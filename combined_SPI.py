@@ -11,6 +11,12 @@ spi_conmebol['confed'] = 'CONMEBOL'
 spi_uefa['confed'] = 'UEFA'
 spi_concacaf['confed'] = 'CONCACAF'
 
+# Read the dictionary CSV for name corrections
+dictionary_df = pd.read_csv('/mnt/data/dictionary.csv')
+name_mapping = pd.Series(dictionary_df.corrected.values, index=dictionary_df.team).to_dict()
+
+
+
 # Function to calculate relative xG and xGA
 def calculate_relative_xg(spi_df):
     top_value = spi_df['xG'].max()
@@ -67,6 +73,11 @@ spi_concacaf['scaled_spi'] = spi_concacaf['relative_spi'] * top_spi_concacaf_sca
 
 # Combine results
 spi_combined = pd.concat([spi_uefa, spi_conmebol, spi_concacaf], ignore_index=True)
+
+# Correct the team names using the mapping dictionary
+spi_combined['team'] = spi_combined['team'].map(name_mapping).fillna(spi_combined['team'])
+
+
 
 # Create spi_final.csv with the required columns and format
 spi_combined['rank'] = spi_combined['scaled_spi'].rank(method='first', ascending=False).astype(int)
