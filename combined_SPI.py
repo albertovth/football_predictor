@@ -1,5 +1,5 @@
-
 import pandas as pd
+from datetime import datetime, timedelta
 
 # Read individual CSVs
 spi_conmebol = pd.read_csv('CONMEBOL_results_spi.csv')
@@ -12,10 +12,8 @@ spi_uefa['confed'] = 'UEFA'
 spi_concacaf['confed'] = 'CONCACAF'
 
 # Read the dictionary CSV for name corrections
-dictionary_df = pd.read_csv('/mnt/data/dictionary.csv')
-name_mapping = pd.Series(dictionary_df.corrected.values, index=dictionary_df.team).to_dict()
-
-
+dictionary_df = pd.read_csv('/home/albertovth/SPI/dictionary.csv')
+name_mapping = pd.Series(dictionary_df.corrected.values, index=dictionary_df.original).to_dict()
 
 # Function to calculate relative xG and xGA
 def calculate_relative_xg(spi_df):
@@ -71,22 +69,73 @@ spi_conmebol['scaled_spi'] = spi_conmebol['relative_spi'] * top_spi_conmebol_sca
 spi_uefa['scaled_spi'] = spi_uefa['relative_spi'] * top_spi_uefa
 spi_concacaf['scaled_spi'] = spi_concacaf['relative_spi'] * top_spi_concacaf_scaled
 
+spi_conmebol['scaled_spi'] = spi_conmebol['scaled_spi'].clip(upper=99)
+spi_uefa['scaled_spi'] = spi_uefa['scaled_spi'].clip(upper=99)
+spi_concacaf['scaled_spi'] = spi_concacaf['scaled_spi'].clip(upper=99)
+
 # Combine results
 spi_combined = pd.concat([spi_uefa, spi_conmebol, spi_concacaf], ignore_index=True)
+
+# Load the original match data to calculate actual xG and xGA
+url = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
+df = pd.read_csv(url)
+
+# Filter data for the last four years
+today = datetime.today()
+four_years_ago = today - timedelta(days=4*365)
+df['date'] = pd.to_datetime(df['date'])
+filtered_df = df[df['date'] >= four_years_ago]
+
+# Calculate actual xG and xGA
+actual_xg_data = []
+
+for index, row in filtered_df.iterrows():
+    home_team = row['home_team']
+    away_team = row['away_team']
+    home_goals = row['home_score']
+    away_goals = row['away_score']
+
+    actual_xg_data.append({'team': home_team, 'xG': home_goals, 'xGA': away_goals})
+    actual_xg_data.append({'team': away_team, 'xG': away_goals, 'xGA': home_goals})
+
+actual_xg_df = pd.DataFrame(actual_xg_data)
+
+# Aggregate data to get actual average xG and xGA per team
+actual_aggregated_data = actual_xg_df.groupby('team').agg({
+    'xG': 'mean',
+    'xGA': 'mean'
+}).reset_index()
+
+# Merge with SPI combined to filter out only the relevant teams
+actual_aggregated_data = actual_aggregated_data.merge(spi_combined[['team']], on='team')
+
+# Find the top Off (scaled_xg) and bottom Def (scaled_xga) team from UEFA
+top_off_team = spi_combined[spi_combined['confed'] == 'UEFA'].sort_values(by='scaled_xg', ascending=False).iloc[0]
+bottom_def_team = spi_combined[spi_combined['confed'] == 'UEFA'].sort_values(by='scaled_xga', ascending=True).iloc[0]
+
+# Get the actual xG and xGA for the top Off team and bottom Def team
+actual_top_xg = actual_aggregated_data[actual_aggregated_data['team'] == top_off_team['team']]['xG'].values[0]
+actual_bottom_xga = actual_aggregated_data[actual_aggregated_data['team'] == bottom_def_team['team']]['xGA'].values[0]
+
+# Scale Off (scaled_xg) and Def (scaled_xga) based on the actual xG and xGA
+spi_combined['off'] = spi_combined['scaled_xg'] / top_off_team['scaled_xg'] * actual_top_xg
+spi_combined['def'] = spi_combined['scaled_xga'] / bottom_def_team['scaled_xga'] * actual_bottom_xga
+
+# Cap Off and Def at 10
+spi_combined['off'] = spi_combined['off'].clip(upper=10)
+spi_combined['def'] = spi_combined['def'].clip(upper=10)
 
 # Correct the team names using the mapping dictionary
 spi_combined['team'] = spi_combined['team'].map(name_mapping).fillna(spi_combined['team'])
 
-
-
 # Create spi_final.csv with the required columns and format
 spi_combined['rank'] = spi_combined['scaled_spi'].rank(method='first', ascending=False).astype(int)
-spi_combined = spi_combined.rename(columns={'team': 'name', 'scaled_xg': 'off', 'scaled_xga': 'def', 'scaled_spi': 'spi'})
+spi_combined = spi_combined.rename(columns={'team': 'name', 'scaled_spi': 'spi'})
 spi_combined = spi_combined[['rank', 'name', 'confed', 'off', 'def', 'spi']]
 spi_combined = spi_combined.sort_values(by=['spi', 'name'], ascending=[False, True])
 
 # Save the final results
-spi_combined.to_csv('spi_final.csv', index=False)
+spi_combined.to_csv('/home/albertovth/SPI/spi_final.csv', index=False)
 
 print("SPI Combined Results:")
 print(spi_combined)
