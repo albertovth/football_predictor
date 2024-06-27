@@ -122,8 +122,8 @@ spi_combined['off'] = spi_combined['scaled_xg'] / top_off_team['scaled_xg'] * ac
 spi_combined['def'] = spi_combined['scaled_xga'] / bottom_def_team['scaled_xga'] * actual_bottom_xga
 
 # Cap Off and Def at 10
-spi_combined['off'] = spi_combined['off'].clip(upper=10)
-spi_combined['def'] = spi_combined['def'].clip(upper=10)
+spi_combined['off'] = spi_combined['off'].clip(upper=6)
+spi_combined['def'] = spi_combined['def'].clip(upper=6)
 
 # Correct the team names using the mapping dictionary
 spi_combined['team'] = spi_combined['team'].map(name_mapping).fillna(spi_combined['team'])
