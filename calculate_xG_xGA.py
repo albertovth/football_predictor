@@ -54,13 +54,14 @@ def adjust_goals_based_on_opponent_spi(row, median_spi):
     
     if home_team not in spi_factors.index or away_team not in spi_factors.index:
         print(f"Team not found in SPI data: Home team = {home_team}, Away team = {away_team}")
-        return pd.Series([row['home_score'], row['away_score']])  # Return original goals if any team is missing in spi_factors
+        error_message = f"Team not found in SPI data: Home team = {home_team}, Away team = {away_team}"
+        raise ValueError(error_message)  
     
     spi_team1 = spi_factors.get(home_team, 1)
     spi_team2 = spi_factors.get(away_team, 1)
     
-    adjusted_home_goals = row['home_score'] * (spi_team2/median_spi)
-    adjusted_away_goals = row['away_score'] * (spi_team1/median_spi)
+    adjusted_home_goals = max(row['home_score'] * 2 * (spi_team2 / median_spi) - row['home_score'] *2* (median_spi / spi_team1), 0.01)
+    adjusted_away_goals = max(row['away_score'] * 2*(spi_team1/median_spi) - row['away_score'] *2* (median_spi / spi_team2), 0.01)
 
     # Cap adjusted goals at 6
     adjusted_home_goals = min(adjusted_home_goals, 6)
@@ -87,9 +88,6 @@ for index, row in filtered_df.iterrows():
     xg_data.append({'team': home_team, 'xG': home_goals, 'xGA': away_goals})
     xg_data.append({'team': away_team, 'xG': away_goals, 'xGA': home_goals})
 
-# Debug print statement to verify xG data
-print("xG Data Sample:")
-print(xg_data[:10])
 
 xg_df = pd.DataFrame(xg_data)
 
@@ -101,13 +99,6 @@ aggregated_data = xg_df.groupby('team').agg({
 
 # Merge with confederations data to filter out only the relevant teams
 aggregated_data = aggregated_data.merge(confed_df, on='team')
-
-print("CONCACAF teams in aggregated data:")
-print(aggregated_data[aggregated_data['confed'] == 'CONCACAF']['team'].unique())
-
-# Debug print statement to verify aggregated xG data
-print("Aggregated xG Data Sample:")
-print(aggregated_data[aggregated_data['confed'] == 'CONCACAF'])
 
 
 # Save the aggregated data to a new CSV file
