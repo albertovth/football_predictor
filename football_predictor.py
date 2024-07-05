@@ -21,7 +21,7 @@ import wikipedia
 import unicodedata
 import math
 
-st.title('Soccer Match Predictor')
+st.title('Football Match Predictor')
 st.title('National Teams')
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -816,8 +816,8 @@ st.markdown("After 10 000 simulations of\nthe match, and considering the lastest
 
 st.subheader("Sources")
 
-st.markdown("Updated data for the simulation comes from the public repository published by FiveThirtyEight\nin GitHub, which is the basis for their Soccer Power Index, available at:")
-link='Soccer-SPI Github [link](https://github.com/fivethirtyeight/data/tree/master/soccer-spi)'
+st.markdown("Updated match data for the simulation comes from the public repository published by Martj42\nin GitHub, available at:")
+link='Martj42 Github repository [link](https://raw.githubusercontent.com/martj42/international_results/master/results.csv)'
 st.markdown(link,unsafe_allow_html=True)
 
 st.markdown("The team logos and the flags are images in the public domain,\navailable at:")
