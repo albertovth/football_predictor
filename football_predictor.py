@@ -142,16 +142,7 @@ def club_logo_home():
 
 def country_flag_home():
 
-    original_input_name = equipo_casa_input_()
-    
-    # Handle special characters for the specific case of Curaçao
-    if original_input_name.lower() == "curacao":
-        input_name = "Curaçao"
-    else:
-        input_name = original_input_name
-
-    # Encode the input properly to handle special characters
-    var_b_ = f"https://commons.wikimedia.org/wiki/File:Flag_of_{input_name}.svg"
+    var_b_="https://commons.wikimedia.org/wiki/"+str(equipo_casa_input_())
 
     var_b=urllib.parse.quote(var_b_,safe=':/.%')
 
