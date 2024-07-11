@@ -141,19 +141,21 @@ def club_logo_home():
     print(logo_ht)
 
 def country_flag_home():
+    # Ensure the input is a string
+    casa_input = str(equipo_casa_input_())
 
-    if equipo_casa_input().lower()=="curacao":
-        var_b_= "https://commons.wikimedia.org/wiki/File:Flag_of_Curaçao.svg"
+    # Handle special case for "Curacao" directly when creating the URL
+    if casa_input.lower() == "curacao":
+        var_b_ = "https://commons.wikimedia.org/wiki/File:Flag_of_Curaçao.svg"
     else:
-        var_b_="https://commons.wikimedia.org/wiki/"+str(equipo_casa_input_())
+        var_b_ = "https://commons.wikimedia.org/wiki/" + casa_input
 
-    var_b=urllib.parse.quote(var_b_,safe=':/.%')
+    var_b = urllib.parse.quote(var_b_, safe=':/.%')
 
     try:
-        html_page = urlopen(str(var_b))
+        html_page = urlopen(var_b)
     except OSError as e:
         html_page = urlopen("https://commons.wikimedia.org/wiki/File:No_image_available.svg")
-
 
     soup = bs(html_page, features='html.parser')
     images = []
@@ -161,32 +163,25 @@ def country_flag_home():
     for img in soup.findAll('img'):
         images.append(img.get('src'))
 
-    flag_list: List[Any] = [k for k in images if "Flag_of_" or "Coat_of_arms" in k]
+    flag_list: List[Any] = [k for k in images if "Flag_of_" in k or "Coat_of_arms" in k]
         
     print(flag_list)
 
-    import unidecode
+    unaccented_flag_list = [unidecode.unidecode(i) for i in flag_list]
 
-    unaccented_flag_list=[]
-
-    for i in flag_list:
-        j=unidecode.unidecode(i)
-        unaccented_flag_list.append(j)
-
-    my_string=str(equipo_casa_input_())
-    first_word=my_string.partition("File:")[2]
-
+    first_word = casa_input.partition("File:")[2]
     unaccented_first_word = unidecode.unidecode(first_word)
 
     try:
-        index = [idx for idx, s in enumerate(unaccented_flag_list) if str(unaccented_first_word) in s][0]
-        flag_ht=flag_list[index]
+        index = [idx for idx, s in enumerate(unaccented_flag_list) if unaccented_first_word in s][0]
+        flag_ht = flag_list[index]
         return flag_ht
     except IndexError:
-        flag_ht="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+        flag_ht = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
         return flag_ht
 
     print(flag_ht)
+
     
 def print_team_logo_home():
     if countries_df['countries'].eq(str(equipo_casa_input_())).any():
