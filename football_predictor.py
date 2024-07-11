@@ -5,7 +5,7 @@ import pandas as pd
 import ssl
 from googlesearch import search
 from bs4 import BeautifulSoup as bs
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 import random
 from scipy.stats import poisson
 import matplotlib
