@@ -142,7 +142,10 @@ def club_logo_home():
 
 def country_flag_home():
 
-    var_b_="https://commons.wikimedia.org/wiki/"+str(equipo_casa_input_())
+    if equipo_casa_input().lower()=="curacao":
+        var_b_= "https://commons.wikimedia.org/wiki/File:Flag_of_Curaçao.svg"
+    else:
+        var_b_="https://commons.wikimedia.org/wiki/"+str(equipo_casa_input_())
 
     var_b=urllib.parse.quote(var_b_,safe=':/.%')
 
@@ -204,7 +207,10 @@ def club_logo_road():
 
 def country_flag_road():
  
-    var_d_="https://commons.wikimedia.org/wiki/"+str(equipo_visita_input_())
+    if equipo_visita_input_().lower() == "curacao":
+        var_d_="https://commons.wikimedia.org/wiki/File:Flag_of_Curaçao.svg"
+    else:
+        var_d_="https://commons.wikimedia.org/wiki/"+str(equipo_visita_input_())
 
     var_d=urllib.parse.quote(var_d_,safe=':/.%')
 
