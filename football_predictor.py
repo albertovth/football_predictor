@@ -820,4 +820,12 @@ st.markdown(link,unsafe_allow_html=True)
 
 st.markdown("The team logos and the flags are images in the public domain,\navailable at:")
 link2='Wikipedia [link](https://www.Wikipedia.org)'
+
+st.markdown("""
+The structure for the ranking, concepts, and initial ranking are borrowed from FiveThirtyEight data on the Soccer Power Index, 
+shared with a [CC-BY-4.0 license](https://github.com/fivethirtyeight/data/tree/master?tab=CC-BY-4.0-1-ov-file#readme) at: 
+[FiveThirtyEight Soccer Power Index](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md).
+""")
+
+
 st.markdown(link2,unsafe_allow_html=True)
