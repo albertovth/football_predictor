@@ -824,7 +824,7 @@ The match data is shared under the [Creative Commons Zero v1.0 Universal license
 # Wikipedia attribution
 st.markdown("""
 The team logos and the flags are images in the public domain, available at: 
-[Wikipedia](https://www.Wikipedia.org).
+[Wikipedia](https://www.Wikipedia.org). The images are shared under the [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/).
 """)
 
 # FiveThirtyEight attribution
