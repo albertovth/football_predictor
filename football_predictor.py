@@ -815,11 +815,16 @@ st.markdown("After 10 000 simulations of\nthe match, and considering the lastest
 st.subheader("Sources")
 
 st.markdown("Updated match data for the simulation comes from the public repository published by Martj42\nin GitHub, available at:")
-link='Martj42 Github repository [link](https://raw.githubusercontent.com/martj42/international_results/master/results.csv)'
-st.markdown(link,unsafe_allow_html=True)
+link = '[Martj42 Github repository](https://raw.githubusercontent.com/martj42/international_results/master/results.csv)'
+st.markdown(link, unsafe_allow_html=True)
+
+st.markdown("""
+The match data is shared under the [Creative Commons Zero v1.0 Universal license](https://github.com/martj42/international_results/blob/master/LICENSE).
+""")
 
 st.markdown("The team logos and the flags are images in the public domain,\navailable at:")
-link2='Wikipedia [link](https://www.Wikipedia.org)'
+link2 = '[Wikipedia](https://www.Wikipedia.org)'
+st.markdown(link2, unsafe_allow_html=True)
 
 st.markdown("""
 The structure for the ranking, concepts, and initial ranking are borrowed from FiveThirtyEight data on the Soccer Power Index, 
@@ -827,5 +832,3 @@ shared with a [CC-BY-4.0 license](https://github.com/fivethirtyeight/data/tree/m
 [FiveThirtyEight Soccer Power Index](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md).
 """)
 
-
-st.markdown(link2,unsafe_allow_html=True)
