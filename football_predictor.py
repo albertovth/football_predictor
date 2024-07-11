@@ -141,16 +141,19 @@ def club_logo_home():
     print(logo_ht)
 
 def country_flag_home():
+    # Adjusting the input for the specific case of Curacao
+    equipo_casa = equipo_casa_input_()
+    if equipo_casa.lower() == "curacao":
+        equipo_casa = "Curaçao"
 
-    var_b_="https://commons.wikimedia.org/wiki/"+str(equipo_casa_input_())
+    var_b_ = "https://commons.wikimedia.org/wiki/" + equipo_casa
 
-    var_b=urllib.parse.quote(var_b_,safe=':/.%')
+    var_b = urllib.parse.quote(var_b_, safe=':/.%')
 
     try:
         html_page = urlopen(str(var_b))
     except OSError as e:
         html_page = urlopen("https://commons.wikimedia.org/wiki/File:No_image_available.svg")
-
 
     soup = bs(html_page, features='html.parser')
     images = []
@@ -158,29 +161,23 @@ def country_flag_home():
     for img in soup.findAll('img'):
         images.append(img.get('src'))
 
-    flag_list: List[Any] = [k for k in images if "Flag_of_" or "Coat_of_arms" in k]
-        
-    print(flag_list)
+    flag_list: List[Any] = [k for k in images if "Flag_of_" in k or "Coat_of_arms" in k]
 
-    import unidecode
+    print("Flag list:", flag_list)
 
-    unaccented_flag_list=[]
+    unaccented_flag_list = [unidecode.unidecode(i) for i in flag_list]
 
-    for i in flag_list:
-        j=unidecode.unidecode(i)
-        unaccented_flag_list.append(j)
-
-    my_string=str(equipo_casa_input_())
-    first_word=my_string.partition("File:")[2]
+    my_string = equipo_casa_input_()
+    first_word = my_string.partition("File:")[2]
 
     unaccented_first_word = unidecode.unidecode(first_word)
 
     try:
         index = [idx for idx, s in enumerate(unaccented_flag_list) if str(unaccented_first_word) in s][0]
-        flag_ht=flag_list[index]
+        flag_ht = flag_list[index]
         return flag_ht
     except IndexError:
-        flag_ht="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+        flag_ht = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
         return flag_ht
 
     print(flag_ht)
