@@ -89,20 +89,14 @@ def run_combined_simulation(file_paths, output_file):
     # Normalize Off (xG) and Def (xGA) values again after scaling
     spi_df['off'] = spi_df['xG']
     spi_df['def'] = spi_df['xGA']
-
+       
     # Read the dictionary CSV for name corrections
     dictionary_df = pd.read_csv('/home/albertovth/SPI/dictionary.csv')
     name_mapping = pd.Series(dictionary_df.corrected.values, index=dictionary_df.original).to_dict()
 
-    # Apply name mapping
+     # Apply name mapping
     spi_df['team'] = spi_df['team'].map(name_mapping).fillna(spi_df['team'])
-
-    # Add confederation column back
-    spi_df['confed'] = spi_df['team'].map(
-        pd.concat([spi_conmebol[['team', 'confed']], spi_uefa[['team', 'confed']], spi_concacaf[['team', 'confed']]])
-        .set_index('team')['confed']
-    )
-
+   
     # Rank teams
     spi_df['rank'] = spi_df['SPI'].rank(method='first', ascending=False).astype(int)
     spi_df = spi_df.rename(columns={'team': 'name'})
@@ -117,6 +111,4 @@ def run_combined_simulation(file_paths, output_file):
 
 # Run combined simulation for all teams
 run_combined_simulation(['/home/albertovth/SPI/CONMEBOL.csv', '/home/albertovth/SPI/UEFA.csv', '/home/albertovth/SPI/CONCACAF.csv'], 'spi_final')
-
-
 
