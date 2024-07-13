@@ -74,8 +74,8 @@ def calculate_points_high(row, median_spi, twenty_fifth_percentile_spi):
     spi_team1 = spi_factors.get(home_team, 1)
     spi_team2 = spi_factors.get(away_team, 1)
     
-    adjusted_home_goals = row['home_score'] * 2 * (spi_team2 / twenty_fifth_percentile_spi) - row['home_score'] * 2 * (spi_team1/median_spi)
-    adjusted_away_goals = row['away_score'] * 2 * (spi_team1 / twenty_fifth_percentile_spi) - row['away_score'] * 2 * (spi_team2/median_spi)
+    adjusted_home_goals = row['home_score'] * 2 * (spi_team2 / twenty_fifth_percentile_spi) - 2*row['home_score'] * (median_spi/spi_team1)
+    adjusted_away_goals = row['away_score'] * 2 * (spi_team1 / twenty_fifth_percentile_spi) - 2*row['away_score'] * (median_spi/spi_team2)
     
     # Cap points per match at 6
     adjusted_home_goals = min(adjusted_home_goals, 6)
