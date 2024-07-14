@@ -44,7 +44,7 @@ def run_simulation(df):
     for team, res in results.items():
         res['points'] = res['wins'] * 3 + res['draws']
         res['avg_points_per_match'] = res['points'] / total_matches_per_team
-        res['SPI'] = (res['avg_points_per_match'] / 3) * 100
+        res['spi'] = (res['avg_points_per_match'] / 3) * 100
 
     return results
 
@@ -53,14 +53,20 @@ def run_combined_simulation(file_paths, output_file):
     spi_conmebol = pd.read_csv(file_paths[0])
     spi_uefa = pd.read_csv(file_paths[1])
     spi_concacaf = pd.read_csv(file_paths[2])
+    spi_afc = pd.read_csv(file_paths[3])
+    spi_caf = pd.read_csv(file_paths[4])
+    spi_ofc = pd.read_csv(file_paths[5])
 
     # Add confederation column
     spi_conmebol['confed'] = 'CONMEBOL'
     spi_uefa['confed'] = 'UEFA'
     spi_concacaf['confed'] = 'CONCACAF'
+    spi_afc['confed'] = 'AFC'
+    spi_caf['confed'] = 'CAF'
+    spi_ofc['confed'] = 'OFC'
 
     # Combine data
-    combined_df = pd.concat([spi_conmebol, spi_uefa, spi_concacaf], ignore_index=True)
+    combined_df = pd.concat([spi_conmebol, spi_uefa, spi_concacaf, spi_afc, spi_caf, spi_ofc], ignore_index=True)
 
     # Run simulations
     results = run_simulation(combined_df)
@@ -70,7 +76,7 @@ def run_combined_simulation(file_paths, output_file):
     results_df.rename(columns={'index': 'team'}, inplace=True)
 
     # Merge with xG and xGA
-    spi_df = combined_df.merge(results_df[['team', 'SPI']], on='team')
+    spi_df = combined_df.merge(results_df[['team', 'spi']], on='team')
 
     # Scale xG and xGA values
     match_data = pd.read_csv("https://raw.githubusercontent.com/martj42/international_results/master/results.csv")
@@ -94,14 +100,14 @@ def run_combined_simulation(file_paths, output_file):
     dictionary_df = pd.read_csv('/home/albertovth/SPI/dictionary.csv')
     name_mapping = pd.Series(dictionary_df.corrected.values, index=dictionary_df.original).to_dict()
 
-     # Apply name mapping
+    # Apply name mapping
     spi_df['team'] = spi_df['team'].map(name_mapping).fillna(spi_df['team'])
    
     # Rank teams
-    spi_df['rank'] = spi_df['SPI'].rank(method='first', ascending=False).astype(int)
+    spi_df['rank'] = spi_df['spi'].rank(method='first', ascending=False).astype(int)
     spi_df = spi_df.rename(columns={'team': 'name'})
-    spi_df = spi_df[['rank', 'name', 'confed', 'off', 'def', 'SPI']]
-    spi_df = spi_df.sort_values(by=['SPI', 'name'], ascending=[False, True])
+    spi_df = spi_df[['rank', 'name', 'confed', 'off', 'def', 'spi']]
+    spi_df = spi_df.sort_values(by=['spi', 'name'], ascending=[False, True])
 
     # Save the final results
     spi_df.to_csv(f'/home/albertovth/SPI/{output_file}.csv', index=False)
@@ -110,5 +116,11 @@ def run_combined_simulation(file_paths, output_file):
     print(spi_df)
 
 # Run combined simulation for all teams
-run_combined_simulation(['/home/albertovth/SPI/CONMEBOL.csv', '/home/albertovth/SPI/UEFA.csv', '/home/albertovth/SPI/CONCACAF.csv'], 'spi_final')
-
+run_combined_simulation([
+    '/home/albertovth/SPI/CONMEBOL.csv',
+    '/home/albertovth/SPI/UEFA.csv',
+    '/home/albertovth/SPI/CONCACAF.csv',
+    '/home/albertovth/SPI/AFC.csv',
+    '/home/albertovth/SPI/CAF.csv',
+    '/home/albertovth/SPI/OFC.csv'
+], 'spi_final')
