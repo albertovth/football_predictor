@@ -48,8 +48,8 @@ def adjust_goals(row):
 
 filtered_df[['home_score', 'away_score']] = filtered_df.apply(lambda row: pd.Series(adjust_goals(row)), axis=1)
 
-# Only include teams from the specified confederations
-filtered_df = filtered_df[(filtered_df['home_team'].isin(confed_df['team'])) & (filtered_df['away_team'].isin(confed_df['team']))]
+# Only include matches where both teams are in the SPI data
+filtered_df = filtered_df[(filtered_df['home_team'].isin(spi_df['team'])) & (filtered_df['away_team'].isin(spi_df['team']))]
 
 # Calculate match factors based on SPI
 spi_factors = spi_df.set_index('team')['spi']
@@ -71,6 +71,9 @@ def calculate_points_high(row, median_spi, twenty_fifth_percentile_spi):
     home_team = row['home_team']
     away_team = row['away_team']
     
+    if home_team not in spi_factors or away_team not in spi_factors:
+        return
+    
     spi_team1 = spi_factors.get(home_team, 1)
     spi_team2 = spi_factors.get(away_team, 1)
     
@@ -89,6 +92,9 @@ def calculate_points_high(row, median_spi, twenty_fifth_percentile_spi):
 def calculate_points_low(row, twenty_fifth_percentile_spi):
     home_team = row['home_team']
     away_team = row['away_team']
+    
+    if home_team not in points_for_xG_low or away_team not in points_for_xG_low:
+        return
     
     # Cap points per match at 6
     home_score_adjusted = min(row['home_score'] * 0.16, 6)
@@ -130,10 +136,16 @@ xg_df.to_csv('/home/albertovth/SPI/aggregated_xg_data.csv', index=False)
 conmebol_teams = xg_df[xg_df['confed'] == 'CONMEBOL'].drop(columns=['confed'])
 uefa_teams = xg_df[xg_df['confed'] == 'UEFA'].drop(columns=['confed'])
 concacaf_teams = xg_df[xg_df['confed'] == 'CONCACAF'].drop(columns=['confed'])
+afc_teams = xg_df[xg_df['confed'] == 'AFC'].drop(columns=['confed'])
+caf_teams = xg_df[xg_df['confed'] == 'CAF'].drop(columns=['confed'])
+ofc_teams = xg_df[xg_df['confed'] == 'OFC'].drop(columns=['confed'])
 
 conmebol_teams.to_csv('/home/albertovth/SPI/CONMEBOL.csv', index=False)
 uefa_teams.to_csv('/home/albertovth/SPI/UEFA.csv', index=False)
 concacaf_teams.to_csv('/home/albertovth/SPI/CONCACAF.csv', index=False)
+afc_teams.to_csv('/home/albertovth/SPI/AFC.csv', index=False)
+caf_teams.to_csv('/home/albertovth/SPI/CAF.csv', index=False)
+ofc_teams.to_csv('/home/albertovth/SPI/OFC.csv', index=False)
 
-print("Data saved to CONMEBOL.csv, UEFA.csv, and CONCACAF.csv.")
+print("Data saved to CONMEBOL.csv, UEFA.csv, CONCACAF.csv, AFC.csv, CAF.csv, and OFC.csv.")
 
