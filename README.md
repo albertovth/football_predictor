@@ -22,7 +22,7 @@ The ranking concepts are based on **FiveThirtyEight's Soccer Power Index**, shar
 - **Documentation and Data**: [FiveThirtyEight Soccer Power Index](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md)
 
 ### Additional Information
-- **Installation**: Backend scripts are updated prior to significant international competitions. The match simulator is available at [Football Predictor](https://footballpredictor.streamlit.app/).
+- **Installation**: Backend data files are updated prior to significant international competitions. The match simulator is available at [Football Predictor](https://footballpredictor.streamlit.app/).
 - **Contributing**: If interested in contributing, please contact [alberto@vthoresen.no](mailto:alberto@vthoresen.no).
 
 ### License
