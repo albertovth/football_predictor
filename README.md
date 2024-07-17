@@ -23,6 +23,7 @@ The ranking concepts are based on **FiveThirtyEight's Soccer Power Index**, shar
 
 ### Additional Information
 - **Installation**: Backend data files are updated prior to significant international competitions. The match simulator is available at [Football Predictor](https://footballpredictor.streamlit.app/).
+To reproduce the process: 1) initialize the original SPI ranking by FiveThirtyEight using the initialization script (file name: init_from_spi_538.py) 2) run the script to calculate xG and xGA (file name: calculate_xG_xGA.py), 3) run the script to simulate matchups and calculate the updated SPI (file name: omnes_contra_omnium_spi.py). The resulting ranking spi_final.csv has to be saved as ranking_final.csv, 4) use ranking_final.csv in the script for the Streamlit app (football_predictor.py). 
 - **Contributing**: If interested in contributing, please contact [alberto@vthoresen.no](mailto:alberto@vthoresen.no).
 
 ### License
