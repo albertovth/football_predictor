@@ -67,7 +67,7 @@ st.subheader('Simulate match\nSelect teams')
 st.markdown(
     "The system will automatically run a simulation\nonce you select teams. \nYou can also rerun the simulation\nwith the buttons provided below. You can also remove your selection, and start over.\nResults will appear at the bottom of the screen. In some cases this may take some time, depending on your connection.\n"
     "\nNote: Up until now, the simulations have been made using the average method, to calculate expected goals, based on expected goals for and against for each team. This is in the process of being updated to the multiplicative method. The new method will be uploaded once implementation and testing is concluded. This method allows for interactions between predicting factors. For more information on the different methods, see [here](https://dictionary.apa.org/multiplicative-model)\n\n"
-    \n"The multiplicative method is considered to be more suited for capturing the complexities and dynamics of football matches. Unlike the average method, which simply takes a mean of the expected goals for and against, the multiplicative method accounts for the interactions between a team's offensive and defensive strengths more effectively.\n\n"
+    "\nThe multiplicative method is considered to be more suited for capturing the complexities and dynamics of football matches. Unlike the average method, which simply takes a mean of the expected goals for and against, the multiplicative method accounts for the interactions between a team's offensive and defensive strengths more effectively.\n\n"
 )
 
 params={
