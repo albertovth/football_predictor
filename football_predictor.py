@@ -36,6 +36,18 @@ spi = spi_global_rankings_intl[['rank', 'name', 'off', 'defe', 'spi']]
 spi.sort_values(by=['spi'], ascending=False, inplace=True)
 spi = spi.reset_index(drop=True)
 
+# Load historical data
+historical_data = pd.read_csv('https://raw.githubusercontent.com/martj42/international_results/master/results.csv')
+
+# Filter data for the past 4 years
+historical_data['date'] = pd.to_datetime(historical_data['date'])
+filtered_data = historical_data[historical_data['date'] >= pd.Timestamp.now() - pd.DateOffset(years=4)]
+
+
+# Calculate median goals
+all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
+median_goals_home = all_goals.median()
+median_goals_away = all_goals.median()
 
 st.markdown("You can simulate matches by selecting teams with the drop-down lists provided under the table presented below.")
 
@@ -64,11 +76,7 @@ st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
 st.dataframe(spi)
 
 st.subheader('Simulate match\nSelect teams')
-st.markdown(
-    "The system will automatically run a simulation\nonce you select teams. \nYou can also rerun the simulation\nwith the buttons provided below. You can also remove your selection, and start over.\nResults will appear at the bottom of the screen. In some cases this may take some time, depending on your connection.\n"
-    "\nNote: Up until now, the simulations have been made using the average method, to calculate expected goals, based on expected goals for and against for each team. This is in the process of being updated to the multiplicative method. The new method will be uploaded once implementation and testing is concluded. This method allows for interactions between predicting factors. For more information on the different methods, see [here](https://dictionary.apa.org/multiplicative-model)\n\n"
-    "\nThe multiplicative method is considered to be more suited for capturing the complexities and dynamics of football matches. Unlike the average method, which simply takes a mean of the expected goals for and against, the multiplicative method accounts for the interactions between a team's offensive and defensive strengths more effectively.\n\n"
-)
+st.markdown("The system will automatically run a simulation\nonce you select teams. \nYou can also rerun the simulation\nwith the buttons provided below. You can also remove your selection, and start over.\nResults will appear at the bottom of the screen. In some cases this may take some time, depending on your connection.")
 
 params={
     'equipo_casa' : st.selectbox('Home team', Equipo_casa),
@@ -302,11 +310,11 @@ try:
     equipo_visita_of = df_pf.at[index_visita_equipo[0], 'off']
     equipo_visita_def = df_pf.at[index_visita_equipo[0], 'defe']
 
-    goles_esperados_equipo_casa = ((equipo_casa_of) + (equipo_visita_def)) / 2
-    goles_esperados_equipo_visita = ((equipo_visita_of) + (equipo_casa_def)) / 2
+    # Calculate expected goals using the multiplicative method with median goals
+    goles_esperados_equipo_casa = (equipo_casa_of / df_pf['off'].median()) * (equipo_visita_def / df_pf['defe'].median()) * median_goals_home
+    goles_esperados_equipo_visita = (equipo_visita_of / df_pf['off'].median()) * (equipo_casa_def / df_pf['defe'].median()) * median_goals_away
 
     goles_esperados_equipo_casa_redondeado = (math.ceil(goles_esperados_equipo_casa * 100) / 100.0)
-
     goles_esperados_equipo_visita_redondeado = (math.ceil(goles_esperados_equipo_visita * 100) / 100.0)
 
 except IndexError:
@@ -837,4 +845,3 @@ The structure for the ranking, concepts, and initial ranking are borrowed from F
 shared with a [CC-BY-4.0 license](https://github.com/fivethirtyeight/data/tree/master?tab=CC-BY-4.0-1-ov-file#readme) at: 
 [FiveThirtyEight Soccer Power Index](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md).
 """)
-
