@@ -1,6 +1,22 @@
 import numpy as np
 from scipy.stats import poisson
 import pandas as pd
+from tqdm import tqdm
+
+
+
+# Load historical data
+historical_data = pd.read_csv('https://raw.githubusercontent.com/martj42/international_results/master/results.csv')
+
+# Filter data for the past 4 years
+historical_data['date'] = pd.to_datetime(historical_data['date'])
+filtered_data = historical_data[historical_data['date'] >= pd.Timestamp.now() - pd.DateOffset(years=4)]
+
+
+# Calculate median goals
+all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
+median_goals_home = all_goals.median()
+median_goals_away = all_goals.median()
 
 def inverse_poisson(lam, rand_nums):
     goals = []
@@ -17,11 +33,12 @@ def run_simulation(df):
     n_simulations = 10000
     results = {team: {'wins': 0, 'draws': 0, 'losses': 0} for team in df['team']}
 
-    for i, team_a in df.iterrows():
-        for j, team_b in df.iterrows():
+    for i, team_a in tqdm(df.iterrows(), total=len(df), desc="Teams progress"):
+        for j, team_b in tqdm(df.iterrows(), total=len(df), desc="Match progress", leave=False):
             if i != j:
-                expected_goals_team_a = (team_a['xG'] + team_b['xGA']) / 2
-                expected_goals_team_b = (team_b['xG'] + team_a['xGA']) / 2
+                # Calculate expected goals using the multiplicative method with median goals
+                expected_goals_team_a = (team_a['xG'] / df['xG'].median()) * (team_b['xGA'] / df['xGA'].median()) * median_goals_home
+                expected_goals_team_b = (team_b['xG'] / df['xG'].median()) * (team_a['xGA'] / df['xGA'].median()) * median_goals_away
 
                 rand_nums = np.random.rand(n_simulations)
 
@@ -47,6 +64,7 @@ def run_simulation(df):
         res['spi'] = (res['avg_points_per_match'] / 3) * 100
 
     return results
+
 
 def run_combined_simulation(file_paths, output_file):
     # Load individual CSVs
@@ -81,7 +99,7 @@ def run_combined_simulation(file_paths, output_file):
     # Scale xG and xGA values
     match_data = pd.read_csv("https://raw.githubusercontent.com/martj42/international_results/master/results.csv")
     match_data['date'] = pd.to_datetime(match_data['date'])
-    match_data = match_data[match_data['date'] >= '2020-01-01']
+    match_data = match_data[match_data['date'] >= pd.Timestamp.now() - pd.DateOffset(years=4)]
 
     median_actual_goals_scored = match_data[['home_score', 'away_score']].stack().median()
     median_actual_goals_conceded = match_data[['home_score', 'away_score']].stack().median()
