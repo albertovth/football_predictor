@@ -73,7 +73,7 @@ hide_dataframe_row_index = """
 st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
 
 # Display an interactive table
-st.table(spi)
+st.dataframe(spi)
 
 st.subheader('Simulate match\nSelect teams')
 st.markdown("The system will automatically run a simulation\nonce you select teams. \nYou can also rerun the simulation\nwith the buttons provided below. You can also remove your selection, and start over.\nResults will appear at the bottom of the screen. In some cases this may take some time, depending on your connection.")
