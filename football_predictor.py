@@ -49,7 +49,7 @@ all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']]
 median_goals_home = all_goals.median()
 median_goals_away = all_goals.median()
 
-st.markdown("You can simulate matches by selecting teams with the drop-down lists provided under the table presented below. For more information on the methods for ranking and simulation, visit the [project documentation](https://github.com/albertovth/football_predictor/blob/main/README.md).")
+st.markdown("You can simulate matches by selecting teams with the drop-down lists provided under the table presented below. For more information on the methods for ranking and simulation, visit the [project documentation](https://github.com/albertovth/football_predictor/blob/main/README.md). Match data last updated 14 July 2024.")
 
 @st.cache_data
 def load_data():
