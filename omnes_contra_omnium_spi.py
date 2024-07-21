@@ -2,16 +2,16 @@ import numpy as np
 from scipy.stats import poisson
 import pandas as pd
 from tqdm import tqdm
-
-
+from datetime import datetime
 
 # Load historical data
 historical_data = pd.read_csv('https://raw.githubusercontent.com/martj42/international_results/master/results.csv')
 
-# Filter data for the past 4 years
+# Filter data from May 23, 2021, and up to today's date
 historical_data['date'] = pd.to_datetime(historical_data['date'])
-filtered_data = historical_data[historical_data['date'] >= pd.Timestamp.now() - pd.DateOffset(years=4)]
-
+start_date = pd.to_datetime('2021-05-23')
+today = datetime.today()
+filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= today)]
 
 # Calculate median goals
 all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
