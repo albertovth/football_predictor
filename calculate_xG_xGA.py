@@ -30,11 +30,12 @@ spi_df['team'] = spi_df['team'].map(corrected_to_original).fillna(spi_df['team']
 df['home_team'] = df['home_team'].map(corrected_to_original).fillna(df['home_team'])
 df['away_team'] = df['away_team'].map(corrected_to_original).fillna(df['away_team'])
 
-# Filter data for the last four years and up to today's date
+# Filter data from May 23, 2021, and up to today's date
 today = datetime.today()
-four_years_ago = today - timedelta(days=4*365)
+start_date = pd.to_datetime('2021-05-23')
 df['date'] = pd.to_datetime(df['date'])
-filtered_df = df[(df['date'] >= four_years_ago) & (df['date'] <= today)]
+filtered_df = df[(df['date'] >= start_date) & (df['date'] <= today)]
+
 
 # Remove matches with NaN scores
 filtered_df = filtered_df.dropna(subset=['home_score', 'away_score'])
