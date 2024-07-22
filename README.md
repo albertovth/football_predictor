@@ -21,7 +21,7 @@ The team logos and flags used are sourced from **Wikipedia**, shared under the [
 The ranking concepts are based on **FiveThirtyEight's Soccer Power Index**, shared under a [CC-BY-4.0 license](https://creativecommons.org/licenses/by/4.0/).
 - **Documentation and Data**: [FiveThirtyEight Soccer Power Index](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md)
 
-#### Error solving and alternative approaches
+#### Error handling and alternative approaches
 OpenAI: The support and knowledge from the OpenAI platform have been instrumental in refining the model and exploring innovative approaches. OpenAI operates under a philosophy of open collaboration, fostering co-intelligence.
 
 ### Additional Information
