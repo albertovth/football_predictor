@@ -848,5 +848,5 @@ shared with a [CC-BY-4.0 license](https://github.com/fivethirtyeight/data/tree/m
 
 # OpenAI attributin
 st.markdown("""
-#### Error solving and alternative approaches
+#### Error handling and alternative approaches
 OpenAI: The support and knowledge from the OpenAI platform have been instrumental in refining the model and exploring innovative approaches. OpenAI operates under a philosophy of open collaboration, fostering co-intelligence.""")
