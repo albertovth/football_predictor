@@ -845,3 +845,8 @@ The structure for the ranking, concepts, and initial ranking are borrowed from F
 shared with a [CC-BY-4.0 license](https://github.com/fivethirtyeight/data/tree/master?tab=CC-BY-4.0-1-ov-file#readme) at: 
 [FiveThirtyEight Soccer Power Index](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md).
 """)
+
+# OpenAI attributin
+st.markdown("""
+#### Error solving and alternative approaches
+OpenAI: The support and knowledge from the OpenAI platform have been instrumental in refining the model and exploring innovative approaches. OpenAI operates under a philosophy of open collaboration, fostering co-intelligence.""")
