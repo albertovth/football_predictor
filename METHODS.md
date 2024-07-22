@@ -11,7 +11,7 @@ The data is collected from publicly available sources, inspired by concepts from
 ### Sources
 - Updated match data for the simulation comes from the public repository published by Martj42 in GitHub: [Martj42 GitHub repository](https://github.com/martj42/international_results), shared under the [Creative Commons Zero v1.0 Universal license](https://github.com/martj42/international_results/blob/master/LICENSE).
 
-- The structure for the ranking, concepts, and initial ranking are borrowed from FiveThirtyEight data on the Soccer Power Index, shared with a [CC-BY-4.0 license](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md](https://github.com/fivethirtyeight/data/blob/master/LICENSE).
+- The structure for the ranking, concepts, and initial ranking are borrowed from [FiveThirtyEight data on the Soccer Power Index](https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md), shared with a [CC-BY-4.0 license](https://github.com/fivethirtyeight/data/blob/master/LICENSE).
 
 ## Model Explanation
 
