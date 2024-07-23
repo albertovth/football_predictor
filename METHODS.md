@@ -16,6 +16,14 @@ The data is collected from publicly available sources, inspired by concepts from
 
 ## Model Explanation
 
+## Clarification of Metrics
+
+It is important to note that in this project, the terms "xG" and "xGA" are used to denote offensive and defensive metrics that represent the average goals scored and conceded by a team, respectively, over a given period. These metrics are adjusted for opponent strength and other factors, rather than being derived from shot-based probabilities.
+
+This usage is distinct from the conventional football analytics metrics "expected goals" (xG) and "expected goals against" (xGA), which are calculated based on the quality and quantity of individual shots taken and faced by a team. The latter metrics estimate the likelihood of scoring from a given shot or conceding from a given shot, considering various contextual factors such as shot location, type, and assist type.
+
+The approach in this project, of using adjusted averages, provides a straightforward and computationally efficient way to evaluate team performance over time, and is particularly useful in the context of simulating match outcomes and ranking teams.
+
 ### Offensive and Defensive Metrics (xG and xGA)
 - **Offensive (xG) and Defensive (xGA) Metrics**: These metrics represent the average goals for and against each team, respectively.
 - **Reward Factor**: Goals are weighted based on the initial SPI ranking of the opponent. The reward factor multiplies goals scored by 2 times the opponent team's SPI divided by the 25th percentile SPI. This effectively weights goals from the lowest ranked team to the highest roughly as the 95th percentile max goals scored in the period (6).
