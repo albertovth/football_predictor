@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project uses an advanced statistical model to predict football match outcomes and rank teams. The model employs historical match data and calculates offensive (xG) and defensive (xGA) metrics, which are then used in Monte Carlo simulations to forecast match results.
+This project uses a statistical model to predict football match outcomes and rank teams. The model employs historical match data and calculates offensive (xG) and defensive (xGA) metrics, which are then used in Monte Carlo simulations to forecast match results.
 
 ## Data Collection
 
