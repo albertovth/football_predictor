@@ -2,11 +2,11 @@
 
 ## Overview
 
-This project uses a statistical model to predict football match outcomes and rank teams. The model employs historical match data and calculates offensive (xG) and defensive (xGA) metrics, which are then used in Monte Carlo simulations to forecast match results.
+This project uses a statistical model to calculate offensive and defensive metrics for football national teams, based exclusively on results, predict football match outcomes on the basis of these metrics, and rank teams based on these simulations. The model employs historical match data and calculates offensive (xG) and defensive (xGA) metrics, which are then used in Monte Carlo simulations to forecast match results.
 
 ## Data Collection
 
-The data is collected from publicly available sources, inspired by concepts from the Soccer Power Index (SPI), provided by FiveThirtyEight, until their project was paused in 2023. FiveThirtyEight's original SPI ranking from May 2021 is used as a starting point, and match results from that date onward are used with this project's method, to update offensive and defensive methods and rankings.
+The data is collected from publicly available sources, inspired by concepts from the Soccer Power Index (SPI), provided by FiveThirtyEight, until their project was paused in 2023. FiveThirtyEight's original SPI ranking from May 2021 is used as a starting point, and match results from that date onward are used with this project's method, to update offensive and defensive metrics and rankings.
 
 ### Sources
 - Updated match data for the simulation comes from the public repository published by Martj42 in GitHub: <a href="https://github.com/martj42/international_results" target="_blank">Martj42 GitHub repository</a>, shared under the <a href="https://github.com/martj42/international_results/blob/master/LICENSE" target="_blank">Creative Commons Zero v1.0 Universal license</a>.
