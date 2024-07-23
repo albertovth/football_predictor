@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project uses a statistical model to calculate offensive and defensive metrics for football national teams, based exclusively on results, predict football match outcomes on the basis of these metrics, and rank teams based on these simulations. The model employs historical match data and calculates offensive (xG) and defensive (xGA) metrics, which are then used in Monte Carlo simulations to forecast match results.
+This project uses a statistical model to calculate offensive and defensive metrics for football national teams, based exclusively on historical data on match results; predict football match outcomes, on the basis of these metrics, using Monte Carlo simulations; and rank teams, based on these simulations. 
 
 ## Data Collection
 
