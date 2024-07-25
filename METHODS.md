@@ -32,6 +32,25 @@ The approach in this project, of using adjusted averages, provides a straightfor
 - **Levelling Factor**: This is necessary because without this factor, low ranked teams get their goals against high ranked teams rewarded, but all goals against them are practically nullified. The levelling factor ensures that low ranked teams are rewarded for scoring against high ranked teams, but in a balanced manner. This factor implies subtracting 2 times the median SPI divided by the scoring team's SPI. The factor parallels the reward factor, but still allowing lower ranked teams to be rewarded for scoring against higher ranked teams.
   
 - **Low SPI Teams Matches**: The code separates matches between teams that both have an SPI under the 25th percentile to avoid creating xG and xGA metrics that give too much importance to these matches. Goals against in such matches are set to 6 (95th percentile) and goals for to 1/6, the inverse of the 95th percentile. This means that teams under the 25th percentile must play and get good results against teams ranked above the 25th percentile, in order to make progress in the ranking. This avoids that teams that only play teams in the bottom of the ranking get unfairly high offensive and unfairly low defensive metrics. This also reflects practice, where low ranked teams climb in rankings when playing and getting good results against higher ranked teams.
+  
+### Considerations for Weighting Goals in xG and xGA Calculations
+
+In the calculation of offensive (xG) and defensive (xGA) metrics, goals are weighted based on the opponent's Soccer Power Index (SPI), for the reward factor, and the scoring team’s SPI, for the leveling factor. This approach was chosen, for several reasons:
+
+1. **Comprehensive Measure**: SPI is a combined measure of a team's offensive and defensive capabilities. By using SPI, the model accounts for the overall strength and dynamics of the team, rather than isolating offensive or defensive metrics.
+
+2. **Dynamic Interactions**: Football matches are complex, with dynamic interactions between a team's offensive and defensive strengths. A team with a strong offense can indirectly bolster its defense, by maintaining control of the game. Using SPI helps capture these interactions, providing a holistic view of team strength.
+
+3. **Simplicity and Consistency**: Using SPI simplifies the calculations, making the model more straightforward and easier to understand. It ensures consistency in how goals are weighted across different matches.
+
+### Alternative Approach Considered
+
+An alternative approach considered was to calculate the reward factor, based on the opponent's defensive metrics, and the leveling factor, based on the scoring team's offensive metrics. While this might seem to offer more precision, by specifically targeting each team's strengths and weaknesses, it was decided against for the following reasons:
+
+- **Dynamic Complexity**: A team's defensive strength can be influenced by its offensive capabilities and vice versa. By using separate metrics, the model might miss out on capturing these interdependencies.
+- **Over-Simplification**: Using only defensive metrics for the reward factor might oversimplify the evaluation, not fully acknowledging the combined effect of a team's overall strength as reflected in the SPI.
+
+By prioritizing a combined measure through SPI, the model aims to balance precision with a comprehensive view of team dynamics. This decision ensures that both offensive and defensive strengths are considered, reflecting a truer nature of football matches.
 
 ### Monte Carlo Simulations
 The Monte Carlo simulation method is used to predict match outcomes by running thousands of simulations for each match.
