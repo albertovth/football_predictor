@@ -27,7 +27,7 @@ The approach in this project, of using adjusted averages, provides a straightfor
 ### Offensive and Defensive Metrics (xG and xGA)
 - **Offensive (xG) and Defensive (xGA) Metrics**: These metrics represent the average goals for and against each team, respectively.
   
-- **Reward Factor**: Goals are weighted based on the initial SPI ranking of the opponent. The reward factor multiplies goals scored by 2 times the opponent team's SPI divided by the 25th percentile SPI. This effectively weights goals from the lowest ranked team to the highest roughly as the 95th percentile max goals scored in the period (6).
+- **Reward Factor**: Goals are weighted based on the initial SPI ranking of the opponent. The reward factor multiplies goals scored by 2 times the opponent team's SPI divided by the 25th percentile SPI. This effectively weights goals from the lowest ranked team to the highest roughly as the 95th percentile max goals per game, scored in the period (6).
   
 - **Levelling Factor**: This is necessary because without this factor, low ranked teams get their goals against high ranked teams rewarded, but all goals against them are practically nullified. The levelling factor ensures that low ranked teams are rewarded for scoring against high ranked teams, but in a balanced manner. This factor implies subtracting 2 times the median SPI divided by the scoring team's SPI. The factor parallels the reward factor, but still allowing lower ranked teams to be rewarded for scoring against higher ranked teams.
   
