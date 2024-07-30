@@ -36,7 +36,6 @@ start_date = pd.to_datetime('2021-05-23')
 df['date'] = pd.to_datetime(df['date'])
 filtered_df = df[(df['date'] >= start_date) & (df['date'] <= today)]
 
-
 # Remove matches with NaN scores
 filtered_df = filtered_df.dropna(subset=['home_score', 'away_score'])
 
@@ -78,8 +77,8 @@ def calculate_points_high(row, median_spi, twenty_fifth_percentile_spi):
     spi_team1 = spi_factors.get(home_team, 1)
     spi_team2 = spi_factors.get(away_team, 1)
     
-    adjusted_home_goals = row['home_score'] * 2 * (spi_team2 / twenty_fifth_percentile_spi) - 2*row['home_score'] * (median_spi/spi_team1)
-    adjusted_away_goals = row['away_score'] * 2 * (spi_team1 / twenty_fifth_percentile_spi) - 2*row['away_score'] * (median_spi/spi_team2)
+    adjusted_home_goals = row['home_score'] * 2 * (spi_team2 / twenty_fifth_percentile_spi) - 2 * row['home_score'] * (median_spi / spi_team1)
+    adjusted_away_goals = row['away_score'] * 2 * (spi_team1 / twenty_fifth_percentile_spi) - 2 * row['away_score'] * (median_spi / spi_team2)
     
     # Cap points per match at 6
     adjusted_home_goals = min(adjusted_home_goals, 6)
@@ -127,6 +126,45 @@ for team in points_for_xG.keys():
 
 xg_df = pd.DataFrame(xg_data)
 
+# Calculate correction factors based on average and median opponent SPI
+average_opponent_spi = {team: 0 for team in spi_df['team']}
+median_opponent_spi = {team: [] for team in spi_df['team']}
+for team in spi_df['team']:
+    home_matches = filtered_df[filtered_df['home_team'] == team]
+    away_matches = filtered_df[filtered_df['away_team'] == team]
+    opponent_spi_sum = home_matches['away_team'].map(spi_factors).sum() + away_matches['home_team'].map(spi_factors).sum()
+    opponent_spi_values = home_matches['away_team'].map(spi_factors).tolist() + away_matches['home_team'].map(spi_factors).tolist()
+    total_matches = len(home_matches) + len(away_matches)
+    average_opponent_spi[team] = opponent_spi_sum / total_matches if total_matches > 0 else median_spi
+    median_opponent_spi[team] = pd.Series(opponent_spi_values).median() if opponent_spi_values else median_spi
+
+# Calculate global mean and median SPI
+global_mean_spi = spi_df['spi'].mean()
+global_median_spi = spi_df['spi'].median()
+
+# Apply correction factors
+for team in xg_df['team']:
+    avg_spi = average_opponent_spi[team]
+    med_spi = median_opponent_spi[team]
+    offense_correction = avg_spi / global_mean_spi
+    defense_correction = global_median_spi / avg_spi
+    xg_df.loc[xg_df['team'] == team, 'xG'] *= offense_correction
+    xg_df.loc[xg_df['team'] == team, 'xGA'] *= defense_correction
+
+# Check for NaN values in average and median opponent SPI
+nan_teams = {team: (avg_spi, med_spi) for team, avg_spi, med_spi in zip(average_opponent_spi.keys(), average_opponent_spi.values(), median_opponent_spi.values()) if pd.isna(avg_spi) or pd.isna(med_spi)}
+
+print("Teams with NaN values in average or median opponent SPI:")
+for team, (avg_spi, med_spi) in nan_teams.items():
+    print(f"{team}: Average SPI={avg_spi}, Median SPI={med_spi}")
+
+# Save average and median opponent SPI to a new CSV file
+opponent_spi_data = [{'team': team, 'average_opponent_spi': avg_spi, 'median_opponent_spi': med_spi} for team, avg_spi, med_spi in zip(average_opponent_spi.keys(), average_opponent_spi.values(), median_opponent_spi.values())]
+opponent_spi_df = pd.DataFrame(opponent_spi_data)
+opponent_spi_df.to_csv('/home/albertovth/SPI/opponent_spi_data.csv', index=False)
+
+print("Average and median opponent SPI data saved to opponent_spi_data.csv")
+
 # Merge with confederations data to filter out only the relevant teams
 xg_df = xg_df.merge(confed_df, on='team')
 
@@ -147,6 +185,3 @@ concacaf_teams.to_csv('/home/albertovth/SPI/CONCACAF.csv', index=False)
 afc_teams.to_csv('/home/albertovth/SPI/AFC.csv', index=False)
 caf_teams.to_csv('/home/albertovth/SPI/CAF.csv', index=False)
 ofc_teams.to_csv('/home/albertovth/SPI/OFC.csv', index=False)
-
-print("Data saved to CONMEBOL.csv, UEFA.csv, CONCACAF.csv, AFC.csv, CAF.csv, and OFC.csv.")
-
