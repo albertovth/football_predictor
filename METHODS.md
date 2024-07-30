@@ -45,16 +45,6 @@ In the calculation of offensive (xG) and defensive (xGA) metrics, goals are weig
 
 3. **Simplicity and Consistency**: Using SPI simplifies the calculations, making the model more straightforward and easier to understand. It ensures consistency in how goals are weighted across different matches.
 
-### Considerations for Weighting Goals in xG and xGA Calculations
-
-In the calculation of offensive (xG) and defensive (xGA) metrics, goals are weighted based on the opponent's Soccer Power Index (SPI), for the reward factor, and the scoring team’s SPI, for the leveling factor. This approach was chosen, for several reasons:
-
-1. **Comprehensive Measure**: SPI is a combined measure of a team's offensive and defensive capabilities. By using SPI, the model accounts for the overall strength and dynamics of the team, rather than isolating offensive or defensive metrics.
-
-2. **Dynamic Interactions**: Football matches are complex, with dynamic interactions between a team's offensive and defensive strengths. A team with a strong offense can indirectly bolster its defense, by maintaining control of the game. Using SPI helps capture these interactions, providing a holistic view of team strength.
-
-3. **Simplicity and Consistency**: Using SPI simplifies the calculations, making the model more straightforward and easier to understand. It ensures consistency in how goals are weighted across different matches.
-
 ### Scaling and Capping of xG and xGA Metrics
 
 To further enhance the accuracy and realism of the model, xG and xGA metrics are scaled to median goals scored and capped to reflect the actual distribution of goals among team rankings. By scaling these metrics to the median, the model normalizes the data, ensuring that offensive and defensive strengths are accurately represented relative to the median performance. This adjustment highlights the relative strengths of teams in a balanced manner.
