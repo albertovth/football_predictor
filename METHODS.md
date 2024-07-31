@@ -45,12 +45,11 @@ In the calculation of offensive (xG) and defensive (xGA) metrics, goals are weig
 
 3. **Simplicity and Consistency**: Using SPI simplifies the calculations, making the model more straightforward and easier to understand. It ensures consistency in how goals are weighted across different matches.
 
-### Scaling and Capping of xG and xGA Metrics
+### Scaling and Proportional Capping of xG and xGA Metrics
 
 To further enhance the accuracy and realism of the model, xG and xGA metrics are scaled to median goals scored and capped to reflect the actual distribution of goals among team rankings. By scaling these metrics to the median, the model normalizes the data, ensuring that offensive and defensive strengths are accurately represented relative to the median performance. This adjustment highlights the relative strengths of teams in a balanced manner.
 
-Additionally, capping the xG and xGA values helps in maintaining the realism of the simulation by preventing extreme values that are rarely observed in real matches. This capping is based on the observed distribution of goals, ensuring that the model reflects actual performance trends. The highest observed values for top-performing teams set the upper limits for these metrics, providing a realistic ceiling that aligns with empirical data. This approach ensures that the simulation remains grounded in real-world performance, offering a more reliable prediction of match outcomes.
-
+Additionally, proportionally capping the xG and xGA values helps in maintaining the realism of the simulation, by preventing extreme values that are rarely observed in real matches. This proportional capping is based on the observed distribution of goals, ensuring that the model reflects actual performance trends. The highest observed values for top-performing/low-performing (xG/xGA) teams set the upper limits for these metrics, providing a realistic ceiling that aligns with empirical data. This approach ensures that the simulation remains grounded in real-world performance, offering a more reliable prediction of match outcomes.
 
 ### Alternative Approach Considered
 
