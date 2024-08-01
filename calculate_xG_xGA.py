@@ -9,11 +9,15 @@ df = pd.read_csv(url)
 spi_df = pd.read_csv('/home/albertovth/SPI/spi_final.csv')
 spi_df = spi_df.rename(columns={'name': 'team'})
 
-# Calculate the median SPI and 25th percentile SPI for the three confederations combined
+# Calculate the median SPI, 25th percentile SPI and the minimum SPI for the three confederations combined
 median_spi = spi_df['spi'].median()
 twenty_fifth_percentile_spi = spi_df['spi'].quantile(0.25)
+minimum_spi = spi_df['spi'].min()
+maximum_spi = spi_df['spi'].max()
+
 print(f"Median SPI: {median_spi}")
 print(f"25th Percentile SPI: {twenty_fifth_percentile_spi}")
+print(f"Minimum SPI: {minimum_spi}")
 
 # Load the confederations data
 confed_df = pd.read_csv('/home/albertovth/SPI/confederations.csv')
@@ -57,8 +61,6 @@ spi_factors = spi_df.set_index('team')['spi']
 # Initialize points for xG and xGA
 points_for_xG_high = {team: 0 for team in spi_df['team']}
 points_for_xGA_high = {team: 0 for team in spi_df['team']}
-points_for_xG_low = {team: 0 for team in spi_df['team']}
-points_for_xGA_low = {team: 0 for team in spi_df['team']}
 
 # High SPI teams
 high_spi_teams = spi_df[spi_df['spi'] >= twenty_fifth_percentile_spi]['team'].tolist()
@@ -77,8 +79,12 @@ def calculate_points_high(row, median_spi, twenty_fifth_percentile_spi):
     spi_team1 = spi_factors.get(home_team, 1)
     spi_team2 = spi_factors.get(away_team, 1)
     
-    adjusted_home_goals = row['home_score'] * 2 * (spi_team2 / twenty_fifth_percentile_spi) - 2 * row['home_score'] * (median_spi / spi_team1)
-    adjusted_away_goals = row['away_score'] * 2 * (spi_team1 / twenty_fifth_percentile_spi) - 2 * row['away_score'] * (median_spi / spi_team2)
+    adjustment_factor=0.017 # calculated with adjustment_factor_calculate_and_dynamism_variable.py
+    dynamism_variable=0.16 # calculated with adjustment_factor_calculate_and_dynamism_variable.py
+    
+    adjusted_home_goals = row['home_score'] * adjustment_factor * (spi_team2 / (minimum_spi - dynamism_variable)) - adjustment_factor * row['home_score'] * ((maximum_spi + dynamism_variable) / spi_team1)
+    adjusted_away_goals = row['away_score'] * adjustment_factor * (spi_team1 / (minimum_spi - dynamism_variable)) - adjustment_factor * row['away_score'] * ((maximum_spi + dynamism_variable) / spi_team2)
+
     
     # Cap points per match at 6
     adjusted_home_goals = min(adjusted_home_goals, 6)
@@ -89,28 +95,13 @@ def calculate_points_high(row, median_spi, twenty_fifth_percentile_spi):
     points_for_xG_high[away_team] += max(adjusted_away_goals, 0.01)
     points_for_xGA_high[away_team] += max(adjusted_home_goals, 0.01)
 
-def calculate_points_low(row, twenty_fifth_percentile_spi):
-    home_team = row['home_team']
-    away_team = row['away_team']
-    
-    if home_team not in points_for_xG_low or away_team not in points_for_xG_low:
-        return
-    
-    # Cap points per match at 6
-    home_score_adjusted = min(row['home_score'] * 0.16, 6)
-    away_score_adjusted = min(row['away_score'] * 6, 6)
-    
-    points_for_xG_low[home_team] += home_score_adjusted
-    points_for_xGA_low[home_team] += away_score_adjusted
-    points_for_xG_low[away_team] += min(row['away_score'] * 0.16, 6)
-    points_for_xGA_low[away_team] += min(row['home_score'] * 6, 6)
-
 # Apply the functions to calculate points
-filtered_df.apply(lambda row: calculate_points_high(row, median_spi, twenty_fifth_percentile_spi) if row['home_team'] in high_spi_teams and row['away_team'] in high_spi_teams else calculate_points_low(row, twenty_fifth_percentile_spi), axis=1)
+filtered_df.apply(lambda row: calculate_points_high(row, median_spi, twenty_fifth_percentile_spi), axis=1)
+
 
 # Combine the points
-points_for_xG = {team: points_for_xG_high[team] + points_for_xG_low[team] for team in spi_df['team']}
-points_for_xGA = {team: points_for_xGA_high[team] + points_for_xGA_low[team] for team in spi_df['team']}
+points_for_xG = {team: points_for_xG_high[team]  for team in spi_df['team']}
+points_for_xGA = {team: points_for_xGA_high[team] for team in spi_df['team']}
 
 # Calculate matches played
 matches_played = filtered_df['home_team'].value_counts() + filtered_df['away_team'].value_counts()
