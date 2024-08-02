@@ -11,14 +11,14 @@ plt.figure(figsize=(12, 6))
 # Histogram for xG
 plt.subplot(1, 2, 1)  # 1 row, 2 columns, 1st subplot
 plt.hist(data['xG'], bins=20, color='blue', alpha=0.7)
-plt.title('Histogram of xG (Expected Goals)')
+plt.title('Histogram of xG (Adjusted Expected Goals)')
 plt.xlabel('xG')
 plt.ylabel('Frequency')
 
 # Histogram for xGA
 plt.subplot(1, 2, 2)  # 1 row, 2 columns, 2nd subplot
 plt.hist(data['xGA'], bins=20, color='red', alpha=0.7)
-plt.title('Histogram of xGA (Expected Goals Against)')
+plt.title('Histogram of xGA (Adjusted Expected Goals Against)')
 plt.xlabel('xGA')
 
 plt.tight_layout()
