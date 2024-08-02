@@ -9,6 +9,7 @@ Aruba,Aruba
 Austria,Austria
 Azerbaijan,Azerbaijan
 Bahamas,Bahamas
+Basque Country,Basque Country
 Barbados,Barbados
 Belarus,Belarus
 Belgium,Belgium
@@ -21,6 +22,7 @@ Brazil,Brazil
 British Virgin Islands,British Virgin Islands
 Bulgaria,Bulgaria
 Canada,Canada
+Cape Verde,Cape Verde Islands
 Cayman Islands,Cayman Islands
 Chile,Chile
 Colombia,Colombia
@@ -33,10 +35,14 @@ Czech Republic,Czech Republic
 Denmark,Denmark
 Dominica,Dominica
 Dominican Republic,Dominican Republic
+DR Congo,Congo DR
 Ecuador,Ecuador
 El Salvador,El Salvador
 England,England
+East Timor,Timor-Leste
+Eritrea,Eritrea
 Estonia,Estonia
+Eswatini,Swaziland
 Faroe Islands,Faroe Islands
 Finland,Finland
 France,France
@@ -79,13 +85,14 @@ Peru,Peru
 Poland,Poland
 Portugal,Portugal
 Puerto Rico,Puerto Rico
-Republic of Ireland,Ireland
+Republic of Ireland,Rep of Ireland
 Romania,Romania
 Saint Kitts and Nevis,St. Kitts and Nevis
 Saint Lucia,St. Lucia
 Saint Martin,St. Martin
 Saint Vincent and the Grenadines,St. Vincent and the Grenadines
 San Marino,San Marino
+São Tomé and Príncipe,Sao Tome and Principe
 Scotland,Scotland
 Serbia,Serbia
 Sint Maarten,Sint Maarten
@@ -95,6 +102,7 @@ Spain,Spain
 Suriname,Suriname
 Sweden,Sweden
 Switzerland,Switzerland
+Taiwan,Chinese Taipei
 Trinidad and Tobago,Trinidad and Tobago
 Turkey,Turkey
 Turks and Caicos Islands,Turks and Caicos Islands
@@ -104,3 +112,4 @@ United States Virgin Islands,US Virgin Islands
 Uruguay,Uruguay
 Venezuela,Venezuela
 Wales,Wales
+Zanzibar,Zanzibar
