@@ -158,11 +158,14 @@ for team in xg_df['team']:
     offense_correction = avg_spi / global_mean_spi
     defense_correction = global_median_spi / avg_spi
     xg_df.loc[xg_df['team'] == team, 'xG'] *= offense_correction
-    xg_df.loc[xg_df['team'] == team, 'xGA'] *= defense_correction
-   
-    # Cap xG and xGA at 10
-    xg_df.loc[xg_df['team'] == team, 'xG'] = xg_df.loc[xg_df['team'] == team, 'xG'].clip(lower=0, upper=10)
-    xg_df.loc[xg_df['team'] == team, 'xGA'] = xg_df.loc[xg_df['team'] == team, 'xGA'].clip(lower=0, upper=10)
+    xg_df.loc[xg_df['team'] == team, 'xGA'] *= defense_correction   
+    
+
+percentile_95th_xGA_corrected = xg_df['xGA'].quantile(0.95)
+
+print(f"95th Percentile for Corrected xGA: {percentile_95th_xGA_corrected}")
+
+xg_df['xGA'] = xg_df['xGA'].clip(lower=0, upper=percentile_95th_xGA_corrected)
 
 # Check for NaN values in average and median opponent SPI
 nan_teams = {team: (avg_spi, med_spi) for team, avg_spi, med_spi in zip(average_opponent_spi.keys(), average_opponent_spi.values(), median_opponent_spi.values()) if pd.isna(avg_spi) or pd.isna(med_spi)}
