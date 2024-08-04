@@ -22,7 +22,7 @@ import unicodedata
 import math
 
 # GitHub badge
-st.markdown("[![GitHub](https://img.shields.io/badge/GitHub-Repo-blue?logo=github)](https://github.com/albertovth/football_predictor)")
+st.markdown("[![GitHub repo](https://img.shields.io/badge/Repo-View%20README-blue)](https://github.com/albertovth/football_predictor/blob/main/README.md)")
 
 st.title('Football Match Predictor')
 st.title('National Teams')
