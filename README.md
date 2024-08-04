@@ -1,6 +1,6 @@
 ## Football Predictor
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://footballpreductor.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://footballpredictor.streamlit.app)
 
 ### Introduction
 This repository contains Python scripts used to rank national football teams based on their historical performance, typically over a four-year period but adjustable in the script settings. The scripts are designed to generate updated Soccer Power Index (SPI - a term originally suggested by FiveThirtyEight, see full attribution below) rankings for national teams, after FiveThirtyEight's equivalent repository ceased updates in 2023.
