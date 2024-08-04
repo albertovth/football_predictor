@@ -21,6 +21,9 @@ import wikipedia
 import unicodedata
 import math
 
+# GitHub badge
+st.markdown("[![GitHub](https://img.shields.io/badge/GitHub-Repo-blue?logo=github)](https://github.com/albertovth/football_predictor)")
+
 st.title('Football Match Predictor')
 st.title('National Teams')
 ssl._create_default_https_context = ssl._create_unverified_context
