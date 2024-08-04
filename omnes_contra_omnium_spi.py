@@ -17,6 +17,7 @@ filtered_data = historical_data[(historical_data['date'] >= start_date) & (histo
 all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
 median_goals_home = all_goals.median()
 median_goals_away = all_goals.median()
+median_goals = all_goals.median()
 
 def inverse_poisson(lam, rand_nums):
     goals = []
@@ -32,14 +33,29 @@ def inverse_poisson(lam, rand_nums):
 def run_simulation(df):
     n_simulations = 10000
     results = {team: {'wins': 0, 'draws': 0, 'losses': 0} for team in df['team']}
+   
+    # Scale xG and xGA to median values
+    df['xG_scaled_to_median'] = (df['xG'] / df['xG'].median()) * median_goals
+    df['xGA_scaled_to_median'] = (df['xGA'] / df['xGA'].median()) * median_goals
 
-    for i, team_a in tqdm(df.iterrows(), total=len(df), desc="Teams progress"):
-        for j, team_b in tqdm(df.iterrows(), total=len(df), desc="Match progress", leave=False):
+    # Calculate the maximum xG and xGA
+    max_xG = df['xG_scaled_to_median'].max()
+    max_xGA = df['xGA_scaled_to_median'].max()
+
+    # Scale the xG and xGA values proportionally to cap at 3.5 and 6 respectively
+    df['xG_scaled'] = df['xG_scaled_to_median'] * (3.5 / max_xG)
+    df['xGA_scaled'] = df['xGA_scaled_to_median'] * (6.0 / max_xGA)
+
+    for i, team_a_row in tqdm(df.iterrows(), total=len(df), desc="Teams progress"):
+        for j, team_b_row in tqdm(df.iterrows(), total=len(df), desc="Match progress", leave=False):
             if i != j:
-                # Calculate expected goals using the multiplicative method with median goals
-                expected_goals_team_a = (team_a['xG'] / df['xG'].median()) * (team_b['xGA'] / df['xGA'].median()) * median_goals_home
-                expected_goals_team_b = (team_b['xG'] / df['xG'].median()) * (team_a['xGA'] / df['xGA'].median()) * median_goals_away
+                team_a = team_a_row['team']
+                team_b = team_b_row['team']
 
+                # Calculate expected goals using the additive method
+                expected_goals_team_a = (team_a_row['xG_scaled'] + team_b_row['xGA_scaled']) / 2
+                expected_goals_team_b = (team_b_row['xG_scaled'] + team_a_row['xGA_scaled']) / 2
+               
                 rand_nums = np.random.rand(n_simulations)
 
                 goals_team_a = inverse_poisson(expected_goals_team_a, rand_nums)
@@ -49,12 +65,12 @@ def run_simulation(df):
                 draws = np.sum(np.array(goals_team_a) == np.array(goals_team_b))
                 wins_team_b = np.sum(np.array(goals_team_a) < np.array(goals_team_b))
 
-                results[team_a['team']]['wins'] += wins_team_a
-                results[team_a['team']]['draws'] += draws
-                results[team_a['team']]['losses'] += wins_team_b
-                results[team_b['team']]['wins'] += wins_team_b
-                results[team_b['team']]['draws'] += draws
-                results[team_b['team']]['losses'] += wins_team_a
+                results[team_a]['wins'] += wins_team_a
+                results[team_a]['draws'] += draws
+                results[team_a]['losses'] += wins_team_b
+                results[team_b]['wins'] += wins_team_b
+                results[team_b]['draws'] += draws
+                results[team_b]['losses'] += wins_team_a
 
     total_matches_per_team = 2 * (len(df) - 1) * n_simulations
 
@@ -96,23 +112,21 @@ def run_combined_simulation(file_paths, output_file):
     # Merge with xG and xGA
     spi_df = combined_df.merge(results_df[['team', 'spi']], on='team')
 
-    # Scale xG and xGA values
-    match_data = pd.read_csv("https://raw.githubusercontent.com/martj42/international_results/master/results.csv")
-    match_data['date'] = pd.to_datetime(match_data['date'])
-    match_data = match_data[match_data['date'] >= pd.Timestamp.now() - pd.DateOffset(years=4)]
+    # Scale xG and xGA values to median goals
+    spi_df['xG_scaled_to_median'] = (spi_df['xG'] / spi_df['xG'].median()) * median_goals
+    spi_df['xGA_scaled_to_median'] = (spi_df['xGA'] / spi_df['xGA'].median()) * median_goals
 
-    median_actual_goals_scored = match_data[['home_score', 'away_score']].stack().median()
-    median_actual_goals_conceded = match_data[['home_score', 'away_score']].stack().median()
+    # Calculate the maximum xG and xGA
+    max_xG = spi_df['xG_scaled_to_median'].max()
+    max_xGA = spi_df['xGA_scaled_to_median'].max()
 
-    xg_median = spi_df['xG'].median()
-    xga_median = spi_df['xGA'].median()
+    # Scale the xG and xGA values proportionally to cap at 3.5 and 6 respectively
+    spi_df['xG_scaled'] = spi_df['xG_scaled_to_median'] * (3.5 / max_xG)
+    spi_df['xGA_scaled'] = spi_df['xGA_scaled_to_median'] * (6.0 / max_xGA)
 
-    spi_df['xG'] = spi_df['xG'] * (median_actual_goals_scored / xg_median)
-    spi_df['xGA'] = spi_df['xGA'] * (median_actual_goals_conceded / xga_median)
-
-    # Normalize Off (xG) and Def (xGA) values again after scaling
-    spi_df['off'] = spi_df['xG']
-    spi_df['def'] = spi_df['xGA']
+    # Normalize Off (xG) and Def (xGA) values
+    spi_df['off'] = spi_df['xG_scaled']
+    spi_df['def'] = spi_df['xGA_scaled']
        
     # Read the dictionary CSV for name corrections
     dictionary_df = pd.read_csv('/home/albertovth/SPI/dictionary.csv')
