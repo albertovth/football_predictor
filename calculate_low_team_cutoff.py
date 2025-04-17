@@ -131,5 +131,3 @@ for cutoff_quantile_low_teams in quantile_range:
 
     print("-" * 50)
 
-# The rest of your code remains unchanged for saving and exporting data.
-
