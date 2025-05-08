@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project uses a statistical model to: 1) calculate offensive and defensive metrics for football national teams, based exclusively on historical data on match results; 2) predict football match outcomes, on the basis of these metrics, using Monte Carlo simulations; and 3) rank teams, based on these simulations. 
+This project uses a statistical model that follows a Bayesian-logic - starting with an initial belief (prior), incorporating new data (evidence), and updating the belief to form a new estimate (posterior). The approach proceeds through three key steps: 1) estimate offensive and defensive metrics for football national teams, based on prior rankings and historical data on match results; 2) predict football match outcomes, on the basis of these metrics, using Monte Carlo simulations; and 3) rank teams, according to their simulated performance. 
 
 ## Data Collection
 
