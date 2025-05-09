@@ -53,7 +53,7 @@ median_goals_home = all_goals.median()
 median_goals_away = all_goals.median()
 median_goals = all_goals.median()
 
-st.markdown("You can simulate matches by selecting teams with the drop-down lists provided under the table presented below. For more information on the methods for ranking and simulation, visit the [project documentation](https://github.com/albertovth/football_predictor/blob/main/README.md). Match data last updated 2 August 2024.")
+st.markdown("You can simulate matches by selecting teams with the drop-down lists provided under the table presented below. For more information on the methods for ranking and simulation, visit the [project documentation](https://github.com/albertovth/football_predictor/blob/main/README.md). Match data last updated 9 May 2025.")
 
 @st.cache_data
 def load_data():
