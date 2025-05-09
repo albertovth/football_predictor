@@ -51,6 +51,7 @@ filtered_data = historical_data[historical_data['date'] >= pd.Timestamp.now() - 
 all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
 median_goals_home = all_goals.median()
 median_goals_away = all_goals.median()
+median_goals = all_goals.median()
 
 st.markdown("You can simulate matches by selecting teams with the drop-down lists provided under the table presented below. For more information on the methods for ranking and simulation, visit the [project documentation](https://github.com/albertovth/football_predictor/blob/main/README.md). Match data last updated 2 August 2024.")
 
@@ -314,8 +315,8 @@ try:
     equipo_visita_def = df_pf.at[index_visita_equipo[0], 'defe']
 
     # Calculate expected goals using the additive method
-    goles_esperados_equipo_casa = (equipo_casa_of + equipo_visita_def) / 2
-    goles_esperados_equipo_visita = (equipo_visita_of + equipo_casa_def) / 2
+    goles_esperados_equipo_casa = (median_goals + (equipo_casa_of + equipo_visita_def) / 2) / 2
+    goles_esperados_equipo_visita = (median_goals + (equipo_visita_of + equipo_casa_def) / 2) / 2
 
     goles_esperados_equipo_casa_redondeado = (math.ceil(goles_esperados_equipo_casa * 100) / 100.0)
     goles_esperados_equipo_visita_redondeado = (math.ceil(goles_esperados_equipo_visita * 100) / 100.0)
