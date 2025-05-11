@@ -315,8 +315,8 @@ try:
     equipo_visita_def = df_pf.at[index_visita_equipo[0], 'defe']
 
     # Calculate expected goals using the additive method
-    goles_esperados_equipo_casa = (median_goals + (equipo_casa_of + equipo_visita_def) / 2) / 2
-    goles_esperados_equipo_visita = (median_goals + (equipo_visita_of + equipo_casa_def) / 2) / 2
+    goles_esperados_equipo_casa = (equipo_casa_of + equipo_visita_def) / 2
+    goles_esperados_equipo_visita = (equipo_visita_of + equipo_casa_def) / 2
 
     goles_esperados_equipo_casa_redondeado = (math.ceil(goles_esperados_equipo_casa * 100) / 100.0)
     goles_esperados_equipo_visita_redondeado = (math.ceil(goles_esperados_equipo_visita * 100) / 100.0)
