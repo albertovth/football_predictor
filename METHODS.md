@@ -45,10 +45,6 @@ In the calculation of offensive (xG) and defensive (xGA) metrics, goals are weig
 
 3. **Simplicity and Consistency**: Using SPI simplifies the calculations, making the model more straightforward and easier to understand. It ensures consistency in how goals are weighted across different matches.
 
-### Note on Expected Goals in Simulations
-
-In the Monte Carlo simulation step, expected goals are derived from the offensive metric of one team and the defensive metric of its opponent (additive method), and then averaged with the empirical median number of goals per match since May 2021. This ensures expected goals in simulations reflect realistic scoring levels overall.
-
 ### Alternative Approach Considered
 
 An alternative approach considered was to calculate the reward factor, based on the opponent's defensive metrics, and the leveling factor, based on the scoring team's offensive metrics. While this might seem to offer more precision, by specifically targeting each team's strengths and weaknesses, it was decided against for the following reasons:
