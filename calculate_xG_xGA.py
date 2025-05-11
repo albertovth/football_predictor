@@ -181,6 +181,27 @@ opponent_spi_df.to_csv('/home/albertovth/SPI/opponent_spi_data.csv', index=False
 
 print("Average and median opponent SPI data saved to opponent_spi_data.csv")
 
+# Compute medians for adjustment
+median_xG = xg_df['xG'].median()
+median_xGA = xg_df['xGA'].median()
+
+# Load historical data
+historical_data = pd.read_csv('https://raw.githubusercontent.com/martj42/international_results/master/results.csv')
+
+# Filter data from May 23, 2021, and up to today's date
+historical_data['date'] = pd.to_datetime(historical_data['date'])
+start_date = pd.to_datetime('2021-05-23')
+today = datetime.today()
+filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= today)]
+
+
+all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
+median_goals_per_team = all_goals.median()
+
+# Apply the multiplicative adjustment
+xg_df['xG'] = (xg_df['xG'] / median_xG) * median_goals_per_team
+xg_df['xGA'] = (xg_df['xGA'] / median_xGA) * median_goals_per_team
+
 # Merge with confederations data to filter out only the relevant teams
 xg_df = xg_df.merge(confed_df, on='team')
 
