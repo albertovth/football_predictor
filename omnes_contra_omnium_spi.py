@@ -17,6 +17,9 @@ filtered_data = historical_data[(historical_data['date'] >= start_date) & (histo
 all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
 median_goals = all_goals.median()
 
+print(f"Empirical median goals (used as baseline): {median_goals}")
+
+
 def inverse_poisson(lam, rand_nums):
     goals = []
     for r in rand_nums:
@@ -29,7 +32,7 @@ def inverse_poisson(lam, rand_nums):
     return goals
 
 def run_simulation(df):
-    n_simulations = 10000
+    n_simulations = 100
     results = {team: {'wins': 0, 'draws': 0, 'losses': 0} for team in df['team']}
 
     for i, team_a_row in tqdm(df.iterrows(), total=len(df), desc="Teams progress"):
@@ -39,8 +42,8 @@ def run_simulation(df):
                 team_b = team_b_row['team']
 
                 # New logic using raw xG and xGA with empirical scaling
-                expected_goals_team_a = (median_goals + (team_a_row['xG'] + team_b_row['xGA']) / 2) / 2
-                expected_goals_team_b = (median_goals + (team_b_row['xG'] + team_a_row['xGA']) / 2) / 2
+                expected_goals_team_a = (team_a_row['xG'] + team_b_row['xGA']) / 2
+                expected_goals_team_b = (team_b_row['xG'] + team_a_row['xGA']) / 2
 
                 rand_nums = np.random.rand(n_simulations)
 
@@ -74,6 +77,8 @@ def run_combined_simulation(file_paths, output_file):
     for df, conf in zip(dfs, confeds):
         df['confed'] = conf
     combined_df = pd.concat(dfs, ignore_index=True)
+    
+    combined_df=combined_df[combined_df['team']!='Russia']
 
     # Run simulations using raw xG and xGA
     results = run_simulation(combined_df)
