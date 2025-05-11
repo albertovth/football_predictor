@@ -32,7 +32,7 @@ def inverse_poisson(lam, rand_nums):
     return goals
 
 def run_simulation(df):
-    n_simulations = 100
+    n_simulations = 10000
     results = {team: {'wins': 0, 'draws': 0, 'losses': 0} for team in df['team']}
 
     for i, team_a_row in tqdm(df.iterrows(), total=len(df), desc="Teams progress"):
