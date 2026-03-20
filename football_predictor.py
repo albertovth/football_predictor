@@ -70,7 +70,7 @@ hide_dataframe_row_index = """
 st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
 
 # Display an interactive table
-st.dataframe(spi)
+st.dataframe(spi, hide_index=True)
 
 st.subheader("Simulate match\nSelect teams")
 st.markdown(
