@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import ssl
 import random
 from scipy.stats import poisson, chi2
 import matplotlib.pyplot as plt
@@ -14,7 +13,6 @@ st.markdown("[![GitHub repo](https://img.shields.io/badge/Repo-View%20README-blu
 
 st.title("Football Match Predictor")
 st.title("National Teams")
-ssl._create_default_https_context = ssl._create_unverified_context
 
 spi_global_rankings_intl = pd.read_csv(
     "https://raw.githubusercontent.com/albertovth/football_predictor/main/ranking_final.csv"
