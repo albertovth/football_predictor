@@ -41,7 +41,7 @@ median_goals_home = all_goals.median()
 median_goals_away = all_goals.median()
 median_goals = all_goals.median()
 
-latest_match_date = historical_data["date"].max().strftime("%-d %B %Y")
+latest_match_date = "13 May 2025"
 st.markdown(
     f"You can simulate matches by selecting teams with the drop-down lists provided under the table presented below. "
     f"For more information on the methods for ranking and simulation, visit the "
