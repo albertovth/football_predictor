@@ -7,9 +7,9 @@ from datetime import datetime
 # Load historical data
 historical_data = pd.read_csv('https://raw.githubusercontent.com/martj42/international_results/master/results.csv')
 
-# Filter data from May 23, 2021, and up to today's date
+# Filter data from 14 May 2025 up to today's date
 historical_data['date'] = pd.to_datetime(historical_data['date'])
-start_date = pd.to_datetime('2021-05-23')
+start_date = pd.to_datetime('2025-05-14')
 today = datetime.today()
 filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= today)]
 
@@ -45,10 +45,11 @@ def run_simulation(df):
                 expected_goals_team_a = (team_a_row['xG'] + team_b_row['xGA']) / 2
                 expected_goals_team_b = (team_b_row['xG'] + team_a_row['xGA']) / 2
 
-                rand_nums = np.random.rand(n_simulations)
+                rand_nums_a = np.random.rand(n_simulations)
+                rand_nums_b = np.random.rand(n_simulations)
 
-                goals_team_a = inverse_poisson(expected_goals_team_a, rand_nums)
-                goals_team_b = inverse_poisson(expected_goals_team_b, rand_nums)
+                goals_team_a = inverse_poisson(expected_goals_team_a, rand_nums_a)
+                goals_team_b = inverse_poisson(expected_goals_team_b, rand_nums_b)
 
                 wins_team_a = np.sum(np.array(goals_team_a) > np.array(goals_team_b))
                 draws = np.sum(np.array(goals_team_a) == np.array(goals_team_b))
