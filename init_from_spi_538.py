@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the SPI data from the May 25, 2021 snapshot
-file_path = '/home/albertovth/SPI/spi_global_rankings_intl_25_5_2021.csv'
+file_path = '/home/albertovth/SPI/spi_global_rankings_intl_13_5_2025.csv'
 spi_538_df = pd.read_csv(file_path)
 
 # Filter to include only CONMEBOL, UEFA, CONCACAF, AFC, CAF and OFC teams
