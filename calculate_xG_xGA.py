@@ -38,7 +38,7 @@ df['away_team'] = df['away_team'].map(corrected_to_original).fillna(df['away_tea
 
 # Filter data from May 23, 2021, and up to today's date
 today = datetime.today()
-start_date = pd.to_datetime('2021-05-23')
+start_date = pd.to_datetime('2025-05-14')
 df['date'] = pd.to_datetime(df['date'])
 filtered_df = df[(df['date'] >= start_date) & (df['date'] <= today)]
 
@@ -190,7 +190,7 @@ historical_data = pd.read_csv('https://raw.githubusercontent.com/martj42/interna
 
 # Filter data from May 23, 2021, and up to today's date
 historical_data['date'] = pd.to_datetime(historical_data['date'])
-start_date = pd.to_datetime('2021-05-23')
+start_date = pd.to_datetime('2025-05-14')
 today = datetime.today()
 filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= today)]
 
