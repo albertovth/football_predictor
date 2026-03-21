@@ -15,4 +15,4 @@ spi_538_df = spi_538_df.rename(columns={'name': 'team'})
 # Save it as the initial spi_final.csv
 spi_538_df.to_csv('/home/albertovth/SPI/spi_final.csv', index=False)
 
-print("SPI data from May 25, 2021 saved as initial spi_final.csv")
+print("SPI data from May 13, 2025 saved as initial spi_final.csv")
