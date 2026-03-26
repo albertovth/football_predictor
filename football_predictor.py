@@ -23,7 +23,7 @@ print(spi_global_rankings_intl)
 spi = spi_global_rankings_intl[["rank", "name", "off", "defe", "spi"]].copy()
 spi = spi.sort_values(by=["spi"], ascending=False).reset_index(drop=True)
 
-latest_ranking_date = "13 May 2025"
+latest_ranking_date = "24 March 2026"
 st.markdown(
     f"You can simulate matches by selecting teams with the drop-down lists provided under the table presented below. "
     f"For more information on the methods for ranking and simulation, visit the "
