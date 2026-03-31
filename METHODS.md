@@ -48,7 +48,9 @@ This stage:
 - starts from the 2021-05-25 prior snapshot in `data/config/priors/spi_global_rankings_intl_25_5_2021.csv`
 - filters to the six supported confederations
 - initializes `data/intermediate/spi_final.csv`
-- uses historical results from 2021-05-26 through 2025-05-26
+- by default uses historical results from 2021-05-26 through 2025-05-26
+- resolves the active stage window through `src/football_predictor/stage_config.py`
+- re-estimates `adjustment factor`, `dynamism variable`, and `cutoff` in raw `spi` space before the main xG/xGA calculation
 - computes confederation-level xG/xGA files
 - simulates the all-versus-all ranking table
 - writes the stage 1 resulting ranking to `data/config/priors/spi_global_rankings_intl_26_5_2025.csv`
@@ -68,6 +70,10 @@ This stage:
 
 - starts from the stage 2 prior in `data/config/priors/spi_global_rankings_intl_26_5_2025.csv`
 - reinitializes `data/intermediate/spi_final.csv`
+- by default uses historical results from 2025-05-27 through today
+- resolves the active stage window through `src/football_predictor/stage_config.py`
+- converts the prior into internal `strength` values
+- re-estimates `adjustment factor`, `dynamism variable`, and `cutoff` in `strength` space before the main xG/xGA calculation
 - uses the corrected balanced low-team methodology
 - generates fresh intermediate xG/xGA and confederation split files
 - simulates the final ranking table
@@ -119,9 +125,38 @@ Both stages use:
 
 - <https://raw.githubusercontent.com/martj42/international_results/master/results.csv>
 
-The historical results are filtered by date window depending on stage.
+The historical results are filtered by date window depending on stage. Those stage windows are now configurable at runtime.
 
 Friendly matches are down-weighted by halving the recorded goals before metric generation.
+
+## Stage Window And Structural Parameter Configuration
+
+The active code uses `src/football_predictor/stage_config.py` to resolve stage windows and structural parameter inputs.
+
+Default windows:
+
+- stage 1: `2021-05-26` to `2025-05-26`
+- stage 2: `2025-05-27` to `today`
+
+Supported environment-variable overrides:
+
+- `STAGE1_START_DATE`
+- `STAGE1_END_DATE`
+- `STAGE1_CUTOFF_QUANTILE`
+- `STAGE2_START_DATE`
+- `STAGE2_END_DATE`
+- `STAGE2_CUTOFF_QUANTILE`
+
+The stage-specific structural estimation remains intentionally different:
+
+- stage 1 estimates in raw `spi` space
+- stage 2 estimates in `strength` space
+
+For each run, the active stage universe is used to re-estimate:
+
+- `adjustment factor`
+- `dynamism variable`
+- `cutoff`
 
 ## Offensive And Defensive Metrics
 
@@ -137,18 +172,19 @@ Instead, the metrics are built from:
 
 ## Stage 1 Logic
 
-Stage 1 uses the 2021 prior as a starting point and updates it over the 2021-05-26 to 2025-05-26 window.
+Stage 1 uses the 2021 prior as a starting point and by default updates it over the 2021-05-26 to 2025-05-26 window.
 
 At a high level, it:
 
 1. loads the stage prior from `data/intermediate/spi_final.csv`
 2. canonicalizes team names using `data/config/dictionary.csv`
 3. filters the historical results to teams present in the prior universe
-4. applies a low-team adjustment regime below the configured cutoff
-5. computes per-team xG and xGA
-6. corrects those values for opponent strength exposure
-7. rescales the outputs into goal-like units using the empirical median goals in the stage window
-8. writes:
+4. re-estimates `adjustment factor`, `dynamism variable`, and `cutoff` in raw `spi` space
+5. applies a low-team adjustment regime below the configured cutoff
+6. computes per-team xG and xGA
+7. corrects those values for opponent strength exposure
+8. rescales the outputs into goal-like units using the empirical median goals in the stage window
+9. writes:
    - `data/intermediate/aggregated_xg_data.csv`
    - `data/intermediate/opponent_spi_data.csv`
    - `data/intermediate/confed/*.csv`
@@ -162,15 +198,16 @@ Stage 2 is the currently active production method used for the latest rankings.
 Its code implements a corrected, strength-balanced low-team approach:
 
 1. The prior is converted into an internal strength scale.
-2. A low-team cutoff is derived on that internal strength scale.
-3. High-strength teams use one reward regime.
-4. Lower-strength teams use a corrected regime where:
+2. `adjustment factor`, `dynamism variable`, and `cutoff` are re-estimated on that internal strength scale.
+3. A low-team cutoff is derived on that internal strength scale.
+4. High-strength teams use one reward regime.
+5. Lower-strength teams use a corrected regime where:
    - offensive reward depends on actual opponent strength
    - own dampening is anchored at the cutoff
    - defensive penalties increase when conceding to weaker low-strength teams
-5. Team metrics are corrected for opponent-strength exposure.
-6. Outputs are rescaled using the empirical median goals in the relevant match window.
-7. Confederation-level files are written and used for all-versus-all simulation.
+6. Team metrics are corrected for opponent-strength exposure.
+7. Outputs are rescaled using the empirical median goals in the relevant match window.
+8. Confederation-level files are written and used for all-versus-all simulation.
 
 This stage writes:
 
@@ -195,6 +232,7 @@ Expected goals are derived as simple averages:
 - team B expected goals = `(team_b_xG + team_a_xGA) / 2`
 
 Each matchup is then simulated repeatedly using Poisson-distributed goal counts. The pipeline currently uses a large all-versus-all Monte Carlo approach and converts simulated points into an SPI-like percentage scale.
+The active simulation uses NumPy Poisson sampling, which keeps the same Monte Carlo structure while making reruns much faster than the earlier manual inverse-Poisson implementation.
 
 ## Outputs
 
@@ -245,22 +283,30 @@ That root file is intentionally a wrapper which runs the app implementation unde
 
 Run from `/home/albertovth/football_predictor`.
 
+Activate the intended environment first:
+
+```bash
+source ~/.bashrc >/dev/null 2>&1 || true
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate spyder607
+```
+
 ### Stage 1
 
 ```bash
-./scripts/run_stage1.sh
+bash scripts/run_stage1.sh
 ```
 
 ### Stage 2
 
 ```bash
-./scripts/run_stage2.sh
+bash scripts/run_stage2.sh
 ```
 
 ### Full Ranking Update
 
 ```bash
-./scripts/update_rankings.sh
+bash scripts/update_rankings.sh
 ```
 
 ### Streamlit App
@@ -274,5 +320,5 @@ streamlit run football_predictor.py
 - The model is driven primarily by scorelines and prior strength, not event-level shot data.
 - It does not explicitly model home advantage, injuries, squad selection, travel, or tactical context.
 - Match coverage and match frequency are uneven across teams.
-- The all-versus-all simulation is computationally heavy.
+- The rating world is intentionally counterfactual: team metrics are built in an adjusted all-versus-all-style framework rather than directly on the raw realized schedule.
 - The current documentation reflects the repository structure and code as migrated; it does not claim that every archived historical experiment in `/home/albertovth/SPI` has been retained as active logic.

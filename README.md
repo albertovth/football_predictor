@@ -33,16 +33,21 @@ Contains the actual Streamlit app implementation in `app/football_predictor.py`.
 
 ### `src/football_predictor/`
 
-Contains shared repository helpers. `src/football_predictor/paths.py` is the central path definition module used by the pipeline scripts so they run relative to the repository instead of `/home/albertovth/SPI`.
+Contains shared repository helpers.
+
+- `src/football_predictor/paths.py`
+  Central path definition module used by the pipeline scripts so they run relative to the repository instead of `/home/albertovth/SPI`.
+- `src/football_predictor/stage_config.py`
+  Shared stage window and parameter-estimation helper used to resolve stage dates and re-estimate stage-specific `adjustment factor`, `dynamism variable`, and `cutoff`.
 
 ### `pipeline/`
 
 Contains the active ranking pipeline:
 
 - `pipeline/spi_stage1/`
-  Builds the stage 1 prior and updated confederation-level xG/xGA data through the 2021-05-26 to 2025-05-26 window.
+  Builds the stage 1 prior and updated confederation-level xG/xGA data. By default it uses the 2021-05-26 to 2025-05-26 window, but the stage window and cutoff quantile can now be overridden from the terminal.
 - `pipeline/spi_stage2/`
-  Uses the stage 2 prior and corrected balanced low-team logic to build the latest ranking outputs and final `ranking_final.csv`.
+  Uses the stage 2 prior and corrected balanced low-team logic to build the latest ranking outputs and final `ranking_final.csv`. By default it uses the 2025-05-27 to today window, but the stage window and cutoff quantile can now be overridden from the terminal.
 
 ### `scripts/`
 
@@ -116,44 +121,82 @@ while allowing the real app implementation to live under `app/`.
 
 From the repository root:
 
-### Run Stage 1
+Activate the intended environment first:
 
 ```bash
 cd /home/albertovth/football_predictor
-./scripts/run_stage1.sh
+source ~/.bashrc >/dev/null 2>&1 || true
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate spyder607
+```
+
+### Run Stage 1
+
+```bash
+bash scripts/run_stage1.sh
 ```
 
 ### Run Stage 2
 
 ```bash
-cd /home/albertovth/football_predictor
-./scripts/run_stage2.sh
+bash scripts/run_stage2.sh
 ```
 
 ### Run Stage 1 And Stage 2 Sequentially
 
 ```bash
-cd /home/albertovth/football_predictor
-./scripts/update_rankings.sh
+bash scripts/update_rankings.sh
 ```
 
 ### Run The Streamlit App
 
 ```bash
-cd /home/albertovth/football_predictor
 streamlit run football_predictor.py
 ```
+
+## Stage Window Configuration
+
+The pipeline now supports terminal-driven stage windows and structural cutoff overrides through environment variables.
+
+Default stage windows:
+
+- Stage 1: `2021-05-26` to `2025-05-26`
+- Stage 2: `2025-05-27` to `today`
+
+Supported overrides:
+
+- `STAGE1_START_DATE`
+- `STAGE1_END_DATE`
+- `STAGE1_CUTOFF_QUANTILE`
+- `STAGE2_START_DATE`
+- `STAGE2_END_DATE`
+- `STAGE2_CUTOFF_QUANTILE`
+
+Examples:
+
+```bash
+STAGE1_END_DATE=2025-06-30 bash scripts/run_stage1.sh
+STAGE2_END_DATE=2026-06-30 bash scripts/run_stage2.sh
+STAGE2_START_DATE=2026-04-01 STAGE2_END_DATE=2026-08-31 bash scripts/run_stage2.sh
+```
+
+Stage-specific structure remains unchanged:
+
+- stage 1 estimates in raw `spi` space
+- stage 2 estimates in `strength` space
+- `adjustment factor`, `dynamism variable`, and `cutoff` are re-estimated from the active stage universe before the main calculation
 
 ## Pipeline Summary
 
 The active workflow is:
 
 1. Initialize the stage prior from the configured FiveThirtyEight snapshot.
-2. Calculate adjusted xG/xGA metrics from match results.
-3. Write confederation-level intermediate files under `data/intermediate/confed/`.
-4. Run the confederation simulation step.
-5. Produce the final ranking table in `data/output/ranking_final.csv`.
-6. Copy the same final ranking to the root `ranking_final.csv` for app compatibility.
+2. Re-estimate the active stage `adjustment factor`, `dynamism variable`, and `cutoff`.
+3. Calculate adjusted xG/xGA metrics from match results.
+4. Write confederation-level intermediate files under `data/intermediate/confed/`.
+5. Run the confederation simulation step.
+6. Produce the final ranking table in `data/output/ranking_final.csv`.
+7. Copy the same final ranking to the root `ranking_final.csv` for app compatibility.
 
 ## Data Sources And Attribution
 
@@ -184,3 +227,4 @@ The Streamlit app uses Wikipedia-hosted team logos and flags:
 - The root `README.md` and `METHODS.md` describe the active reorganized repository.
 - `docs/README.md` and `docs/METHODS.md` currently mirror the root documents.
 - Archived legacy scripts may still contain historical `/home/albertovth/SPI` path references, but active code no longer depends on them.
+- The all-versus-all simulation is now much faster because the active simulation scripts use NumPy Poisson sampling instead of the older manual inverse-Poisson path.
