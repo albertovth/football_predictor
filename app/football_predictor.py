@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from scipy.stats import poisson, chi2
+from scipy.stats import chi2
 import matplotlib.pyplot as plt
 import numpy as np
 import altair as alt
@@ -219,11 +219,10 @@ with col12:
 latest_iteration4 = st.empty()
 bar4 = st.progress(0)
 
-probabilidad_casa = np.random.rand(10000)
-probabilidad_visita = np.random.rand(10000)
+n_simulations = 10000
 
-random_marcadores_equipo_casa = poisson.ppf(probabilidad_casa, goles_esperados_equipo_casa)
-random_marcadores_equipo_visita = poisson.ppf(probabilidad_visita, goles_esperados_equipo_visita)
+random_marcadores_equipo_casa = np.random.poisson(goles_esperados_equipo_casa, size=n_simulations)
+random_marcadores_equipo_visita = np.random.poisson(goles_esperados_equipo_visita, size=n_simulations)
 random_marcadores_partido = [str(x[0])+" - " + str(x[1]) for x in zip(random_marcadores_equipo_casa, random_marcadores_equipo_visita)]
 
 results = list()
@@ -239,33 +238,33 @@ for i, j in zip(random_marcadores_equipo_casa, random_marcadores_equipo_visita):
 resultados_posibles_equipo_casa = list(range(0, 11))
 resultados_posibles_equipo_visita = list(range(0, 11))
 
-probabilidad_marcadores_final_casa = [((random_marcadores_equipo_casa == 0).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 1).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 2).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 3).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 4).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 5).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 6).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 7).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 8).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 9).sum()) / 10000,
-                                      ((random_marcadores_equipo_casa == 10).sum()) / 10000]
+probabilidad_marcadores_final_casa = [((random_marcadores_equipo_casa == 0).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 1).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 2).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 3).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 4).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 5).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 6).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 7).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 8).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 9).sum()) / n_simulations,
+                                      ((random_marcadores_equipo_casa == 10).sum()) / n_simulations]
 
-probabilidad_marcadores_final_visita = [((random_marcadores_equipo_visita == 0).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 1).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 2).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 3).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 4).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 5).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 6).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 7).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 8).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 9).sum()) / 10000,
-                                        ((random_marcadores_equipo_visita == 10).sum()) / 10000]
+probabilidad_marcadores_final_visita = [((random_marcadores_equipo_visita == 0).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 1).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 2).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 3).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 4).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 5).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 6).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 7).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 8).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 9).sum()) / n_simulations,
+                                        ((random_marcadores_equipo_visita == 10).sum()) / n_simulations]
 
-equipo_casa_gana = equipo_casa_input + " wins a " + str(round(((results.count("home team wins") / 10000) * 100),2)) + " % of the 10 000 simulations of the match"
-equipo_visita_gana= equipo_visita_input + " wins a " + str(round(((results.count("visiting team wins") / 10000) * 100),2)) + " % of the 10 000 simulations of the match"
-empate = "The match results in a tie " + str(round(((results.count("tie") / 10000) * 100),2)) + " % of the 10 000 simulations of the match"
+equipo_casa_gana = equipo_casa_input + " wins a " + str(round(((results.count("home team wins") / n_simulations) * 100),2)) + " % of the 10 000 simulations of the match"
+equipo_visita_gana= equipo_visita_input + " wins a " + str(round(((results.count("visiting team wins") / n_simulations) * 100),2)) + " % of the 10 000 simulations of the match"
+empate = "The match results in a tie " + str(round(((results.count("tie") / n_simulations) * 100),2)) + " % of the 10 000 simulations of the match"
 
 datalinea_casa = pd.DataFrame({'Team':[equipo_casa_input, equipo_casa_input, equipo_casa_input, equipo_casa_input, equipo_casa_input,
                                          equipo_casa_input, equipo_casa_input, equipo_casa_input, equipo_casa_input, equipo_casa_input, equipo_casa_input],

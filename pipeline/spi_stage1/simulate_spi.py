@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.stats import poisson
 import pandas as pd
 from tqdm import tqdm
 from datetime import datetime
@@ -27,23 +26,11 @@ start_date = pd.to_datetime('2021-05-26')
 today = datetime.today()
 filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= STAGE1_END_DATE)]
 
-# Calculate median goals
 all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
 median_goals = all_goals.median()
 
 print(f"Empirical median goals (used as baseline): {median_goals}")
 
-
-def inverse_poisson(lam, rand_nums):
-    goals = []
-    for r in rand_nums:
-        cum_prob = 0
-        k = 0
-        while cum_prob < r:
-            cum_prob += poisson.pmf(k, lam)
-            k += 1
-        goals.append(k - 1)
-    return goals
 
 def run_simulation(df):
     n_simulations = 10000
@@ -55,19 +42,15 @@ def run_simulation(df):
                 team_a = team_a_row['team']
                 team_b = team_b_row['team']
 
-                # New logic using raw xG and xGA with empirical scaling
                 expected_goals_team_a = (team_a_row['xG'] + team_b_row['xGA']) / 2
                 expected_goals_team_b = (team_b_row['xG'] + team_a_row['xGA']) / 2
 
-                rand_nums_a = np.random.rand(n_simulations)
-                rand_nums_b = np.random.rand(n_simulations)
+                goals_team_a = np.random.poisson(expected_goals_team_a, size=n_simulations)
+                goals_team_b = np.random.poisson(expected_goals_team_b, size=n_simulations)
 
-                goals_team_a = inverse_poisson(expected_goals_team_a, rand_nums_a)
-                goals_team_b = inverse_poisson(expected_goals_team_b, rand_nums_b)
-
-                wins_team_a = np.sum(np.array(goals_team_a) > np.array(goals_team_b))
-                draws = np.sum(np.array(goals_team_a) == np.array(goals_team_b))
-                wins_team_b = np.sum(np.array(goals_team_a) < np.array(goals_team_b))
+                wins_team_a = np.sum(goals_team_a > goals_team_b)
+                draws = np.sum(goals_team_a == goals_team_b)
+                wins_team_b = np.sum(goals_team_a < goals_team_b)
 
                 results[team_a]['wins'] += wins_team_a
                 results[team_a]['draws'] += draws
@@ -94,7 +77,6 @@ def run_combined_simulation(file_paths, output_file):
     
     combined_df=combined_df[combined_df['team']!='Russia']
 
-    # Run simulations using raw xG and xGA
     results = run_simulation(combined_df)
     results_df = pd.DataFrame.from_dict(results, orient='index').reset_index()
     results_df.rename(columns={'index': 'team'}, inplace=True)
