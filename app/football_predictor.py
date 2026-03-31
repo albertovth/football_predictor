@@ -223,7 +223,7 @@ n_simulations = 10000
 
 random_marcadores_equipo_casa = np.random.poisson(goles_esperados_equipo_casa, size=n_simulations)
 random_marcadores_equipo_visita = np.random.poisson(goles_esperados_equipo_visita, size=n_simulations)
-random_marcadores_partido = [str(x[0])+" - " + str(x[1]) for x in zip(random_marcadores_equipo_casa, random_marcadores_equipo_visita)]
+random_marcadores_partido = [f"{float(x[0])} - {float(x[1])}" for x in zip(random_marcadores_equipo_casa, random_marcadores_equipo_visita)]
 
 results = list()
 
