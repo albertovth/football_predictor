@@ -1,6 +1,5 @@
 
 import pandas as pd
-from datetime import datetime
 from pathlib import Path
 import sys
 
@@ -18,17 +17,12 @@ from football_predictor.paths import (
     RESULTS_URL,
     SPI_FINAL_FILE,
 )
-
-def add_strength(df, spi_col="spi", lower=0.05, upper=0.95):
-    df = df.copy()
-    n = len(df)
-    if n <= 1:
-        df["strength"] = 0.5
-        return df
-    ranks = df[spi_col].rank(method="average")
-    pct = (ranks - 1) / (n - 1)
-    df["strength"] = lower + (upper - lower) * pct
-    return df
+from football_predictor.stage_config import (
+    add_strength,
+    estimate_stage_metric_parameters,
+    resolve_cutoff_quantile,
+    resolve_stage_window,
+)
 
 # Load the match data
 df = pd.read_csv(RESULTS_URL)
@@ -38,18 +32,27 @@ spi_df = pd.read_csv(SPI_FINAL_FILE)
 spi_df = spi_df.rename(columns={'name': 'team'})
 spi_df = add_strength(spi_df, spi_col="spi", lower=0.05, upper=0.95)
 
-cutoff_quantile_low_teams = 0.07
+cutoff_quantile_low_teams = resolve_cutoff_quantile("stage2")
 
 # Summary statistics on internal strength scale
-median_strength = spi_df['strength'].median()
-cutoff_quantile_strength = spi_df['strength'].quantile(cutoff_quantile_low_teams)
-minimum_strength = spi_df['strength'].min()
-maximum_strength = spi_df['strength'].max()
+stage_parameters = estimate_stage_metric_parameters(
+    stage_name="stage2",
+    metric_series=spi_df['strength'],
+    cutoff_quantile=cutoff_quantile_low_teams,
+)
+median_strength = stage_parameters['median']
+cutoff_quantile_strength = stage_parameters['cutoff_value']
+minimum_strength = stage_parameters['minimum']
+maximum_strength = stage_parameters['maximum']
+ADJUSTMENT_FACTOR = stage_parameters['adjustment_factor']
+DYNAMISM_VARIABLE = stage_parameters['dynamism_variable']
 
 print(f"Median strength: {median_strength}")
 print(f"Cutoff quantile strength: {cutoff_quantile_strength}")
 print(f"Minimum strength: {minimum_strength}")
 print(f"Maximum strength: {maximum_strength}")
+print(f"Estimated adjustment factor: {ADJUSTMENT_FACTOR:.6f}")
+print(f"Estimated dynamism variable: {DYNAMISM_VARIABLE:.6f}")
 
 # Load dictionary and confederations
 dictionary_df = pd.read_csv(DICTIONARY_FILE)
@@ -67,10 +70,10 @@ df['home_team'] = df['home_team'].map(corrected_to_original).fillna(df['home_tea
 df['away_team'] = df['away_team'].map(corrected_to_original).fillna(df['away_team'])
 
 # Filter date window
-today = datetime.today()
-start_date = pd.to_datetime('2025-05-27')
+start_date, end_date = resolve_stage_window("stage2")
+print(f"Stage 2 window: {start_date.date()} to {end_date.date()}")
 df['date'] = pd.to_datetime(df['date'])
-filtered_df = df[(df['date'] >= start_date) & (df['date'] <= today)]
+filtered_df = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
 filtered_df = filtered_df.dropna(subset=['home_score', 'away_score'])
 
 def adjust_goals(row):
@@ -96,9 +99,6 @@ points_for_xG_low = {team: 0 for team in spi_df['team']}
 points_for_xGA_low = {team: 0 for team in spi_df['team']}
 
 high_strength_teams = spi_df[spi_df['strength'] >= cutoff_quantile_strength]['team'].tolist()
-
-ADJUSTMENT_FACTOR = 0.333
-DYNAMISM_VARIABLE = 0.025
 LOW_TEAM_DEFENSIVE_PENALTY_CAP = 6
 LOW_TEAM_MIN_OFFENSIVE_REWARD = 0.01
 
@@ -250,7 +250,7 @@ median_xGA = xg_df['xGA'].median()
 
 historical_data = pd.read_csv(RESULTS_URL)
 historical_data['date'] = pd.to_datetime(historical_data['date'])
-filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= today)]
+filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= end_date)]
 
 all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
 median_goals_per_team = all_goals.median()

@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime
 from pathlib import Path
 import sys
 
@@ -10,21 +9,16 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from football_predictor.paths import DICTIONARY_FILE, RESULTS_URL, SPI_FINAL_FILE
+from football_predictor.stage_config import (
+    add_strength,
+    estimate_stage_metric_parameters,
+    resolve_cutoff_quantile,
+    resolve_stage_window,
+)
 
 # -----------------------------
 # Helpers
 # -----------------------------
-def add_strength(df, spi_col="spi", lower=0.05, upper=0.95):
-    df = df.copy()
-    n = len(df)
-    if n == 1:
-        df["strength"] = 0.5
-        return df
-    ranks = df[spi_col].rank(method="average")
-    pct = (ranks - 1) / (n - 1)
-    df["strength"] = lower + (upper - lower) * pct
-    return df
-
 # -----------------------------
 # Load prior
 # -----------------------------
@@ -55,8 +49,8 @@ spi_teams = spi_df['team'].tolist()
 df = df[(df['home_team'].isin(spi_teams)) & (df['away_team'].isin(spi_teams))]
 
 df['date'] = pd.to_datetime(df['date'])
-start_date = pd.to_datetime('2025-05-27')
-end_date = pd.to_datetime('2026-03-23')
+start_date, end_date = resolve_stage_window("stage2")
+print(f"Stage 2 cutoff-search window: {start_date.date()} to {end_date.date()}")
 
 filtered_df = df[(df['date'] >= start_date) & (df['date'] <= end_date)].copy()
 filtered_df = filtered_df.dropna(subset=['home_score', 'away_score'])
@@ -70,11 +64,16 @@ filtered_df[['home_score', 'away_score']] = filtered_df.apply(
     lambda row: pd.Series(adjust_goals(row)), axis=1
 )
 
-# -----------------------------
-# Constants from your corrected stage 2
-# -----------------------------
-adjustment_factor = 0.333
-dynamism_variable = 0.025
+default_cutoff_quantile = resolve_cutoff_quantile("stage2")
+base_parameters = estimate_stage_metric_parameters(
+    stage_name="stage2",
+    metric_series=spi_df['strength'],
+    cutoff_quantile=default_cutoff_quantile,
+)
+adjustment_factor = base_parameters['adjustment_factor']
+dynamism_variable = base_parameters['dynamism_variable']
+print(f"Estimated adjustment factor: {adjustment_factor:.6f}")
+print(f"Estimated dynamism variable: {dynamism_variable:.6f}")
 
 strength_factors = spi_df.set_index('team')['strength']
 

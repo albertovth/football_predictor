@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from datetime import datetime
 from pathlib import Path
 import sys
 
@@ -15,21 +14,21 @@ from football_predictor.paths import (
     CONFED_FILES,
     DICTIONARY_FILE,
     RESULTS_URL,
-    STAGE1_END_DATE,
     STAGE2_PRIOR_FILE,
 )
+from football_predictor.stage_config import resolve_stage_window
 
 historical_data = pd.read_csv(RESULTS_URL)
 
 historical_data['date'] = pd.to_datetime(historical_data['date'])
-start_date = pd.to_datetime('2021-05-26')
-today = datetime.today()
-filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= STAGE1_END_DATE)]
+start_date, end_date = resolve_stage_window("stage1")
+filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= end_date)]
 
 all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
 median_goals = all_goals.median()
 
 print(f"Empirical median goals (used as baseline): {median_goals}")
+print(f"Stage 1 simulation window: {start_date.date()} to {end_date.date()}")
 
 
 def run_simulation(df):
