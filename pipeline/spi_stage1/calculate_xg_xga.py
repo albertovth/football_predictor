@@ -18,6 +18,11 @@ from football_predictor.paths import (
     RESULTS_URL,
     SPI_FINAL_FILE,
 )
+from football_predictor.stage_config import (
+    estimate_stage_metric_parameters,
+    resolve_cutoff_quantile,
+    resolve_stage_window,
+)
 
 
 def report_saved_csv(path: str, df: pd.DataFrame) -> None:
@@ -39,15 +44,20 @@ df = pd.read_csv(RESULTS_URL)
 spi_df = pd.read_csv(SPI_FINAL_FILE)
 spi_df = spi_df.rename(columns={'name': 'team'})
 
-cutoff_quantile_low_teams = 0.07  # structural cutoff
-adjustment_factor = 0.017  # calculated with adjustment_factor_calculate_and_dynamism_variable.py
-dynamism_variable = 0.16   # calculated with adjustment_factor_calculate_and_dynamism_variable.py
+cutoff_quantile_low_teams = resolve_cutoff_quantile("stage1")  # structural cutoff
 
 # Calculate SPI summary stats
-median_spi = spi_df['spi'].median()
-cutoff_quantile_spi = spi_df['spi'].quantile(cutoff_quantile_low_teams)
-minimum_spi = spi_df['spi'].min()
-maximum_spi = spi_df['spi'].max()
+stage_parameters = estimate_stage_metric_parameters(
+    stage_name="stage1",
+    metric_series=spi_df['spi'],
+    cutoff_quantile=cutoff_quantile_low_teams,
+)
+median_spi = stage_parameters['median']
+cutoff_quantile_spi = stage_parameters['cutoff_value']
+minimum_spi = stage_parameters['minimum']
+maximum_spi = stage_parameters['maximum']
+adjustment_factor = stage_parameters['adjustment_factor']
+dynamism_variable = stage_parameters['dynamism_variable']
 
 automatic_low_def_penalty_at_cutoff = max(
     adjustment_factor * (
@@ -83,8 +93,8 @@ df['away_team'] = df['away_team'].map(corrected_to_original).fillna(df['away_tea
 # -----------------------------
 # Filter stage 1 data window
 # -----------------------------
-start_date = pd.to_datetime('2021-05-26')
-end_date = pd.to_datetime('2025-05-26')
+start_date, end_date = resolve_stage_window("stage1")
+print(f"Stage 1 window: {start_date.date()} to {end_date.date()}")
 df['date'] = pd.to_datetime(df['date'])
 filtered_df = df[(df['date'] >= start_date) & (df['date'] <= end_date)].copy()
 filtered_df = filtered_df.dropna(subset=['home_score', 'away_score'])
