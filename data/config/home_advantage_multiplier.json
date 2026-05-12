@@ -1,0 +1,14 @@
+{
+  "source_url": "https://raw.githubusercontent.com/martj42/international_results/master/results.csv",
+  "from_date": "2000-01-01",
+  "to_date": null,
+  "exclude_friendlies": false,
+  "matches_used": 18027,
+  "mean_home_goals": 1.6924058356909082,
+  "mean_away_goals": 1.021301381261441,
+  "raw_home_away_goal_ratio": 1.6571071641953183,
+  "one_sided_home_lambda_multiplier": 1.2872867451330796,
+  "app_home_advantage_multiplier": 1.2872867451330796,
+  "generated_at_utc": "2026-05-12T21:25:46.477059+00:00",
+  "method_note": "Filtered to non-neutral international matches. The raw ratio is mean(home_score) / mean(away_score). The app multiplier is the square root of that raw ratio, bounded to [1.00, 1.30], because the Streamlit app will only boost the selected true home team's final expected-goals lambda and will not reduce the opponent's lambda."
+}

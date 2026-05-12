@@ -6,6 +6,7 @@ import numpy as np
 import altair as alt
 import urllib
 import math
+import json
 from pathlib import Path
 
 # GitHub badge
@@ -15,6 +16,15 @@ st.title("Football Match Predictor")
 st.title("National Teams")
 
 RANKING_FILE = Path(__file__).resolve().parents[1] / "ranking_final.csv"
+HOME_ADVANTAGE_FILE = Path(__file__).resolve().parents[1] / "data" / "config" / "home_advantage_multiplier.json"
+
+
+def load_home_advantage_multiplier(default=1.0):
+    try:
+        data = json.loads(HOME_ADVANTAGE_FILE.read_text(encoding="utf-8"))
+        return float(data["app_home_advantage_multiplier"])
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+        return default
 
 spi_global_rankings_intl = pd.read_csv(RANKING_FILE)
 spi_global_rankings_intl.columns = ["rank", "name", "confed", "off", "defe", "spi"]
@@ -56,6 +66,29 @@ params = {
     "equipo_casa": st.selectbox("Home team", Equipo_casa),
     "equipo_visita": st.selectbox("Visiting team", Equipo_visita),
 }
+
+st.subheader("Home advantage")
+apply_home_advantage_to_home_label = st.checkbox(
+    f"Apply home advantage to {params['equipo_casa']}",
+    key="apply_home_advantage_to_home_label",
+)
+apply_home_advantage_to_visiting_label = st.checkbox(
+    f"Apply home advantage to {params['equipo_visita']}",
+    key="apply_home_advantage_to_visiting_label",
+)
+home_advantage_multiplier = st.number_input(
+    "Home advantage multiplier for expected goals",
+    min_value=1.00,
+    max_value=1.30,
+    value=load_home_advantage_multiplier(),
+    step=0.01,
+    format="%.4f",
+    key="home_advantage_multiplier",
+)
+st.caption(
+    "Home advantage is applied only to the selected true home team’s final expected-goals value before simulation. "
+    "It does not change rankings, offensive ratings, defensive ratings, or the opponent’s expected goals."
+)
 
 simulate_clicked = st.button("Run or rerun simulation, based on your selection")
 clear_clicked = st.button("Remove selection")
@@ -191,14 +224,22 @@ try:
     goles_esperados_equipo_casa = (equipo_casa_of + equipo_visita_def) / 2
     goles_esperados_equipo_visita = (equipo_visita_of + equipo_casa_def) / 2
 
-    goles_esperados_equipo_casa_redondeado = (math.ceil(goles_esperados_equipo_casa * 100) / 100.0)
-    goles_esperados_equipo_visita_redondeado = (math.ceil(goles_esperados_equipo_visita * 100) / 100.0)
-
 except IndexError:
-    goles_esperados_equipo_casa_redondeado = 1
-    goles_esperados_equipo_visita_redondeado= 1
     goles_esperados_equipo_casa=1
     goles_esperados_equipo_visita=1
+
+home_advantage_message = "Home advantage: not applied"
+if apply_home_advantage_to_home_label and apply_home_advantage_to_visiting_label:
+    st.warning("Select only one true home team for home advantage. No home advantage was applied.")
+elif apply_home_advantage_to_home_label and home_advantage_multiplier > 1.00:
+    goles_esperados_equipo_casa *= home_advantage_multiplier
+    home_advantage_message = f"Home advantage applied to {equipo_casa_input} with multiplier {home_advantage_multiplier:.4f}"
+elif apply_home_advantage_to_visiting_label and home_advantage_multiplier > 1.00:
+    goles_esperados_equipo_visita *= home_advantage_multiplier
+    home_advantage_message = f"Home advantage applied to {equipo_visita_input} with multiplier {home_advantage_multiplier:.4f}"
+
+goles_esperados_equipo_casa_redondeado = (math.ceil(goles_esperados_equipo_casa * 100) / 100.0)
+goles_esperados_equipo_visita_redondeado = (math.ceil(goles_esperados_equipo_visita * 100) / 100.0)
 
 col5, mid4, col6, mid5, col7, mid5, col8 = st.columns([1,1,5,5,1,1,5])
 
@@ -215,6 +256,8 @@ with col10:
 
 with col12:
     st.write(goles_esperados_equipo_visita_redondeado)
+
+st.markdown(home_advantage_message)
 
 latest_iteration4 = st.empty()
 bar4 = st.progress(0)
