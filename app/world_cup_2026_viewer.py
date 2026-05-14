@@ -5,6 +5,8 @@ from urllib.parse import quote
 import pandas as pd
 import streamlit as st
 
+st.set_page_config(layout="wide")
+
 
 SNAPSHOT_FILE = Path(__file__).resolve().parents[1] / "data" / "output" / "world_cup_2026" / "simulation_snapshot.json"
 
@@ -311,7 +313,7 @@ with groups_tab:
                 standings_df(snapshot["group_tables"][group]),
                 column_config=STANDINGS_COLUMNS,
                 hide_index=True,
-                width=520,
+                use_container_width=True,
             )
             st.markdown("**Matches**")
             matches = [m for m in snapshot["group_matches"] if m["group"] == group]
@@ -319,7 +321,7 @@ with groups_tab:
                 group_matches_df(matches),
                 column_config=MATCH_COLUMNS,
                 hide_index=True,
-                width=760,
+                use_container_width=True,
             )
 
 with thirds_tab:
@@ -328,7 +330,7 @@ with thirds_tab:
         best_thirds_df(snapshot["best_thirds"]),
         column_config=BEST_THIRDS_COLUMNS,
         hide_index=True,
-        width=620,
+        use_container_width=True,
     )
 
 with knockout_tab:
@@ -340,5 +342,5 @@ with knockout_tab:
             knockout_df(matches),
             column_config=KNOCKOUT_COLUMNS,
             hide_index=True,
-            width=980,
+            use_container_width=True,
         )
