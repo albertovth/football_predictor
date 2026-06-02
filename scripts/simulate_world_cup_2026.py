@@ -1,4 +1,5 @@
 import argparse
+import itertools
 import json
 from collections import Counter
 from pathlib import Path
@@ -10,6 +11,8 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RANKING_FILE = REPO_ROOT / "ranking_final.csv"
 HOME_ADVANTAGE_FILE = REPO_ROOT / "data" / "config" / "home_advantage_multiplier.json"
+# Parsed from FIFA World Cup 26 Regulations, Annex C.
+THIRD_PLACE_ALLOCATION_FILE = REPO_ROOT / "data" / "world_cup_2026_third_place_allocation.json"
 CHI2_95_DF2 = 5.991464547107979
 HOST_COUNTRIES = {"Mexico": "Mexico", "Canada": "Canada", "USA": "USA"}
 NAME_MAP = {
@@ -131,6 +134,8 @@ ROUND_OF_32 = [
     (87, "1K", "3D/E/I/J/L", "USA"),
     (88, "2D", "2G", "USA"),
 ]
+
+THIRD_PLACE_WINNER_SLOTS = ("1A", "1B", "1D", "1E", "1G", "1I", "1K", "1L")
 
 
 KNOCKOUT_BRACKET = [
@@ -333,6 +338,61 @@ def best_thirds(standings):
     return sorted(thirds, key=lambda row: (row["points"], row["gd"], row["gf"], row["spi"]), reverse=True)[:8]
 
 
+def third_place_allocation_key(qualified_thirds):
+    groups = sorted(row["group"] if isinstance(row, dict) else row for row in qualified_thirds)
+    if len(groups) != 8 or len(set(groups)) != 8:
+        raise ValueError(f"Expected exactly 8 unique third-place groups, got {groups}")
+    invalid = [group for group in groups if group not in GROUPS]
+    if invalid:
+        raise ValueError(f"Invalid third-place group letters: {invalid}")
+    return "".join(groups)
+
+
+def load_third_place_allocation_table(path=THIRD_PLACE_ALLOCATION_FILE):
+    table = json.loads(Path(path).read_text(encoding="utf-8"))
+    validate_third_place_allocation_table(table)
+    return table
+
+
+def validate_third_place_allocation_table(table):
+    expected_keys = {"".join(groups) for groups in itertools.combinations(GROUPS, 8)}
+    if set(table) != expected_keys:
+        missing = sorted(expected_keys - set(table))
+        extra = sorted(set(table) - expected_keys)
+        raise ValueError(f"Invalid Annex C allocation keys. Missing: {missing[:5]}, extra: {extra[:5]}")
+
+    for key, row in table.items():
+        if len(key) != 8 or len(set(key)) != 8:
+            raise ValueError(f"Invalid Annex C key: {key}")
+        if set(row) != set(THIRD_PLACE_WINNER_SLOTS):
+            raise ValueError(f"Invalid Annex C winner slots for {key}: {sorted(row)}")
+
+        assigned_groups = []
+        for third_slot in row.values():
+            if not isinstance(third_slot, str) or len(third_slot) != 2 or not third_slot.startswith("3"):
+                raise ValueError(f"Invalid Annex C third-place slot for {key}: {third_slot}")
+            assigned_groups.append(third_slot.removeprefix("3"))
+
+        if sorted(assigned_groups) != sorted(key):
+            raise ValueError(f"Invalid Annex C row for {key}: assigned groups {assigned_groups}")
+
+        for winner_slot, third_slot in row.items():
+            winner_group = winner_slot.removeprefix("1")
+            third_group = third_slot.removeprefix("3")
+            if winner_group == third_group:
+                raise ValueError(f"Invalid Annex C row for {key}: {winner_slot} assigned {third_slot}")
+
+
+def resolve_third_place_allocation(qualified_thirds, allocation_table=None):
+    table = allocation_table or load_third_place_allocation_table()
+    key = third_place_allocation_key(qualified_thirds)
+    try:
+        row = table[key]
+    except KeyError as exc:
+        raise ValueError(f"Missing FIFA Annex C third-place allocation row for combination {key}") from exc
+    return row
+
+
 def build_slots(standings):
     slots = {}
     for group, rows in standings.items():
@@ -343,34 +403,41 @@ def build_slots(standings):
     return slots
 
 
-def third_slot_candidates(slot, slots):
-    return [f"3{group}" for group in slot[1:].split("/") if f"3{group}" in slots]
-
-
-def assign_third_slots(slots):
-    third_slots = [slot for _, slot_a, slot_b, _ in ROUND_OF_32 for slot in (slot_a, slot_b) if slot.startswith("3")]
-    candidates = {slot: third_slot_candidates(slot, slots) for slot in third_slots}
-    ordered = sorted(third_slots, key=lambda slot: len(candidates[slot]))
+def assign_third_slots(slots, qualified_thirds, allocation_table=None):
+    allocation = resolve_third_place_allocation(qualified_thirds, allocation_table)
     assignments = {}
-
-    def backtrack(index, used):
-        if index == len(ordered):
-            return True
-        slot = ordered[index]
-        for candidate in candidates[slot]:
-            if candidate in used:
+    for _, slot_a, slot_b, _ in ROUND_OF_32:
+        for slot in (slot_a, slot_b):
+            if not slot.startswith("3"):
                 continue
-            assignments[slot] = slots[candidate]
-            used.add(candidate)
-            if backtrack(index + 1, used):
-                return True
-            used.remove(candidate)
-            del assignments[slot]
-        return False
-
-    if not backtrack(0, set()):
-        raise ValueError("Could not assign qualified third-place teams to Round-of-32 slots")
+            winner_slot = slot_a if slot_b == slot else slot_b
+            third_slot = allocation[winner_slot]
+            allowed_groups = set(slot.removeprefix("3").split("/"))
+            third_group = third_slot.removeprefix("3")
+            if third_group not in allowed_groups:
+                raise ValueError(f"Invalid Annex C row: {winner_slot} assigned {third_slot}, outside {slot}")
+            assignments[slot] = slots[third_slot]
     return assignments
+
+
+def build_round_of_32_matches(standings, rankings, n_simulations, use_home_advantage, home_multiplier, allocation_table=None):
+    slots = build_slots(standings)
+    qualified_thirds = best_thirds(standings)
+    third_assignments = assign_third_slots(slots, qualified_thirds, allocation_table)
+    matches = {}
+    losers = {}
+
+    for match_no, slot_a, slot_b, venue_country in ROUND_OF_32:
+        team_a = resolve_slot(slot_a, slots, third_assignments)
+        team_b = resolve_slot(slot_b, slots, third_assignments)
+        match = predict_match(team_a, team_b, rankings, n_simulations, venue_country, use_home_advantage, home_multiplier)
+        match["match_no"] = match_no
+        match["winner"] = knockout_winner(match)
+        match["knockout_tiebreak_note"] = "forecast draw resolved by higher non-draw simulated win count" if match["forecast"] == "draw" else ""
+        matches[match_no] = match
+        losers[match_no] = match["team_b"] if match["winner"] == match["team_a"] else match["team_a"]
+
+    return matches, losers
 
 
 def resolve_slot(slot, slots, third_assignments):
@@ -388,20 +455,7 @@ def knockout_winner(match):
 
 
 def simulate_knockouts(standings, rankings, n_simulations, use_home_advantage, home_multiplier):
-    slots = build_slots(standings)
-    third_assignments = assign_third_slots(slots)
-    results = {}
-    losers = {}
-
-    for match_no, slot_a, slot_b, venue_country in ROUND_OF_32:
-        team_a = resolve_slot(slot_a, slots, third_assignments)
-        team_b = resolve_slot(slot_b, slots, third_assignments)
-        match = predict_match(team_a, team_b, rankings, n_simulations, venue_country, use_home_advantage, home_multiplier)
-        match["match_no"] = match_no
-        match["winner"] = knockout_winner(match)
-        match["knockout_tiebreak_note"] = "forecast draw resolved by higher non-draw simulated win count" if match["forecast"] == "draw" else ""
-        results[match_no] = match
-        losers[match_no] = match["team_b"] if match["winner"] == match["team_a"] else match["team_a"]
+    results, losers = build_round_of_32_matches(standings, rankings, n_simulations, use_home_advantage, home_multiplier)
 
     for match_no, prev_a, prev_b, venue_country in KNOCKOUT_BRACKET:
         team_a = losers[prev_a[1]] if isinstance(prev_a, tuple) else results[prev_a]["winner"]
