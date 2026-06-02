@@ -11,8 +11,11 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RANKING_FILE = REPO_ROOT / "ranking_final.csv"
 HOME_ADVANTAGE_FILE = REPO_ROOT / "data" / "config" / "home_advantage_multiplier.json"
+SNAPSHOT_FILE = REPO_ROOT / "data" / "output" / "world_cup_2026" / "simulation_snapshot.json"
 # Parsed from FIFA World Cup 26 Regulations, Annex C.
 THIRD_PLACE_ALLOCATION_FILE = REPO_ROOT / "data" / "world_cup_2026_third_place_allocation.json"
+# Snapshot from FIFA API /api/v3/rankings/?gender=1&count=300&language=en.
+FIFA_MENS_RANKING_FILE = REPO_ROOT / "data" / "fifa_mens_world_ranking.json"
 CHI2_95_DF2 = 5.991464547107979
 HOST_COUNTRIES = {"Mexico": "Mexico", "Canada": "Canada", "USA": "USA"}
 NAME_MAP = {
@@ -21,6 +24,17 @@ NAME_MAP = {
     "Czechia": "Czech Republic",
     "Cape Verde": "Cape Verde Islands",
     "DR Congo": "Congo DR",
+}
+FIFA_RANKING_NAME_MAP = {
+    "Cape Verde Islands": "Cabo Verde",
+    "Congo DR": "Congo DR",
+    "Curacao": "Curaçao",
+    "Czech Republic": "Czechia",
+    "Iran": "IR Iran",
+    "Ivory Coast": "Côte d'Ivoire",
+    "South Korea": "Korea Republic",
+    "Turkey": "Türkiye",
+    "USA": "USA",
 }
 
 
@@ -163,6 +177,7 @@ def parse_args():
     parser.add_argument("--simulations", type=int, default=10000)
     parser.add_argument("--seed", type=int)
     parser.add_argument("--no-home-advantage", action="store_true")
+    parser.add_argument("--write-snapshot", action="store_true")
     return parser.parse_args()
 
 
@@ -182,6 +197,26 @@ def load_home_multiplier():
         return float(data["app_home_advantage_multiplier"])
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
         return 1.0
+
+
+def load_fifa_rankings(path=FIFA_MENS_RANKING_FILE):
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    rankings = {}
+    for row in data["rows"]:
+        rankings[row["team"]] = int(row["rank"])
+    return rankings
+
+
+def fifa_ranking_name(team):
+    return FIFA_RANKING_NAME_MAP.get(team, team)
+
+
+def fifa_rank(team, fifa_rankings):
+    name = fifa_ranking_name(team)
+    try:
+        return fifa_rankings[name]
+    except KeyError as exc:
+        raise ValueError(f"Missing FIFA/Coca-Cola Men's World Ranking for {team} ({name})") from exc
 
 
 def most_common_score(goals_a, goals_b, mask):
@@ -278,7 +313,19 @@ def predict_match(team_a, team_b, rankings, n_simulations, venue_country, use_ho
 
 def init_table(group):
     return {
-        team: {"group": group, "team": team, "played": 0, "wins": 0, "draws": 0, "losses": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0, "spi": 0.0}
+        team: {
+            "group": group,
+            "team": team,
+            "played": 0,
+            "wins": 0,
+            "draws": 0,
+            "losses": 0,
+            "gf": 0,
+            "ga": 0,
+            "gd": 0,
+            "points": 0,
+            "team_conduct_score": 0,
+        }
         for team in GROUPS[group]
     }
 
@@ -296,8 +343,6 @@ def apply_group_result(table, match, rankings):
     table[b]["ga"] += ga
     table[a]["gd"] = table[a]["gf"] - table[a]["ga"]
     table[b]["gd"] = table[b]["gf"] - table[b]["ga"]
-    table[a]["spi"] = rankings[a]["spi"]
-    table[b]["spi"] = rankings[b]["spi"]
     if ga > gb:
         table[a]["wins"] += 1
         table[b]["losses"] += 1
@@ -313,15 +358,87 @@ def apply_group_result(table, match, rankings):
         table[b]["points"] += 1
 
 
-def sort_table(table):
-    return sorted(
-        table.values(),
-        key=lambda row: (row["points"], row["gd"], row["gf"], row["spi"]),
-        reverse=True,
+def split_by_equal_values(rows, criterion):
+    groups = []
+    for row in rows:
+        value = criterion(row)
+        if not groups or groups[-1][0] != value:
+            groups.append((value, [row]))
+        else:
+            groups[-1][1].append(row)
+    return [group_rows for _, group_rows in groups]
+
+
+def head_to_head_stats(teams, matches):
+    stats = {team: {"points": 0, "gd": 0, "gf": 0} for team in teams}
+    team_set = set(teams)
+    for match in matches:
+        team_a = match["team_a"]
+        team_b = match["team_b"]
+        if team_a not in team_set or team_b not in team_set:
+            continue
+
+        score_a = match["score_a"]
+        score_b = match["score_b"]
+        stats[team_a]["gf"] += score_a
+        stats[team_a]["gd"] += score_a - score_b
+        stats[team_b]["gf"] += score_b
+        stats[team_b]["gd"] += score_b - score_a
+        if score_a > score_b:
+            stats[team_a]["points"] += 3
+        elif score_b > score_a:
+            stats[team_b]["points"] += 3
+        else:
+            stats[team_a]["points"] += 1
+            stats[team_b]["points"] += 1
+    return stats
+
+
+def rank_tied_group_rows(rows, group_matches, fifa_rankings):
+    if len(rows) == 1:
+        return rows
+
+    teams = [row["team"] for row in rows]
+    h2h = head_to_head_stats(teams, group_matches)
+    criteria = (
+        lambda row: h2h[row["team"]]["points"],
+        lambda row: h2h[row["team"]]["gd"],
+        lambda row: h2h[row["team"]]["gf"],
+        lambda row: row["gd"],
+        lambda row: row["gf"],
+        lambda row: row.get("team_conduct_score", 0),
+        lambda row: -fifa_rank(row["team"], fifa_rankings),
     )
+
+    ranked = rows
+    for criterion in criteria:
+        next_ranked = []
+        for tied_rows in split_by_equal_values(ranked, criterion):
+            if len(tied_rows) == 1:
+                next_ranked.extend(tied_rows)
+                continue
+            if criterion is criteria[-1]:
+                ranks = [fifa_rank(row["team"], fifa_rankings) for row in tied_rows]
+                if len(set(ranks)) != len(ranks):
+                    teams = [row["team"] for row in tied_rows]
+                    raise ValueError(f"FIFA ranking did not resolve group tie for {teams}")
+            next_ranked.extend(sorted(tied_rows, key=criterion, reverse=True))
+        ranked = next_ranked
+    return ranked
+
+
+def sort_table(table, group_matches, fifa_rankings):
+    ranked = []
+    by_points = {}
+    for row in table.values():
+        by_points.setdefault(row["points"], []).append(row)
+    for points in sorted(by_points, reverse=True):
+        ranked.extend(rank_tied_group_rows(by_points[points], group_matches, fifa_rankings))
+    return ranked
 
 
 def simulate_groups(rankings, n_simulations, use_home_advantage, home_multiplier):
+    fifa_rankings = load_fifa_rankings()
     tables = {group: init_table(group) for group in GROUPS}
     matches = []
     for group, team_a, team_b, venue_country in GROUP_FIXTURES:
@@ -329,13 +446,46 @@ def simulate_groups(rankings, n_simulations, use_home_advantage, home_multiplier
         match["group"] = group
         matches.append(match)
         apply_group_result(tables[group], match, rankings)
-    standings = {group: sort_table(table) for group, table in tables.items()}
+    standings = {
+        group: sort_table(table, [match for match in matches if match["group"] == group], fifa_rankings)
+        for group, table in tables.items()
+    }
     return matches, standings
 
 
-def best_thirds(standings):
+def best_thirds(standings, fifa_rankings=None):
+    fifa_rankings = fifa_rankings or load_fifa_rankings()
     thirds = [rows[2] for rows in standings.values()]
-    return sorted(thirds, key=lambda row: (row["points"], row["gd"], row["gf"], row["spi"]), reverse=True)[:8]
+    ranked = sorted(
+        thirds,
+        key=lambda row: (
+            row["points"],
+            row["gd"],
+            row["gf"],
+            row.get("team_conduct_score", 0),
+            -fifa_rank(row["team"], fifa_rankings),
+        ),
+        reverse=True,
+    )
+    eighth = ranked[7]
+    ninth = ranked[8]
+    eighth_key = (
+        eighth["points"],
+        eighth["gd"],
+        eighth["gf"],
+        eighth.get("team_conduct_score", 0),
+        fifa_rank(eighth["team"], fifa_rankings),
+    )
+    ninth_key = (
+        ninth["points"],
+        ninth["gd"],
+        ninth["gf"],
+        ninth.get("team_conduct_score", 0),
+        fifa_rank(ninth["team"], fifa_rankings),
+    )
+    if eighth_key == ninth_key:
+        raise ValueError(f"FIFA ranking did not resolve best third-place cutoff: {eighth['team']} and {ninth['team']}")
+    return ranked[:8]
 
 
 def third_place_allocation_key(qualified_thirds):
@@ -393,12 +543,12 @@ def resolve_third_place_allocation(qualified_thirds, allocation_table=None):
     return row
 
 
-def build_slots(standings):
+def build_slots(standings, fifa_rankings=None):
     slots = {}
     for group, rows in standings.items():
         slots[f"1{group}"] = rows[0]["team"]
         slots[f"2{group}"] = rows[1]["team"]
-    for row in best_thirds(standings):
+    for row in best_thirds(standings, fifa_rankings):
         slots[f"3{row['group']}"] = row["team"]
     return slots
 
@@ -420,9 +570,18 @@ def assign_third_slots(slots, qualified_thirds, allocation_table=None):
     return assignments
 
 
-def build_round_of_32_matches(standings, rankings, n_simulations, use_home_advantage, home_multiplier, allocation_table=None):
-    slots = build_slots(standings)
-    qualified_thirds = best_thirds(standings)
+def build_round_of_32_matches(
+    standings,
+    rankings,
+    n_simulations,
+    use_home_advantage,
+    home_multiplier,
+    allocation_table=None,
+    fifa_rankings=None,
+):
+    fifa_rankings = fifa_rankings or load_fifa_rankings()
+    slots = build_slots(standings, fifa_rankings)
+    qualified_thirds = best_thirds(standings, fifa_rankings)
     third_assignments = assign_third_slots(slots, qualified_thirds, allocation_table)
     matches = {}
     losers = {}
@@ -454,8 +613,16 @@ def knockout_winner(match):
     return match["team_b"]
 
 
-def simulate_knockouts(standings, rankings, n_simulations, use_home_advantage, home_multiplier):
-    results, losers = build_round_of_32_matches(standings, rankings, n_simulations, use_home_advantage, home_multiplier)
+def simulate_knockouts(standings, rankings, n_simulations, use_home_advantage, home_multiplier, fifa_rankings=None):
+    fifa_rankings = fifa_rankings or load_fifa_rankings()
+    results, losers = build_round_of_32_matches(
+        standings,
+        rankings,
+        n_simulations,
+        use_home_advantage,
+        home_multiplier,
+        fifa_rankings=fifa_rankings,
+    )
 
     for match_no, prev_a, prev_b, venue_country in KNOCKOUT_BRACKET:
         team_a = losers[prev_a[1]] if isinstance(prev_a, tuple) else results[prev_a]["winner"]
@@ -479,6 +646,106 @@ def print_match(match, prefix=""):
     )
 
 
+def snapshot_match(match, round_name, label):
+    row = {
+        "round": round_name,
+        "label": label,
+        "team_a": match["team_a"],
+        "score_a": match["score_a"],
+        "score_b": match["score_b"],
+        "team_b": match["team_b"],
+        "winner": match["winner"],
+        "forecast": match["forecast"],
+    }
+    if match.get("home_advantage_team"):
+        row["home_adv"] = match["home_advantage_team"]
+    if match.get("knockout_tiebreak_note"):
+        row["note"] = match["knockout_tiebreak_note"]
+    return row
+
+
+def knockout_round_name(match_no):
+    if 73 <= match_no <= 88:
+        return "Round of 32"
+    if 89 <= match_no <= 96:
+        return "Round of 16"
+    if 97 <= match_no <= 100:
+        return "Quarter-finals"
+    if 101 <= match_no <= 102:
+        return "Semi-finals"
+    if match_no == 103:
+        return "Third place"
+    if match_no == 104:
+        return "Final"
+    raise ValueError(f"Unknown knockout match number: {match_no}")
+
+
+def knockout_label(match_no):
+    if match_no == 103:
+        return "Third place"
+    if match_no == 104:
+        return "Final"
+    return f"Match {match_no}"
+
+
+def build_snapshot(group_matches, standings, knockout_results, args, home_multiplier, use_home_advantage, fifa_rankings):
+    final_match = knockout_results[104]
+    third_place_match = knockout_results[103]
+    return {
+        "title": "World Cup 2026 simulation snapshot",
+        "source_command": "python scripts/simulate_world_cup_2026.py --write-snapshot",
+        "simulations_per_match": args.simulations,
+        "home_advantage": "on" if use_home_advantage else "off",
+        "home_advantage_multiplier": round(home_multiplier, 4),
+        "knockout_tiebreak_note": "Knockout forecast draws are resolved by higher non-draw simulated win count.",
+        "tournament_tiebreak_note": (
+            "Group and best-third rankings follow FIFA World Cup 26 Regulations Article 13. "
+            "The simulator has no card data, so team conduct scores are equal unless provided; "
+            "remaining ties use the FIFA/Coca-Cola Men's World Ranking snapshot."
+        ),
+        "fifa_ranking_source": {
+            "file": str(FIFA_MENS_RANKING_FILE.relative_to(REPO_ROOT)),
+            "published_at": json.loads(FIFA_MENS_RANKING_FILE.read_text(encoding="utf-8"))["published_at"],
+        },
+        "third_place_allocation_source": {
+            "file": str(THIRD_PLACE_ALLOCATION_FILE.relative_to(REPO_ROOT)),
+            "regulation": "FIFA World Cup 26 Regulations Annex C",
+        },
+        "champion": final_match["winner"],
+        "third_place": third_place_match["winner"],
+        "group_matches": [
+            {
+                "group": match["group"],
+                "team_a": match["team_a"],
+                "score_a": match["score_a"],
+                "score_b": match["score_b"],
+                "team_b": match["team_b"],
+                "winner": match["winner"] or "draw",
+                "forecast": match["forecast"],
+                **({"home_adv": match["home_advantage_team"]} if match.get("home_advantage_team") else {}),
+            }
+            for match in group_matches
+        ],
+        "group_tables": {
+            group: [[row["team"], row["points"], row["gd"], row["gf"]] for row in rows]
+            for group, rows in standings.items()
+        },
+        "best_thirds": [
+            [row["team"], row["group"], row["points"], row["gd"], row["gf"]]
+            for row in best_thirds(standings, fifa_rankings)
+        ],
+        "knockout_matches": [
+            snapshot_match(knockout_results[match_no], knockout_round_name(match_no), knockout_label(match_no))
+            for match_no in sorted(knockout_results)
+        ],
+    }
+
+
+def write_snapshot(snapshot, path=SNAPSHOT_FILE):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")
+
+
 def main():
     args = parse_args()
     if args.seed is not None:
@@ -496,6 +763,7 @@ def main():
     print("Knockout forecast draws are resolved by higher non-draw simulated win count.")
     print()
 
+    fifa_rankings = load_fifa_rankings()
     group_matches, standings = simulate_groups(rankings, args.simulations, use_home_advantage, home_multiplier)
     print("GROUP MATCHES")
     for match in group_matches:
@@ -511,7 +779,7 @@ def main():
     for row in best_thirds(standings):
         print(f"  Group {row['group']}: {row['team']} ({row['points']} pts, GD {row['gd']}, GF {row['gf']})")
 
-    knockout_results = simulate_knockouts(standings, rankings, args.simulations, use_home_advantage, home_multiplier)
+    knockout_results = simulate_knockouts(standings, rankings, args.simulations, use_home_advantage, home_multiplier, fifa_rankings)
     print("\nKNOCKOUT MATCHES")
     for match_no in sorted(knockout_results):
         label = "Final" if match_no == 104 else "Third place" if match_no == 103 else f"Match {match_no}"
@@ -519,6 +787,11 @@ def main():
 
     print(f"\nChampion: {knockout_results[104]['winner']}")
     print(f"Third place: {knockout_results[103]['winner']}")
+
+    if args.write_snapshot:
+        snapshot = build_snapshot(group_matches, standings, knockout_results, args, home_multiplier, use_home_advantage, fifa_rankings)
+        write_snapshot(snapshot)
+        print(f"Snapshot written to {SNAPSHOT_FILE}")
 
 
 if __name__ == "__main__":

@@ -26,6 +26,16 @@ def fake_standings(qualified_third_groups):
     return standings
 
 
+def fake_fifa_rankings():
+    rankings = {}
+    rank = 1
+    for group in wc.GROUPS:
+        for prefix in ("W", "R", "T", "X"):
+            rankings[f"{prefix}{group}"] = rank
+            rank += 1
+    return rankings
+
+
 def fake_predict_match(team_a, team_b, rankings, n_simulations, venue_country, use_home_advantage, home_multiplier):
     return {
         "team_a": team_a,
@@ -48,14 +58,15 @@ class WorldCup2026AllocationTests(unittest.TestCase):
 
     def test_qualification_count(self):
         standings = fake_standings("ABCDEFGH")
+        fifa_rankings = fake_fifa_rankings()
         qualifiers = []
         for rows in standings.values():
             qualifiers.extend([rows[0], rows[1]])
-        qualifiers.extend(wc.best_thirds(standings))
+        qualifiers.extend(wc.best_thirds(standings, fifa_rankings))
 
         self.assertEqual(len(qualifiers), 32)
-        self.assertEqual(len(wc.best_thirds(standings)), 8)
-        self.assertEqual(wc.third_place_allocation_key(wc.best_thirds(standings)), "ABCDEFGH")
+        self.assertEqual(len(wc.best_thirds(standings, fifa_rankings)), 8)
+        self.assertEqual(wc.third_place_allocation_key(wc.best_thirds(standings, fifa_rankings)), "ABCDEFGH")
 
     def test_third_place_allocation_table_completeness(self):
         expected_keys = {"".join(groups) for groups in itertools.combinations("ABCDEFGHIJKL", 8)}
@@ -142,6 +153,7 @@ class WorldCup2026AllocationTests(unittest.TestCase):
                 use_home_advantage=False,
                 home_multiplier=1.0,
                 allocation_table=self.table,
+                fifa_rankings=fake_fifa_rankings(),
             )
 
         self.assertEqual(len(matches), 16)
