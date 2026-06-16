@@ -708,30 +708,72 @@ scores_home_team_wins = forecast_scores_dataframe.loc[forecast_scores_dataframe.
 scores_road_team_wins = forecast_scores_dataframe.loc[forecast_scores_dataframe.Results == "visiting team wins"]
 scores_tie = forecast_scores_dataframe.loc[forecast_scores_dataframe.Results == "tie"]
 
-def most_common_score(df_subset, fallback="0.0 - 0.0"):
-    if df_subset.empty:
+def representative_score(df_subset, fallback="0.0 - 0.0"):
+    """Select a representative scoreline for the already-forecasted outcome."""
+    if df_subset.empty or "Scores" not in df_subset.columns:
         return fallback
-    counts = df_subset["Scores"].value_counts().sort_index()
+
+    score_parts = df_subset["Scores"].astype(str).str.split(" - ", expand=True)
+    if score_parts.shape[1] != 2:
+        return fallback
+
+    score_parts = score_parts.apply(pd.to_numeric, errors="coerce")
+    score_parts.columns = ["home_goals", "away_goals"]
+    valid_scores = score_parts.dropna()
+
+    if valid_scores.empty:
+        return fallback
+
+    mean_home = valid_scores["home_goals"].mean()
+    mean_away = valid_scores["away_goals"].mean()
+
+    counts = df_subset["Scores"].astype(str).value_counts().reset_index()
+    counts.columns = ["score", "frequency"]
+
+    count_parts = counts["score"].str.split(" - ", expand=True)
+    if count_parts.shape[1] != 2:
+        return fallback
+
+    count_parts = count_parts.apply(pd.to_numeric, errors="coerce")
+    counts["home_goals"] = count_parts[0]
+    counts["away_goals"] = count_parts[1]
+    counts = counts.dropna(subset=["home_goals", "away_goals"])
+
     if counts.empty:
         return fallback
-    return counts.idxmax()
 
-idxmax_score_home_team_wins = most_common_score(scores_home_team_wins)
-idxmax_score_road_team_wins = most_common_score(scores_road_team_wins)
-idxmax_score_tie = most_common_score(scores_tie)
+    counts["distance"] = (
+        (counts["home_goals"] - mean_home) ** 2
+        + (counts["away_goals"] - mean_away) ** 2
+    )
+    counts["total_goals"] = counts["home_goals"] + counts["away_goals"]
+
+    counts = counts.sort_values(
+        by=["distance", "frequency", "total_goals"],
+        ascending=[True, False, True]
+    )
+
+    return counts.iloc[0]["score"]
+
+
+# Select a representative scoreline for the forecasted outcome, based on the
+# conditional mean and nearest observed scoreline rather than the raw modal score.
+representative_score_home_team_wins = representative_score(scores_home_team_wins)
+representative_score_road_team_wins = representative_score(scores_road_team_wins)
+representative_score_tie = representative_score(scores_tie)
 
 def score_forecast():
     if all(i>cr for i in x_list):
         if ((results.count("home team wins")) / 10000) > ((results.count("visiting team wins")) / 10000)+0.02 and (
                 (results.count("home team wins")) / 10000) > ((results.count("tie"))/10000)+0.02:
-            return(idxmax_score_home_team_wins)
+            return(representative_score_home_team_wins)
         elif ((results.count("visiting team wins")) / 10000) > ((results.count("home team wins")) / 10000)+0.02 and (
                 (results.count("visiting team wins")) / 10000) > ((results.count("tie"))/10000)+0.02:
-            return(idxmax_score_road_team_wins)
+            return(representative_score_road_team_wins)
         else:
-            return(idxmax_score_tie)
+            return(representative_score_tie)
     else:
-        return(idxmax_score_tie)
+        return(representative_score_tie)
 
 st.subheader("Result of the simulations")
 
