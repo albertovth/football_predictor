@@ -1,7 +1,6 @@
 import argparse
 import itertools
 import json
-from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -12,6 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RANKING_FILE = REPO_ROOT / "ranking_final.csv"
 HOME_ADVANTAGE_FILE = REPO_ROOT / "data" / "config" / "home_advantage_multiplier.json"
 SNAPSHOT_FILE = REPO_ROOT / "data" / "output" / "world_cup_2026" / "simulation_snapshot.json"
+SCORE_PROGNOSES_FILE = REPO_ROOT / "data" / "output" / "world_cup_2026" / "score_prognoses.csv"
 # Parsed from FIFA World Cup 26 Regulations, Annex C.
 THIRD_PLACE_ALLOCATION_FILE = REPO_ROOT / "data" / "world_cup_2026_third_place_allocation.json"
 # Snapshot from FIFA API /api/v3/rankings/?gender=1&count=300&language=en.
@@ -219,11 +219,18 @@ def fifa_rank(team, fifa_rankings):
         raise ValueError(f"Missing FIFA/Coca-Cola Men's World Ranking for {team} ({name})") from exc
 
 
-def most_common_score(goals_a, goals_b, mask):
+def representative_score(goals_a, goals_b, mask):
     if not np.any(mask):
         return (0, 0)
-    scores = Counter(zip(goals_a[mask].tolist(), goals_b[mask].tolist()))
-    return max(scores.items(), key=lambda item: (item[1], -item[0][0], -item[0][1]))[0]
+
+    observed_scores = np.column_stack((goals_a[mask], goals_b[mask]))
+    mean_goals = observed_scores.mean(axis=0)
+    unique_scores, frequencies = np.unique(observed_scores, axis=0, return_counts=True)
+    distances = np.sum((unique_scores - mean_goals) ** 2, axis=1)
+    total_goals = np.sum(unique_scores, axis=1)
+    selected_idx = np.lexsort((total_goals, -frequencies, distances))[0]
+    selected_score = unique_scores[selected_idx]
+    return int(selected_score[0]), int(selected_score[1])
 
 
 def app_forecast(wins_a, draws, wins_b, n_simulations):
@@ -286,13 +293,13 @@ def predict_match(team_a, team_b, rankings, n_simulations, venue_country, use_ho
     forecast = app_forecast(wins_a, draws, wins_b, n_simulations)
 
     if forecast == "team_a":
-        score = most_common_score(goals_a, goals_b, wins_a_mask)
+        score = representative_score(goals_a, goals_b, wins_a_mask)
         winner = team_a
     elif forecast == "team_b":
-        score = most_common_score(goals_a, goals_b, wins_b_mask)
+        score = representative_score(goals_a, goals_b, wins_b_mask)
         winner = team_b
     else:
-        score = most_common_score(goals_a, goals_b, draws_mask)
+        score = representative_score(goals_a, goals_b, draws_mask)
         winner = None
 
     return {
@@ -746,6 +753,49 @@ def write_snapshot(snapshot, path=SNAPSHOT_FILE):
     path.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")
 
 
+def score_prognosis_row(match, round_name, label):
+    total = match["wins_a"] + match["draws"] + match["wins_b"]
+    return {
+        "round": round_name,
+        "label": label,
+        "group": match.get("group", ""),
+        "team_a": match["team_a"],
+        "team_b": match["team_b"],
+        "score_a": match["score_a"],
+        "score_b": match["score_b"],
+        "score": f"{match['score_a']}-{match['score_b']}",
+        "winner": match["winner"] or "draw",
+        "forecast": match["forecast"],
+        "home_advantage_team": match.get("home_advantage_team") or "",
+        "wins_a": match["wins_a"],
+        "draws": match["draws"],
+        "wins_b": match["wins_b"],
+        "prob_team_a": match["wins_a"] / total,
+        "prob_draw": match["draws"] / total,
+        "prob_team_b": match["wins_b"] / total,
+        "expected_goals_a": match["lambda_a"],
+        "expected_goals_b": match["lambda_b"],
+        "note": match.get("knockout_tiebreak_note", ""),
+    }
+
+
+def build_score_prognoses(group_matches, knockout_results):
+    rows = [
+        score_prognosis_row(match, "Group stage", f"Group {match['group']}")
+        for match in group_matches
+    ]
+    rows.extend(
+        score_prognosis_row(knockout_results[match_no], knockout_round_name(match_no), knockout_label(match_no))
+        for match_no in sorted(knockout_results)
+    )
+    return pd.DataFrame(rows)
+
+
+def write_score_prognoses(group_matches, knockout_results, path=SCORE_PROGNOSES_FILE):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    build_score_prognoses(group_matches, knockout_results).to_csv(path, index=False)
+
+
 def main():
     args = parse_args()
     if args.seed is not None:
@@ -791,7 +841,9 @@ def main():
     if args.write_snapshot:
         snapshot = build_snapshot(group_matches, standings, knockout_results, args, home_multiplier, use_home_advantage, fifa_rankings)
         write_snapshot(snapshot)
+        write_score_prognoses(group_matches, knockout_results)
         print(f"Snapshot written to {SNAPSHOT_FILE}")
+        print(f"Score prognoses written to {SCORE_PROGNOSES_FILE}")
 
 
 if __name__ == "__main__":

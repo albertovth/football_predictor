@@ -20,8 +20,8 @@
     {
       "group": "A",
       "team_a": "Mexico",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "South Africa",
       "winner": "Mexico",
       "forecast": "team_a",
@@ -30,7 +30,7 @@
     {
       "group": "A",
       "team_a": "South Korea",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Czech Republic",
       "winner": "South Korea",
@@ -39,7 +39,7 @@
     {
       "group": "A",
       "team_a": "Czech Republic",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "South Africa",
       "winner": "Czech Republic",
@@ -58,8 +58,8 @@
     {
       "group": "A",
       "team_a": "Czech Republic",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Mexico",
       "winner": "Mexico",
       "forecast": "team_b",
@@ -69,7 +69,7 @@
       "group": "A",
       "team_a": "South Africa",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "South Korea",
       "winner": "South Korea",
       "forecast": "team_b"
@@ -77,8 +77,8 @@
     {
       "group": "B",
       "team_a": "Canada",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 3,
+      "score_b": 1,
       "team_b": "Bosnia and Herzegovina",
       "winner": "Canada",
       "forecast": "team_a",
@@ -88,7 +88,7 @@
       "group": "B",
       "team_a": "Qatar",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 3,
       "team_b": "Switzerland",
       "winner": "Switzerland",
       "forecast": "team_b"
@@ -96,7 +96,7 @@
     {
       "group": "B",
       "team_a": "Switzerland",
-      "score_a": 2,
+      "score_a": 3,
       "score_b": 1,
       "team_b": "Bosnia and Herzegovina",
       "winner": "Switzerland",
@@ -105,7 +105,7 @@
     {
       "group": "B",
       "team_a": "Canada",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Qatar",
       "winner": "Canada",
@@ -115,8 +115,8 @@
     {
       "group": "B",
       "team_a": "Switzerland",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Canada",
       "winner": "Switzerland",
       "forecast": "team_a",
@@ -125,8 +125,8 @@
     {
       "group": "B",
       "team_a": "Bosnia and Herzegovina",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 3,
+      "score_b": 1,
       "team_b": "Qatar",
       "winner": "Bosnia and Herzegovina",
       "forecast": "team_a"
@@ -134,7 +134,7 @@
     {
       "group": "C",
       "team_a": "Brazil",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Morocco",
       "winner": "Brazil",
@@ -144,7 +144,7 @@
       "group": "C",
       "team_a": "Haiti",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Scotland",
       "winner": "Scotland",
       "forecast": "team_b"
@@ -153,7 +153,7 @@
       "group": "C",
       "team_a": "Scotland",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Morocco",
       "winner": "Morocco",
       "forecast": "team_b"
@@ -161,7 +161,7 @@
     {
       "group": "C",
       "team_a": "Brazil",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Haiti",
       "winner": "Brazil",
@@ -170,8 +170,8 @@
     {
       "group": "C",
       "team_a": "Scotland",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Brazil",
       "winner": "Brazil",
       "forecast": "team_b"
@@ -179,7 +179,7 @@
     {
       "group": "C",
       "team_a": "Morocco",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Haiti",
       "winner": "Morocco",
@@ -188,7 +188,7 @@
     {
       "group": "D",
       "team_a": "USA",
-      "score_a": 2,
+      "score_a": 3,
       "score_b": 1,
       "team_b": "Paraguay",
       "winner": "USA",
@@ -198,25 +198,25 @@
     {
       "group": "D",
       "team_a": "Australia",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 1,
       "team_b": "Turkey",
-      "winner": "draw",
-      "forecast": "draw"
+      "winner": "Australia",
+      "forecast": "team_a"
     },
     {
       "group": "D",
       "team_a": "Turkey",
       "score_a": 1,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Paraguay",
-      "winner": "draw",
-      "forecast": "draw"
+      "winner": "Paraguay",
+      "forecast": "team_b"
     },
     {
       "group": "D",
       "team_a": "USA",
-      "score_a": 2,
+      "score_a": 3,
       "score_b": 1,
       "team_b": "Australia",
       "winner": "USA",
@@ -227,7 +227,7 @@
       "group": "D",
       "team_a": "Turkey",
       "score_a": 1,
-      "score_b": 2,
+      "score_b": 3,
       "team_b": "USA",
       "winner": "USA",
       "forecast": "team_b",
@@ -246,7 +246,7 @@
       "group": "E",
       "team_a": "Ivory Coast",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Ecuador",
       "winner": "Ecuador",
       "forecast": "team_b"
@@ -254,7 +254,7 @@
     {
       "group": "E",
       "team_a": "Germany",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Curacao",
       "winner": "Germany",
@@ -263,7 +263,7 @@
     {
       "group": "E",
       "team_a": "Germany",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Ivory Coast",
       "winner": "Germany",
@@ -272,7 +272,7 @@
     {
       "group": "E",
       "team_a": "Ecuador",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Curacao",
       "winner": "Ecuador",
@@ -282,7 +282,7 @@
       "group": "E",
       "team_a": "Curacao",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Ivory Coast",
       "winner": "Ivory Coast",
       "forecast": "team_b"
@@ -290,17 +290,17 @@
     {
       "group": "E",
       "team_a": "Ecuador",
-      "score_a": 1,
-      "score_b": 1,
+      "score_a": 0,
+      "score_b": 2,
       "team_b": "Germany",
-      "winner": "draw",
-      "forecast": "draw"
+      "winner": "Germany",
+      "forecast": "team_b"
     },
     {
       "group": "F",
       "team_a": "Netherlands",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Japan",
       "winner": "Netherlands",
       "forecast": "team_a"
@@ -308,8 +308,8 @@
     {
       "group": "F",
       "team_a": "Sweden",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Tunisia",
       "winner": "Tunisia",
       "forecast": "team_b"
@@ -317,8 +317,8 @@
     {
       "group": "F",
       "team_a": "Netherlands",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Sweden",
       "winner": "Netherlands",
       "forecast": "team_a"
@@ -326,8 +326,8 @@
     {
       "group": "F",
       "team_a": "Tunisia",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Japan",
       "winner": "Japan",
       "forecast": "team_b"
@@ -335,8 +335,8 @@
     {
       "group": "F",
       "team_a": "Japan",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Sweden",
       "winner": "Japan",
       "forecast": "team_a"
@@ -344,8 +344,8 @@
     {
       "group": "F",
       "team_a": "Tunisia",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Netherlands",
       "winner": "Netherlands",
       "forecast": "team_b"
@@ -354,7 +354,7 @@
       "group": "G",
       "team_a": "Iran",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "New Zealand",
       "winner": "New Zealand",
       "forecast": "team_b"
@@ -362,7 +362,7 @@
     {
       "group": "G",
       "team_a": "Belgium",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Egypt",
       "winner": "Belgium",
@@ -371,7 +371,7 @@
     {
       "group": "G",
       "team_a": "Belgium",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Iran",
       "winner": "Belgium",
@@ -380,8 +380,8 @@
     {
       "group": "G",
       "team_a": "New Zealand",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Egypt",
       "winner": "New Zealand",
       "forecast": "team_a"
@@ -390,7 +390,7 @@
       "group": "G",
       "team_a": "Egypt",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Iran",
       "winner": "Iran",
       "forecast": "team_b"
@@ -399,16 +399,16 @@
       "group": "G",
       "team_a": "New Zealand",
       "score_a": 1,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Belgium",
-      "winner": "draw",
-      "forecast": "draw"
+      "winner": "Belgium",
+      "forecast": "team_b"
     },
     {
       "group": "H",
       "team_a": "Saudi Arabia",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Uruguay",
       "winner": "Uruguay",
       "forecast": "team_b"
@@ -416,7 +416,7 @@
     {
       "group": "H",
       "team_a": "Spain",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Cape Verde Islands",
       "winner": "Spain",
@@ -425,7 +425,7 @@
     {
       "group": "H",
       "team_a": "Uruguay",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Cape Verde Islands",
       "winner": "Uruguay",
@@ -434,8 +434,8 @@
     {
       "group": "H",
       "team_a": "Spain",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 3,
+      "score_b": 1,
       "team_b": "Saudi Arabia",
       "winner": "Spain",
       "forecast": "team_a"
@@ -443,7 +443,7 @@
     {
       "group": "H",
       "team_a": "Cape Verde Islands",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Saudi Arabia",
       "winner": "Cape Verde Islands",
@@ -453,7 +453,7 @@
       "group": "H",
       "team_a": "Uruguay",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Spain",
       "winner": "Spain",
       "forecast": "team_b"
@@ -471,7 +471,7 @@
       "group": "I",
       "team_a": "Iraq",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Norway",
       "winner": "Norway",
       "forecast": "team_b"
@@ -488,8 +488,8 @@
     {
       "group": "I",
       "team_a": "France",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 3,
+      "score_b": 1,
       "team_b": "Iraq",
       "winner": "France",
       "forecast": "team_a"
@@ -498,7 +498,7 @@
       "group": "I",
       "team_a": "Norway",
       "score_a": 1,
-      "score_b": 2,
+      "score_b": 3,
       "team_b": "France",
       "winner": "France",
       "forecast": "team_b"
@@ -506,7 +506,7 @@
     {
       "group": "I",
       "team_a": "Senegal",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Iraq",
       "winner": "Senegal",
@@ -515,8 +515,8 @@
     {
       "group": "J",
       "team_a": "Argentina",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Algeria",
       "winner": "Argentina",
       "forecast": "team_a"
@@ -533,7 +533,7 @@
     {
       "group": "J",
       "team_a": "Argentina",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Austria",
       "winner": "Argentina",
@@ -542,8 +542,8 @@
     {
       "group": "J",
       "team_a": "Jordan",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Algeria",
       "winner": "Algeria",
       "forecast": "team_b"
@@ -552,16 +552,16 @@
       "group": "J",
       "team_a": "Algeria",
       "score_a": 1,
-      "score_b": 0,
+      "score_b": 1,
       "team_b": "Austria",
-      "winner": "Algeria",
-      "forecast": "team_a"
+      "winner": "draw",
+      "forecast": "draw"
     },
     {
       "group": "J",
       "team_a": "Jordan",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Argentina",
       "winner": "Argentina",
       "forecast": "team_b"
@@ -579,7 +579,7 @@
       "group": "K",
       "team_a": "Uzbekistan",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Colombia",
       "winner": "Colombia",
       "forecast": "team_b"
@@ -587,8 +587,8 @@
     {
       "group": "K",
       "team_a": "Portugal",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Uzbekistan",
       "winner": "Portugal",
       "forecast": "team_a"
@@ -596,8 +596,8 @@
     {
       "group": "K",
       "team_a": "Colombia",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Congo DR",
       "winner": "Colombia",
       "forecast": "team_a"
@@ -605,8 +605,8 @@
     {
       "group": "K",
       "team_a": "Colombia",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Portugal",
       "winner": "Colombia",
       "forecast": "team_a"
@@ -614,7 +614,7 @@
     {
       "group": "K",
       "team_a": "Congo DR",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Uzbekistan",
       "winner": "Congo DR",
@@ -623,7 +623,7 @@
     {
       "group": "L",
       "team_a": "Ghana",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Panama",
       "winner": "Ghana",
@@ -632,7 +632,7 @@
     {
       "group": "L",
       "team_a": "England",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Croatia",
       "winner": "England",
@@ -641,7 +641,7 @@
     {
       "group": "L",
       "team_a": "England",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Ghana",
       "winner": "England",
@@ -651,7 +651,7 @@
       "group": "L",
       "team_a": "Panama",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Croatia",
       "winner": "Croatia",
       "forecast": "team_b"
@@ -660,7 +660,7 @@
       "group": "L",
       "team_a": "Panama",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "England",
       "winner": "England",
       "forecast": "team_b"
@@ -668,7 +668,7 @@
     {
       "group": "L",
       "team_a": "Croatia",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Ghana",
       "winner": "Croatia",
@@ -681,76 +681,76 @@
         "Mexico",
         7,
         2,
-        3
+        5
       ],
       [
         "South Korea",
         7,
-        2,
-        3
+        4,
+        5
       ],
       [
         "Czech Republic",
         3,
         -1,
-        1
+        3
       ],
       [
         "South Africa",
         0,
-        -3,
-        0
+        -5,
+        1
       ]
     ],
     "B": [
       [
         "Switzerland",
         9,
-        3,
-        4
+        6,
+        8
       ],
       [
         "Canada",
         6,
-        1,
-        2
+        3,
+        6
       ],
       [
         "Bosnia and Herzegovina",
         3,
-        -1,
-        2
+        -2,
+        5
       ],
       [
         "Qatar",
         0,
-        -3,
-        0
+        -7,
+        1
       ]
     ],
     "C": [
       [
         "Brazil",
         9,
-        3,
-        3
+        5,
+        6
       ],
       [
         "Morocco",
         6,
-        1,
-        2
+        2,
+        4
       ],
       [
         "Scotland",
         3,
         -1,
-        1
+        3
       ],
       [
         "Haiti",
         0,
-        -3,
+        -6,
         0
       ]
     ],
@@ -758,51 +758,51 @@
       [
         "USA",
         9,
-        3,
-        6
+        6,
+        9
       ],
       [
         "Paraguay",
-        2,
+        4,
         -1,
-        3
+        4
       ],
       [
         "Australia",
-        2,
+        4,
         -1,
-        3
+        4
       ],
       [
         "Turkey",
-        2,
-        -1,
+        0,
+        -4,
         3
       ]
     ],
     "E": [
       [
-        "Ecuador",
-        7,
-        2,
-        3
+        "Germany",
+        9,
+        6,
+        6
       ],
       [
-        "Germany",
-        7,
+        "Ecuador",
+        6,
         2,
-        3
+        4
       ],
       [
         "Ivory Coast",
         3,
-        -1,
-        1
+        -2,
+        2
       ],
       [
         "Curacao",
         0,
-        -3,
+        -6,
         0
       ]
     ],
@@ -811,180 +811,180 @@
         "Netherlands",
         9,
         3,
-        3
+        6
       ],
       [
         "Japan",
         6,
         1,
-        2
+        5
       ],
       [
         "Tunisia",
         3,
         -1,
-        1
+        4
       ],
       [
         "Sweden",
         0,
         -3,
-        0
+        3
       ]
     ],
     "G": [
       [
-        "New Zealand",
-        7,
-        2,
-        3
+        "Belgium",
+        9,
+        5,
+        6
       ],
       [
-        "Belgium",
-        7,
+        "New Zealand",
+        6,
         2,
-        3
+        5
       ],
       [
         "Iran",
         3,
-        -1,
-        1
+        -2,
+        2
       ],
       [
         "Egypt",
         0,
-        -3,
-        0
+        -5,
+        1
       ]
     ],
     "H": [
       [
         "Spain",
         9,
-        3,
-        3
+        6,
+        7
       ],
       [
         "Uruguay",
         6,
-        1,
-        2
+        2,
+        4
       ],
       [
         "Cape Verde Islands",
         3,
-        -1,
-        1
+        -2,
+        2
       ],
       [
         "Saudi Arabia",
         0,
-        -3,
-        0
+        -6,
+        1
       ]
     ],
     "I": [
       [
         "France",
         9,
-        3,
-        5
+        5,
+        8
       ],
       [
         "Senegal",
         4,
-        0,
-        3
+        1,
+        4
       ],
       [
         "Norway",
         4,
         0,
-        3
+        4
       ],
       [
         "Iraq",
         0,
-        -3,
-        0
+        -6,
+        1
       ]
     ],
     "J": [
       [
         "Argentina",
         9,
-        3,
-        3
+        4,
+        6
       ],
       [
         "Algeria",
-        6,
-        1,
-        2
+        4,
+        0,
+        4
       ],
       [
         "Austria",
-        1,
+        2,
         -2,
-        1
+        2
       ],
       [
         "Jordan",
         1,
         -2,
-        1
+        3
       ]
     ],
     "K": [
       [
         "Colombia",
         9,
-        3,
-        3
+        4,
+        6
       ],
       [
         "Portugal",
         6,
         1,
-        3
+        5
       ],
       [
         "Congo DR",
         3,
-        -1,
-        2
+        0,
+        4
       ],
       [
         "Uzbekistan",
         0,
-        -3,
-        0
+        -5,
+        1
       ]
     ],
     "L": [
       [
         "England",
         9,
-        3,
-        3
+        6,
+        6
       ],
       [
         "Croatia",
         6,
-        1,
-        2
+        2,
+        4
       ],
       [
         "Ghana",
         3,
-        -1,
-        1
+        -2,
+        2
       ],
       [
         "Panama",
         0,
-        -3,
+        -6,
         0
       ]
     ]
@@ -995,56 +995,56 @@
       "I",
       4,
       0,
-      3
+      4
+    ],
+    [
+      "Australia",
+      "D",
+      4,
+      -1,
+      4
     ],
     [
       "Congo DR",
       "K",
       3,
-      -1,
-      2
-    ],
-    [
-      "Bosnia and Herzegovina",
-      "B",
-      3,
-      -1,
-      2
-    ],
-    [
-      "Iran",
-      "G",
-      3,
-      -1,
-      1
-    ],
-    [
-      "Ivory Coast",
-      "E",
-      3,
-      -1,
-      1
-    ],
-    [
-      "Czech Republic",
-      "A",
-      3,
-      -1,
-      1
-    ],
-    [
-      "Scotland",
-      "C",
-      3,
-      -1,
-      1
+      0,
+      4
     ],
     [
       "Tunisia",
       "F",
       3,
       -1,
-      1
+      4
+    ],
+    [
+      "Czech Republic",
+      "A",
+      3,
+      -1,
+      3
+    ],
+    [
+      "Scotland",
+      "C",
+      3,
+      -1,
+      3
+    ],
+    [
+      "Bosnia and Herzegovina",
+      "B",
+      3,
+      -2,
+      5
+    ],
+    [
+      "Iran",
+      "G",
+      3,
+      -2,
+      2
     ]
   ],
   "knockout_matches": [
@@ -1052,7 +1052,7 @@
       "round": "Round of 32",
       "label": "Match 73",
       "team_a": "South Korea",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Canada",
       "winner": "South Korea",
@@ -1061,19 +1061,18 @@
     {
       "round": "Round of 32",
       "label": "Match 74",
-      "team_a": "Ecuador",
-      "score_a": 1,
+      "team_a": "Germany",
+      "score_a": 2,
       "score_b": 1,
-      "team_b": "Scotland",
-      "winner": "Ecuador",
-      "forecast": "draw",
-      "note": "forecast draw resolved by higher non-draw simulated win count"
+      "team_b": "Australia",
+      "winner": "Germany",
+      "forecast": "team_a"
     },
     {
       "round": "Round of 32",
       "label": "Match 75",
       "team_a": "Netherlands",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Morocco",
       "winner": "Netherlands",
@@ -1083,7 +1082,7 @@
       "round": "Round of 32",
       "label": "Match 76",
       "team_a": "Brazil",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Japan",
       "winner": "Brazil",
@@ -1093,7 +1092,7 @@
       "round": "Round of 32",
       "label": "Match 77",
       "team_a": "France",
-      "score_a": 2,
+      "score_a": 3,
       "score_b": 1,
       "team_b": "Tunisia",
       "winner": "France",
@@ -1102,9 +1101,9 @@
     {
       "round": "Round of 32",
       "label": "Match 78",
-      "team_a": "Germany",
+      "team_a": "Ecuador",
       "score_a": 0,
-      "score_b": 1,
+      "score_b": 2,
       "team_b": "Senegal",
       "winner": "Senegal",
       "forecast": "team_b"
@@ -1113,9 +1112,9 @@
       "round": "Round of 32",
       "label": "Match 79",
       "team_a": "Mexico",
-      "score_a": 1,
-      "score_b": 0,
-      "team_b": "Ivory Coast",
+      "score_a": 3,
+      "score_b": 1,
+      "team_b": "Scotland",
       "winner": "Mexico",
       "forecast": "team_a",
       "home_adv": "Mexico"
@@ -1124,8 +1123,8 @@
       "round": "Round of 32",
       "label": "Match 80",
       "team_a": "England",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Congo DR",
       "winner": "England",
       "forecast": "team_a"
@@ -1134,7 +1133,7 @@
       "round": "Round of 32",
       "label": "Match 81",
       "team_a": "USA",
-      "score_a": 2,
+      "score_a": 3,
       "score_b": 1,
       "team_b": "Bosnia and Herzegovina",
       "winner": "USA",
@@ -1144,12 +1143,13 @@
     {
       "round": "Round of 32",
       "label": "Match 82",
-      "team_a": "New Zealand",
-      "score_a": 0,
+      "team_a": "Belgium",
+      "score_a": 1,
       "score_b": 1,
       "team_b": "Czech Republic",
       "winner": "Czech Republic",
-      "forecast": "team_b"
+      "forecast": "draw",
+      "note": "forecast draw resolved by higher non-draw simulated win count"
     },
     {
       "round": "Round of 32",
@@ -1165,8 +1165,8 @@
       "round": "Round of 32",
       "label": "Match 84",
       "team_a": "Spain",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Algeria",
       "winner": "Spain",
       "forecast": "team_a"
@@ -1175,7 +1175,7 @@
       "round": "Round of 32",
       "label": "Match 85",
       "team_a": "Switzerland",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Iran",
       "winner": "Switzerland",
@@ -1185,7 +1185,7 @@
       "round": "Round of 32",
       "label": "Match 86",
       "team_a": "Argentina",
-      "score_a": 1,
+      "score_a": 2,
       "score_b": 0,
       "team_b": "Uruguay",
       "winner": "Argentina",
@@ -1196,27 +1196,28 @@
       "label": "Match 87",
       "team_a": "Colombia",
       "score_a": 1,
-      "score_b": 0,
+      "score_b": 1,
       "team_b": "Norway",
       "winner": "Colombia",
-      "forecast": "team_a"
+      "forecast": "draw",
+      "note": "forecast draw resolved by higher non-draw simulated win count"
     },
     {
       "round": "Round of 32",
       "label": "Match 88",
       "team_a": "Paraguay",
-      "score_a": 1,
-      "score_b": 0,
-      "team_b": "Belgium",
+      "score_a": 2,
+      "score_b": 1,
+      "team_b": "New Zealand",
       "winner": "Paraguay",
       "forecast": "team_a"
     },
     {
       "round": "Round of 16",
       "label": "Match 89",
-      "team_a": "Ecuador",
-      "score_a": 0,
-      "score_b": 1,
+      "team_a": "Germany",
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "France",
       "winner": "France",
       "forecast": "team_b"
@@ -1225,8 +1226,8 @@
       "round": "Round of 16",
       "label": "Match 90",
       "team_a": "South Korea",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Netherlands",
       "winner": "South Korea",
       "forecast": "team_a"
@@ -1238,7 +1239,7 @@
       "score_a": 1,
       "score_b": 1,
       "team_b": "Senegal",
-      "winner": "Brazil",
+      "winner": "Senegal",
       "forecast": "draw",
       "note": "forecast draw resolved by higher non-draw simulated win count"
     },
@@ -1246,8 +1247,8 @@
       "round": "Round of 16",
       "label": "Match 92",
       "team_a": "Mexico",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "England",
       "winner": "England",
       "forecast": "team_b",
@@ -1258,7 +1259,7 @@
       "label": "Match 93",
       "team_a": "Portugal",
       "score_a": 1,
-      "score_b": 2,
+      "score_b": 3,
       "team_b": "Spain",
       "winner": "Spain",
       "forecast": "team_b"
@@ -1267,7 +1268,7 @@
       "round": "Round of 16",
       "label": "Match 94",
       "team_a": "USA",
-      "score_a": 2,
+      "score_a": 3,
       "score_b": 1,
       "team_b": "Czech Republic",
       "winner": "USA",
@@ -1278,8 +1279,8 @@
       "round": "Round of 16",
       "label": "Match 95",
       "team_a": "Argentina",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Paraguay",
       "winner": "Argentina",
       "forecast": "team_a"
@@ -1288,8 +1289,8 @@
       "round": "Round of 16",
       "label": "Match 96",
       "team_a": "Switzerland",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "Colombia",
       "winner": "Switzerland",
       "forecast": "team_a"
@@ -1298,8 +1299,8 @@
       "round": "Quarter-finals",
       "label": "Match 97",
       "team_a": "France",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "South Korea",
       "winner": "France",
       "forecast": "team_a"
@@ -1308,7 +1309,7 @@
       "round": "Quarter-finals",
       "label": "Match 98",
       "team_a": "Spain",
-      "score_a": 2,
+      "score_a": 3,
       "score_b": 1,
       "team_b": "USA",
       "winner": "Spain",
@@ -1318,9 +1319,9 @@
     {
       "round": "Quarter-finals",
       "label": "Match 99",
-      "team_a": "Brazil",
-      "score_a": 0,
-      "score_b": 1,
+      "team_a": "Senegal",
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "England",
       "winner": "England",
       "forecast": "team_b"
@@ -1329,8 +1330,8 @@
       "round": "Quarter-finals",
       "label": "Match 100",
       "team_a": "Argentina",
-      "score_a": 0,
-      "score_b": 1,
+      "score_a": 1,
+      "score_b": 2,
       "team_b": "Switzerland",
       "winner": "Switzerland",
       "forecast": "team_b"
@@ -1340,7 +1341,7 @@
       "label": "Match 101",
       "team_a": "France",
       "score_a": 1,
-      "score_b": 2,
+      "score_b": 3,
       "team_b": "Spain",
       "winner": "Spain",
       "forecast": "team_b"
@@ -1350,27 +1351,29 @@
       "label": "Match 102",
       "team_a": "England",
       "score_a": 1,
-      "score_b": 0,
+      "score_b": 1,
       "team_b": "Switzerland",
       "winner": "England",
-      "forecast": "team_a"
+      "forecast": "draw",
+      "note": "forecast draw resolved by higher non-draw simulated win count"
     },
     {
       "round": "Third place",
       "label": "Third place",
       "team_a": "France",
-      "score_a": 2,
+      "score_a": 1,
       "score_b": 1,
       "team_b": "Switzerland",
       "winner": "France",
-      "forecast": "team_a"
+      "forecast": "draw",
+      "note": "forecast draw resolved by higher non-draw simulated win count"
     },
     {
       "round": "Final",
       "label": "Final",
       "team_a": "Spain",
-      "score_a": 1,
-      "score_b": 0,
+      "score_a": 2,
+      "score_b": 1,
       "team_b": "England",
       "winner": "Spain",
       "forecast": "team_a"
