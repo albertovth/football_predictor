@@ -269,6 +269,18 @@ Run from `/home/albertovth/football_predictor`.
 streamlit run football_predictor.py
 ```
 
+### Streamlit App Score Suggestion
+
+The Streamlit app first keeps its existing winner/draw forecast logic based on the 10,000 simulated outcomes. After that outcome is selected, candidate scorelines are constrained to that forecasted outcome.
+
+Within that set, the displayed scoreline is chosen by a 5/3/1 criteria point system that prioritizes exact result, goal difference and winner: 5 points for exact score, 3 for correct goal difference, and 1 for correct winner or draw. The app evaluates each candidate scoreline against all simulated match results and selects the scoreline with the highest average points.
+
+Because the candidate scores already share the selected outcome, the winner criterion is included for consistency with the point system, while exact score and goal difference do most of the work when choosing between scores for the same forecasted winner or draw.
+
+This is more complete than simply picking the modal score. The most frequent simulated score is often only slightly more common than several nearby scores. The point-maximizing approach evaluates a wider range of outcomes and selects the score that gives the best average return when exact score, goal difference and correct winner are all considered, with exact score weighted highest and goal difference weighted next.
+
+This means the suggested scoreline is not necessarily the single most frequent simulated score.
+
 ## Limitations
 
 - The model is driven primarily by scorelines and prior strength, not event-level shot data.
