@@ -708,72 +708,105 @@ scores_home_team_wins = forecast_scores_dataframe.loc[forecast_scores_dataframe.
 scores_road_team_wins = forecast_scores_dataframe.loc[forecast_scores_dataframe.Results == "visiting team wins"]
 scores_tie = forecast_scores_dataframe.loc[forecast_scores_dataframe.Results == "tie"]
 
-def representative_score(df_subset, fallback="0.0 - 0.0"):
-    """Select a representative scoreline for the already-forecasted outcome."""
-    if df_subset.empty or "Scores" not in df_subset.columns:
-        return fallback
+def score_outcome(home_goals, away_goals):
+    if home_goals > away_goals:
+        return "home team wins"
+    if home_goals < away_goals:
+        return "visiting team wins"
+    return "tie"
 
-    score_parts = df_subset["Scores"].astype(str).str.split(" - ", expand=True)
+
+def contest_points(actual_home, actual_away, predicted_home, predicted_away):
+    if actual_home == predicted_home and actual_away == predicted_away:
+        return 5.0
+    if (actual_home - actual_away) == (predicted_home - predicted_away):
+        return 3.0
+    if score_outcome(actual_home, actual_away) == score_outcome(predicted_home, predicted_away):
+        return 1.0
+    return 0.0
+
+
+def parse_score_dataframe(score_dataframe):
+    if score_dataframe.empty or "Scores" not in score_dataframe.columns:
+        return pd.DataFrame(columns=["home_goals", "away_goals"])
+
+    score_parts = score_dataframe["Scores"].astype(str).str.split(" - ", expand=True)
     if score_parts.shape[1] != 2:
-        return fallback
+        return pd.DataFrame(columns=["home_goals", "away_goals"])
 
     score_parts = score_parts.apply(pd.to_numeric, errors="coerce")
     score_parts.columns = ["home_goals", "away_goals"]
-    valid_scores = score_parts.dropna()
+    return score_parts.dropna().astype(int)
 
-    if valid_scores.empty:
+
+def contest_optimized_score(score_dataframe, forecasted_outcome, fallback="0.0 - 0.0"):
+    """Select the scoreline with highest expected contest points."""
+    actual_scores = parse_score_dataframe(score_dataframe)
+    if actual_scores.empty:
         return fallback
 
-    mean_home = valid_scores["home_goals"].mean()
-    mean_away = valid_scores["away_goals"].mean()
-
-    counts = df_subset["Scores"].astype(str).value_counts().reset_index()
-    counts.columns = ["score", "frequency"]
-
-    count_parts = counts["score"].str.split(" - ", expand=True)
-    if count_parts.shape[1] != 2:
+    candidates = [
+        (home_goals, away_goals)
+        for home_goals in range(11)
+        for away_goals in range(11)
+        if score_outcome(home_goals, away_goals) == forecasted_outcome
+    ]
+    if not candidates:
         return fallback
 
-    count_parts = count_parts.apply(pd.to_numeric, errors="coerce")
-    counts["home_goals"] = count_parts[0]
-    counts["away_goals"] = count_parts[1]
-    counts = counts.dropna(subset=["home_goals", "away_goals"])
+    rows = []
+    for predicted_home, predicted_away in candidates:
+        expected_points = actual_scores.apply(
+            lambda row: contest_points(
+                row["home_goals"],
+                row["away_goals"],
+                predicted_home,
+                predicted_away,
+            ),
+            axis=1,
+        ).mean()
+        observed_frequency = int(
+            (
+                (actual_scores["home_goals"] == predicted_home)
+                & (actual_scores["away_goals"] == predicted_away)
+            ).sum()
+        )
+        rows.append(
+            {
+                "home_goals": predicted_home,
+                "away_goals": predicted_away,
+                "expected_points": expected_points,
+                "observed_frequency": observed_frequency,
+                "total_goals": predicted_home + predicted_away,
+            }
+        )
 
-    if counts.empty:
-        return fallback
-
-    counts["distance"] = (
-        (counts["home_goals"] - mean_home) ** 2
-        + (counts["away_goals"] - mean_away) ** 2
+    candidate_scores = pd.DataFrame(rows).sort_values(
+        by=["expected_points", "observed_frequency", "total_goals", "home_goals", "away_goals"],
+        ascending=[False, False, True, True, True],
     )
-    counts["total_goals"] = counts["home_goals"] + counts["away_goals"]
-
-    counts = counts.sort_values(
-        by=["distance", "frequency", "total_goals"],
-        ascending=[True, False, True]
-    )
-
-    return counts.iloc[0]["score"]
+    best = candidate_scores.iloc[0]
+    return f"{int(best['home_goals'])}.0 - {int(best['away_goals'])}.0"
 
 
-# Select a representative scoreline for the forecasted outcome, based on the
-# conditional mean and nearest observed scoreline rather than the raw modal score.
-representative_score_home_team_wins = representative_score(scores_home_team_wins)
-representative_score_road_team_wins = representative_score(scores_road_team_wins)
-representative_score_tie = representative_score(scores_tie)
+# Select the scoreline for the forecasted outcome that maximizes expected
+# contest points under the 5/3/1 score, goal-difference, winner rules.
+contest_score_home_team_wins = contest_optimized_score(forecast_scores_dataframe, "home team wins")
+contest_score_road_team_wins = contest_optimized_score(forecast_scores_dataframe, "visiting team wins")
+contest_score_tie = contest_optimized_score(forecast_scores_dataframe, "tie")
 
 def score_forecast():
     if all(i>cr for i in x_list):
         if ((results.count("home team wins")) / 10000) > ((results.count("visiting team wins")) / 10000)+0.02 and (
                 (results.count("home team wins")) / 10000) > ((results.count("tie"))/10000)+0.02:
-            return(representative_score_home_team_wins)
+            return(contest_score_home_team_wins)
         elif ((results.count("visiting team wins")) / 10000) > ((results.count("home team wins")) / 10000)+0.02 and (
                 (results.count("visiting team wins")) / 10000) > ((results.count("tie"))/10000)+0.02:
-            return(representative_score_road_team_wins)
+            return(contest_score_road_team_wins)
         else:
-            return(representative_score_tie)
+            return(contest_score_tie)
     else:
-        return(representative_score_tie)
+        return(contest_score_tie)
 
 st.subheader("Result of the simulations")
 
