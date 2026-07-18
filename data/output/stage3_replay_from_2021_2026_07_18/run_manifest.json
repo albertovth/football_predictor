@@ -1,0 +1,148 @@
+{
+  "status": "validated_and_published",
+  "method": "full sequential replay from May 2021 with four-year rolling equal-appearance evidence at Stage 2 and Stage 3 handoffs",
+  "starting_prior": "data/config/priors/spi_global_rankings_intl_25_5_2021.csv",
+  "starting_prior_sha256": "308637f887fee7b73ab40ca66853dcb80a7de8a86b98dd56a8e0394441b77f0f",
+  "results": "data/input/stage3_2026_07_18/results.csv",
+  "results_sha256": "9bb7ae6bac69e6d028ecd1a2c3a040d8590671bc430ccf8ac17f4ad3d1a126ee",
+  "periods": {
+    "stage1": {
+      "start": "2021-05-26",
+      "end": "2025-05-26",
+      "source_rows": 4375,
+      "completed": 4375,
+      "unfinished": 0,
+      "eligible": 4292,
+      "excluded_completed": 83,
+      "friendly": 1037,
+      "world_cup": 64,
+      "other_competitive": 3191,
+      "duplicate_eligible": 0,
+      "malformed_completed": 0,
+      "observed_teams": 217,
+      "first_eligible": "2021-05-27",
+      "last_eligible": "2025-05-25"
+    },
+    "stage2": {
+      "start": "2025-05-27",
+      "end": "2026-01-26",
+      "source_rows": 817,
+      "completed": 817,
+      "unfinished": 0,
+      "eligible": 787,
+      "excluded_completed": 30,
+      "friendly": 180,
+      "world_cup": 0,
+      "other_competitive": 607,
+      "duplicate_eligible": 0,
+      "malformed_completed": 0,
+      "observed_teams": 206,
+      "first_eligible": "2025-05-27",
+      "last_eligible": "2026-01-26"
+    },
+    "stage3": {
+      "start": "2026-01-27",
+      "end": "2026-07-18",
+      "source_rows": 401,
+      "completed": 400,
+      "unfinished": 1,
+      "eligible": 377,
+      "excluded_completed": 23,
+      "friendly": 194,
+      "world_cup": 102,
+      "other_competitive": 81,
+      "duplicate_eligible": 0,
+      "malformed_completed": 0,
+      "observed_teams": 178,
+      "first_eligible": "2026-02-25",
+      "last_eligible": "2026-07-15"
+    }
+  },
+  "universe_transition": {
+    "stage1_output_teams": 214,
+    "retained_app_teams": 206,
+    "excluded": [
+      "French Guiana",
+      "Guam",
+      "Macau",
+      "Mongolia",
+      "Samoa",
+      "Tahiti",
+      "Tonga",
+      "Tuvalu"
+    ]
+  },
+  "evidence": {
+    "window_start": "2022-07-16",
+    "window_end": "2026-07-15",
+    "appearances": 7764,
+    "stage1": 5436,
+    "stage2": 1574,
+    "stage3": 754,
+    "ledger_sha256": "44f84f23f8d96f3a120fbc11f9554abcbb380a02df62dd59a9a3b7463433278a"
+  },
+  "ranking": {
+    "teams": 206,
+    "top10": [
+      "Argentina",
+      "Spain",
+      "Brazil",
+      "France",
+      "Netherlands",
+      "England",
+      "Colombia",
+      "Italy",
+      "Germany",
+      "Belgium"
+    ],
+    "sha256": "88aff21cee6585e14b8ce313489b48ac05342b3cdc8bfe669d859fd47e3918e3",
+    "previous_published_sha256": "ffd346a5d512d6754885f35207ebc17ff9155363f7ec199e5ec548371dccebb1",
+    "spearman_to_replayed_stage2": 0.9970362438955753,
+    "mean_absolute_rank_change_from_replayed_stage2": 3.0485436893203883
+  },
+  "seeded_validation": {
+    "seed": 20260718,
+    "sha256": "22b2d9881ec459f371f594cd916fc1dcfee19c03b89e1ae7ea3a6495b1813d04",
+    "byte_identical": true
+  },
+  "checks": {
+    "stage_windows_are_disjoint": true,
+    "no_duplicate_eligible_matches": true,
+    "no_malformed_completed_scores": true,
+    "stage3_counts_match_frozen_audit": true,
+    "final_team_count_206": true,
+    "final_ui_names_match_verified_prior": true,
+    "final_ranks_exact_1_to_206": true,
+    "final_metrics_finite": true,
+    "pooled_metrics_nonnegative_finite": true,
+    "pooled_medians_equal_one": true,
+    "ledger_window_exact": true,
+    "ledger_appearance_count_7764": true,
+    "ledger_no_duplicate_appearances": true,
+    "ledger_teams_exact_final_universe": true,
+    "evidence_counts_equal_ledger": true,
+    "stage3_new_counts_equal_ledger": true,
+    "zero_match_off_relative_order_preserved": true,
+    "zero_match_def_relative_order_preserved": true,
+    "seeded_final_runs_byte_identical": true,
+    "production_output_and_root_copy_identical": true,
+    "stage1_team_set_reproduced": true,
+    "stage1_top10_reproduced": true,
+    "stage1_rank_spearman_above_0_999": true,
+    "friendly_half_weight_present_in_stage1_script": true,
+    "friendly_half_weight_present_in_stage2_script": true
+  },
+  "script_hashes": {
+    "src/football_predictor/stage_config.py": "dc5ffc334e36ba4deb8d2cedcbdca56a363ffd077d714979d59044c1308cf389",
+    "pipeline/spi_stage1/calculate_xg_xga.py": "958763842e8e0692ca5e384046b48019c9f9dad8f2b527f0ec83063ea4382206",
+    "pipeline/spi_stage1/simulate_spi.py": "a8acb065e59129f5c5e674624fb36d78754301a3f8d75f5aabb10a0cdaed64bf",
+    "pipeline/spi_stage2/calculate_xg_xga.py": "523acef4de73bbd778afdcadbcff70502e72a0fb1724b0dbe07f8f4a3506b751",
+    "pipeline/spi_stage2/simulate_spi.py": "811885d4710805c8140dc565bf2abad214e05eaa2ce757c1b2a83ab0795d8ca5",
+    "pipeline/spi_stage3/build_evidence_window.py": "bf1f59024ce2a2245cd8d72ab89a34a8e4b19c66020f7a2161c88457866af569",
+    "pipeline/spi_stage3/combine_prior_evidence.py": "9bf4bcc06b29e5b562af8d0411f0cb4ed185879ff64646f34b2dc2951af7a6a2"
+  },
+  "documented_limitations": [
+    "The rolling window bounds evidence confidence; older match information can remain indirectly embedded in a carried prior.",
+    "The July frozen results snapshot does not byte-reproduce the historical May 2025 metrics; it reproduces the exact 214-team set, top ten, and rank order with Spearman above 0.999."
+  ]
+}

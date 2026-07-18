@@ -1,13 +1,13 @@
 # Stage 4 national-team ranking update guide
 
-This guide repeats the method that produced the validated Stage 3 ranking on
-2026-07-18. Do not use archive, post_world_cup_update.py, or wrong_output.
+This guide continues from the validated full 2021-to-Stage-3 replay published
+on 2026-07-18. Do not use archive, post_world_cup_update.py, or wrong_output.
 
 Stage 4 has five parts:
 
 1. Run unchanged Stage 2 calibration and raw xG/xGA using the published Stage 3
    ranking as the prior.
-2. Combine raw metrics with the published cumulative evidence.
+2. Combine raw metrics with the published four-year evidence window.
 3. Run unchanged Stage 2 all-versus-all simulation.
 4. Validate everything in isolation.
 5. Publish only after every gate passes.
@@ -18,14 +18,31 @@ Use these files together:
 
 - Ranking: data/config/priors/spi_global_rankings_intl_18_7_2026.csv
 - Evidence: data/config/priors/ranking_evidence_18_7_2026.csv
+- Dated evidence ledger:
+  data/config/priors/ranking_evidence_ledger_18_7_2026.csv
 
 Ranking SHA-256:
 
-    ffd346a5d512d6754885f35207ebc17ff9155363f7ec199e5ec548371dccebb1
+    88aff21cee6585e14b8ce313489b48ac05342b3cdc8bfe669d859fd47e3918e3
 
-The evidence file contains each team's total through Stage 3. Do not run
-build_prior_evidence.py again. That one-time script reconstructed the first
-cumulative prior from Stage 1 plus Stage 2.
+Evidence SHA-256:
+
+    2af8f7a13647547eb9ce14e0ab50c11477bf1b88e703d04700abdcf062459cfb
+
+Ledger SHA-256:
+
+    44f84f23f8d96f3a120fbc11f9554abcbb380a02df62dd59a9a3b7463433278a
+
+The evidence file is the 206-team aggregate of the ledger. The ledger contains
+one row per eligible team appearance and is what allows old appearances to
+expire. Do not substitute the earlier cumulative evidence_final.csv.
+
+The incoming ranking was rebuilt sequentially from the May 2021 FiveThirtyEight
+prior, with four-year evidence pooling at both later handoffs. Stage 4
+transfers that published Stage 3 xG/xGA by relative position, calculates raw
+metrics only from the new window, and combines the two sources using the
+evidence counts below. The replay audit is under
+`data/output/stage3_replay_from_2021_2026_07_18/`.
 
 ## Exact Stage 4 start
 
@@ -36,6 +53,7 @@ included.
 - Incoming prior last included match: 2026-07-15
 - Stage 4 start: 2026-07-16
 - Stage 4 end: the new frozen-source cutoff
+- Incoming four-year evidence window: 2022-07-16 through 2026-07-15
 
 Always derive the start from the last completed eligible match actually
 included. Do not infer it from a filename or publication date.
@@ -55,8 +73,10 @@ Suggested variables:
     STAGE4_INPUT=data/input/stage4_YYYY_MM_DD/results.csv
     STAGE4_PRIOR=data/config/priors/spi_global_rankings_intl_18_7_2026.csv
     STAGE4_EVIDENCE=data/config/priors/ranking_evidence_18_7_2026.csv
+    STAGE4_LEDGER=data/config/priors/ranking_evidence_ledger_18_7_2026.csv
     STAGE4_START=2026-07-16
     STAGE4_END=YYYY-MM-DD
+    STAGE4_LAST_INCLUDED=YYYY-MM-DD
     SPYDER_PYTHON=/home/albertovth/anaconda3/envs/spyder607/bin/python
 
 Create isolated output directories:
@@ -202,13 +222,14 @@ Replace 0.07 below only if the unchanged cutoff search selected another value:
 Preserve raw/intermediate/aggregated_xg_data.csv,
 raw/intermediate/opponent_strength_data.csv, confederation files, and the log.
 
-## 6. Combine cumulative evidence
+## 6. Combine the four-year evidence window
 
 Run:
 
     "$SPYDER_PYTHON" pipeline/spi_stage3/combine_prior_evidence.py \
       --prior-ranking "$STAGE4_PRIOR" \
       --prior-evidence "$STAGE4_EVIDENCE" \
+      --prior-evidence-ledger "$STAGE4_LEDGER" \
       --new-metrics "$STAGE4_RUN/raw/intermediate/aggregated_xg_data.csv" \
       --dictionary data/config/dictionary.csv \
       --results "$STAGE4_INPUT" \
@@ -218,6 +239,11 @@ Run:
       --confed-output-dir "$STAGE4_RUN/intermediate/confed" \
       --calibration-output "$STAGE4_RUN/evidence_calibration.csv" \
       --evidence-output "$STAGE4_RUN/evidence_final.csv" \
+      --evidence-ledger-output "$STAGE4_RUN/evidence_ledger_final.csv" \
+      --windowed-prior-output "$STAGE4_RUN/windowed_prior_evidence.csv" \
+      --evidence-cutoff-date "$STAGE4_LAST_INCLUDED" \
+      --evidence-window-years 4 \
+      --stage-label stage4 \
       --audit-output "$STAGE4_RUN/evidence_normalization.csv" \
       > "$STAGE4_RUN/logs/06_combine_prior_evidence.log"
 
@@ -243,7 +269,44 @@ median goals. A zero-match team has new matches equal to zero and therefore
 preserves its prior relative xG and xGA placements. A team with only a few new
 matches receives the same arithmetic weighting rule as every other team.
 
-The resulting evidence_final.csv becomes the next update's evidence prior.
+There is no fitted decay, multiplier, or pseudo-count. Every retained eligible
+appearance has weight one; every appearance older than four years has weight
+zero. Therefore a team with 36 retained prior appearances and four new matches
+gets prior weight 36/40 and new weight 4/40. Those shares come from observed
+match counts, not a selected coefficient.
+
+The rolling start is always:
+
+    last included eligible match date - 4 calendar years + 1 day
+
+For the incoming Stage 4 prior this is 2022-07-16. If a later Stage 4 ranking
+includes a match on 2026-07-18, its evidence window begins 2022-07-19 and the
+ledger automatically expires appearances from 2022-07-16 through 2022-07-18.
+
+The resulting evidence_final.csv and evidence_ledger_final.csv become the next
+update's evidence prior pair.
+
+### Empirical check and scope
+
+The four-year rule was compared chronologically with cumulative pooling,
+direct new-period replacement, and leaving the prior unchanged over 240 held-
+out matches. Mean Poisson negative log likelihood per match was:
+
+- cumulative pooling: 3.028577;
+- four-year pooling: 3.028928;
+- prior only: 3.032991;
+- direct replacement: 3.172841.
+
+Four-year and cumulative pooling each won two of four folds and were
+effectively tied. This supports match-count pooling and rejects direct
+replacement. It does not prove that four years is an optimized duration. Four
+years is the bounded one-World-Cup-cycle policy, adopted without measurable
+holdout degradation and without adding a fitted parameter. Exact fold scores
+are in data/output/stage3_2026_07_18/evidence_window_holdout.csv.
+
+This is a rolling evidence-confidence window. Expiring an appearance reduces
+the incoming prior's confidence weight; it does not algebraically remove that
+match from an already-published prior xG/xGA value.
 
 ## 7. Run unchanged simulation
 
@@ -273,6 +336,7 @@ but separate output files. The two ranking SHA-256 hashes must match.
 Do not publish unless all pass:
 
 - exact incoming ranking and evidence SHAs recorded;
+- exact incoming ledger SHA recorded;
 - exact prior last-included, new-start, and source-cutoff dates;
 - completed, unfinished, eligible, and excluded counts reconcile;
 - category counts reconcile;
@@ -288,6 +352,9 @@ Do not publish unless all pass:
 - raw and pooled metrics are finite and nonnegative;
 - pooled medians equal empirical median goals;
 - evidence arithmetic is exact;
+- new metric match counts exactly equal new ledger appearance counts by team;
+- every ledger date falls inside the four-year window;
+- the window start equals last-included date minus four years plus one day;
 - zero-match teams preserve relative xG and xGA order;
 - ranks are exactly 1 through 206;
 - prior regression metrics reproduce;
@@ -312,6 +379,7 @@ Keep:
 - evidence calibration;
 - pooled xG/xGA;
 - next-stage evidence;
+- next-stage dated evidence ledger;
 - seeded audit outputs;
 - unseeded production ranking;
 - ranking comparison;
@@ -330,6 +398,9 @@ Only after validation:
     cp "$STAGE4_RUN/evidence_final.csv" data/output/ranking_evidence.csv
     cp "$STAGE4_RUN/evidence_final.csv" \
       data/config/priors/ranking_evidence_D_M_YYYY.csv
+    cp "$STAGE4_RUN/evidence_ledger_final.csv" data/output/ranking_evidence_ledger.csv
+    cp "$STAGE4_RUN/evidence_ledger_final.csv" \
+      data/config/priors/ranking_evidence_ledger_D_M_YYYY.csv
 
 Verify identical ranking SHAs, then run:
 
@@ -349,10 +420,12 @@ These values regression-test the workflow. Stage 4 must derive its own values:
 - adjustment factor: 0.33277777777777784;
 - dynamism: 0.025;
 - low-team defensive P_c: 3.784242871189775;
-- corrected xGA cap: 8.396484358315535;
-- corrected xG median: 3.7030226644707422;
-- clipped xGA median: 2.9596064068731396;
+- corrected xGA cap: 10.165230613969603;
 - empirical median goals: 1.0;
-- offensive scale: 0.27004965689102145;
-- defensive scale: 0.3378827663292269;
+- retained prior appearances: 7,010;
+- new appearances: 754;
+- final rolling appearances: 7,764;
 - simulations per ordered matchup: 10,000.
+
+All exact replay values are in
+`data/output/stage3_replay_from_2021_2026_07_18/parameter_comparison.csv`.

@@ -1,5 +1,13 @@
 # Stage 3 validation report
 
+> Superseded: this report records the first Stage 3 publication. The current
+> application ranking is the full replay documented in
+> `data/output/stage3_replay_from_2021_2026_07_18/VALIDATION_REPORT.md`.
+
+> Superseded: this report records the first Stage 3 publication. The current
+> application ranking is the validated full replay documented in
+> `data/output/stage3_replay_from_2021_2026_07_18/VALIDATION_REPORT.md`.
+
 Status: PASSED
 
 The app ranking was updated only after 66 of 66 automated checks and all 16
@@ -145,6 +153,50 @@ Argentina used 67 prior appearances and 11 new matches, for prior weight
 Pre-normalization medians were 1.0103094166918365 xG and 1.007826250155126
 xGA. Both final distributions were normalized to 1.0.
 
+This cumulative count was used to validate and publish the Stage 3 ranking. It
+does not change that ranking. For Stage 4 confidence weighting it is superseded
+by the dated rolling ledger below.
+
+## Stage 4 rolling evidence policy
+
+The published Stage 3 xG, xGA, SPI, and rank remain unchanged. Only the
+evidence counts carried into the next update are bounded to the latest four
+calendar years.
+
+- Incoming Stage 4 evidence window: 2022-07-16 through 2026-07-15
+- Eligible team appearances retained: 7,764
+- Stage 1 appearances retained: 5,436
+- Stage 2 appearances retained: 1,574
+- Stage 3 appearances retained: 754
+- Teams: 206
+- Minimum team appearances: 13
+- Median team appearances: 38
+- Maximum team appearances: 71
+- Teams with no retained evidence: 0
+- Aggregate evidence SHA-256:
+  2af8f7a13647547eb9ce14e0ab50c11477bf1b88e703d04700abdcf062459cfb
+- Dated ledger SHA-256:
+  44f84f23f8d96f3a120fbc11f9554abcbb380a02df62dd59a9a3b7463433278a
+
+Every retained eligible team appearance has evidence weight one and every
+older appearance has weight zero. New-period and retained-prior xG/xGA are
+pooled by their observed team-specific appearance counts before the unchanged
+all-versus-all simulation. Friendlies still have their goals multiplied by 0.5
+inside the unchanged xG/xGA method; no extra evidence multiplier is applied.
+
+A chronological holdout over 240 eligible matches produced mean Poisson
+negative log likelihood of 3.028577 for cumulative pooling, 3.028928 for the
+four-year window, 3.032991 for leaving the prior unchanged, and 3.172841 for
+direct new-period replacement. The evidence supports match-count pooling and
+rejects direct replacement. It does not identify four years as an optimized
+duration; four years is the simple one-World-Cup-cycle boundary, adopted
+without measurable holdout degradation or another fitted parameter.
+
+The rolling window controls confidence only. Expired matches are not
+algebraically subtracted from the already-published Stage 3 xG/xGA values.
+Exact fold scores and the ledger reconstruction audit are in
+evidence_window_holdout.csv and evidence_window_4y_audit.json.
+
 ## Regression and reproducibility
 
 - Recreated prior offense and defense maximum errors: below 1e-12
@@ -168,3 +220,5 @@ in candidate/parameters.json and candidate/parameter_comparison.csv.
 - data/config/priors/spi_global_rankings_intl_18_7_2026.csv
 - data/output/ranking_evidence.csv
 - data/config/priors/ranking_evidence_18_7_2026.csv
+- data/output/ranking_evidence_ledger.csv
+- data/config/priors/ranking_evidence_ledger_18_7_2026.csv

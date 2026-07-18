@@ -1,0 +1,26 @@
+parameter,stage1,stage2_replay,stage3_replay
+prior teams,218.0,214.0,206.0
+published/output teams,214.0,206.0,206.0
+observed teams,217.0,206.0,178.0
+strength minimum,0.26,0.05,0.05
+strength median,38.235,0.5,0.5
+strength maximum,92.23,0.95,0.95
+cutoff quantile,0.07,0.07,0.07
+cutoff strength,2.5313000000000003,0.113,0.113
+adjustment factor,0.016933782755246277,0.33277777777777784,0.33277777777777784
+dynamism variable,0.16,0.025,0.025
+low-team defensive P_c,5.856565155807408,3.784242871189775,3.784242871189775
+adjusted-goal cap,6.0,6.0,6.0
+minimum offensive reward,0.01,0.01,0.01
+defensive penalty cap,6.0,6.0,6.0
+corrected xGA percentile,0.95,0.95,0.95
+corrected xGA cap,8.364374812255782,8.728654671646698,10.165230613969603
+empirical median goals,1.0,1.0,1.0
+friendly goal weight,0.5,0.5,0.5
+raw zero-match carry-forward teams,0.0,8.0,28.0
+retained prior evidence appearances,,6533.0,7010.0
+new evidence appearances,8461.0,1574.0,754.0
+final rolling evidence appearances,8461.0,8107.0,7764.0
+pooled xG median before normalization,,1.0280862951696381,0.9940987046962414
+pooled xGA median before normalization,,1.0479001540868553,0.9868816015100779
+simulations per ordered matchup,10000.0,10000.0,10000.0

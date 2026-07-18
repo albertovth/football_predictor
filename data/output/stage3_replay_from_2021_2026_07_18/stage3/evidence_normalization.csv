@@ -1,0 +1,2 @@
+teams,median_goals,prior_off_median,prior_def_median,pooled_off_median_before_normalization,pooled_def_median_before_normalization,final_off_median,final_def_median,zero_new_match_teams,evidence_window_years,evidence_window_start,evidence_window_end,prior_evidence_end,retained_prior_appearances,new_appearances,final_appearances,expired_appearances
+206,1.0,1.0000000000000002,0.9999999999999999,0.9940990795300826,0.986882030242211,1.0,1.0,28,4,2022-07-16,2026-07-15,2026-01-26,7010,754,7764,1097

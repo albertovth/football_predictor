@@ -1,0 +1,17 @@
+{
+  "method": "four_year_rolling_equal_match_evidence",
+  "window_start": "2022-07-16",
+  "window_end": "2026-07-15",
+  "window_years": 4,
+  "teams": 206,
+  "appearances": 7764,
+  "minimum_team_appearances": 13.0,
+  "median_team_appearances": 38.0,
+  "maximum_team_appearances": 71.0,
+  "zero_evidence_teams": 0,
+  "segment_appearances": {
+    "stage1": 5436,
+    "stage2": 1574,
+    "stage3": 754
+  }
+}

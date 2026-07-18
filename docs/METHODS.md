@@ -1,21 +1,23 @@
 # Current national-team ranking method
 
-Status: authoritative for the validated Stage 3 ranking published on
-2026-07-18. For operational commands for the next update, use
+Status: authoritative for the validated full 2021-to-Stage-3 replay published
+on 2026-07-18. For operational commands for the next update, use
 `docs/STAGE4_UPDATE_GUIDE.md`.
 
 ## Pipeline history
 
 - Stage 1 started from the May 2021 FiveThirtyEight international SPI prior and
   processed matches from 2021-05-26 through 2025-05-26.
-- Stage 2 used the Stage 1 result as its prior and processed matches from
-  2025-05-27 through 2026-01-26.
-- Stage 3 used the then-current 206-team application `ranking_final.csv` as its
-  prior and processed new matches from 2026-01-27. The last eligible completed
-  match in the frozen source was 2026-07-15.
+- Stage 2 used the replayed Stage 1 result as its prior, processed matches from
+  2025-05-27 through 2026-01-26, and pooled prior and new relative xG/xGA by
+  rolling team-appearance evidence before simulation.
+- Stage 3 used that replayed 206-team Stage 2 result, processed matches from
+  2026-01-27, and applied the same evidence pooling. The last eligible
+  completed match in the frozen source was 2026-07-15.
 
-The Stage 3 prior was the ranking beginning Spain, England, and France. It was
-not the older file named `spi_global_rankings_intl_26_5_2025.csv`.
+This is a full sequential replay from the May 2021 starting prior, not one
+single formula applied to every match. Each stage recalculates its raw window;
+the later handoffs combine prior and new relative xG/xGA by evidence.
 
 ## Authoritative code
 
@@ -101,10 +103,19 @@ This distinction is important:
 - A team with no new matches has new weight zero and therefore preserves its
   relative prior xG and xGA positions on the new scale.
 
-The first Stage 3 update reconstructed prior evidence counts from the eligible
-Stage 1 and Stage 2 team appearances. Later updates use the published
-`ranking_evidence_*.csv` file and add only the new window's appearances. Do not
-recount Stage 1 and Stage 2 for every future update.
+The replay applies the dated four-year ledger at both the Stage 2 and Stage 3
+handoffs. Every retained appearance has weight one and older appearances have
+weight zero. There is no fitted decay, multiplier, or pseudo-count.
+
+The new-period share is therefore empirical match share. Four new appearances
+against 36 retained prior appearances contribute `4 / 40`, or 10 percent. The
+four-year boundary is the explicit one-World-Cup-cycle policy; chronological
+holdout testing found it effectively tied with cumulative pooling and strongly
+better than direct replacement.
+
+The boundary limits confidence, not all historical memory. Earlier information
+can remain embedded in the carried prior, representing persistent football
+institutions and competence; new observed appearances progressively dilute it.
 
 ## Simulation
 
@@ -131,8 +142,8 @@ The validated ranking is copied byte-for-byte to:
 - `data/output/ranking_final.csv`;
 - the dated ranking prior for the next stage.
 
-The cumulative evidence output is likewise copied to the dated evidence prior
-for the next stage. Publication happens only after validation and identical
+The evidence aggregate and dated ledger are likewise copied to the next
+stage's prior files. Publication happens only after validation and identical
 ranking hashes are confirmed.
 
 ## Completed Stage 3 reference

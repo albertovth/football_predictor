@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "checks_passed": 25,
+  "checks_failed": 0,
+  "checks": {
+    "stage_windows_are_disjoint": true,
+    "no_duplicate_eligible_matches": true,
+    "no_malformed_completed_scores": true,
+    "stage3_counts_match_frozen_audit": true,
+    "final_team_count_206": true,
+    "final_ui_names_match_verified_prior": true,
+    "final_ranks_exact_1_to_206": true,
+    "final_metrics_finite": true,
+    "pooled_metrics_nonnegative_finite": true,
+    "pooled_medians_equal_one": true,
+    "ledger_window_exact": true,
+    "ledger_appearance_count_7764": true,
+    "ledger_no_duplicate_appearances": true,
+    "ledger_teams_exact_final_universe": true,
+    "evidence_counts_equal_ledger": true,
+    "stage3_new_counts_equal_ledger": true,
+    "zero_match_off_relative_order_preserved": true,
+    "zero_match_def_relative_order_preserved": true,
+    "seeded_final_runs_byte_identical": true,
+    "production_output_and_root_copy_identical": true,
+    "stage1_team_set_reproduced": true,
+    "stage1_top10_reproduced": true,
+    "stage1_rank_spearman_above_0_999": true,
+    "friendly_half_weight_present_in_stage1_script": true,
+    "friendly_half_weight_present_in_stage2_script": true
+  }
+}

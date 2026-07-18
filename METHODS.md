@@ -243,6 +243,19 @@ unchanged simulation runs. Teams without a new match therefore preserve their
 relative prior positions; teams with few matches move in proportion to their
 new evidence.
 
+In the full replay, prior appearances are read from a dated four-year rolling
+ledger at the Stage 2 and Stage 3 handoffs. Every appearance inside the window
+has weight one; older appearances have weight zero. There is no additional
+decay curve or fitted coefficient. Four-year and cumulative pooling were
+effectively tied over 240
+chronologically held-out matches, while direct replacement was materially
+worse. The four-year boundary is therefore a transparent one-World-Cup-cycle
+policy rather than a claimed optimized duration.
+
+This bounds evidence confidence rather than erasing all inherited memory.
+Persistent institutions and competence can remain represented in a carried
+prior and are progressively diluted by new appearances.
+
 The exact next-update procedure is in `docs/STAGE4_UPDATE_GUIDE.md`.
 
 ## Simulation Method

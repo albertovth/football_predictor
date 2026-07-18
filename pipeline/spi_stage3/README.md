@@ -24,21 +24,34 @@ treated as absolute goal values. The pooled 206-team xG and xGA distributions
 are independently normalized to the empirical median goals. The existing Stage
 2 simulation then consumes them without modification.
 
-Prior matches are the cumulative eligible-match evidence supporting the
-incoming prior. For Stage 3, build_prior_evidence.py reconstructs them from
-Stage 1 plus Stage 2. Later updates use the total carried in evidence_final.csv,
-so Stage 4 does not recount the history.
+The published ranking was replayed from the May 2021 starting prior. The dated
+four-year ledger was applied at both the Stage 2 and Stage 3 handoffs. It
+expires older appearance counts; every retained appearance has weight one and
+there is no decay coefficient or pseudo-count.
 
-This is a new confidence layer, not a claim that the original Stage 2 script
+The rule was checked on 240 chronologically held-out matches. Four-year and
+cumulative pooling were effectively tied, while direct new-period replacement
+was materially worse. Four years is therefore documented as the bounded
+one-World-Cup-cycle policy, not claimed as an optimized duration.
+
+This is a confidence layer, not a claim that the original Stage 2 script
 performed a formal Bayesian update. Adjusted-goal formulas, high/low branches,
 friendly weighting, opponent corrections, floors, the hard cap of 6, the xGA
 percentile cap, and simulation remain the production Stage 2 implementation.
+
+The four-year boundary limits confidence rather than erasing all inherited
+memory. Older information may remain embedded in a carried prior, reflecting
+persistent football institutions and competence, and is diluted by new
+appearances.
 
 Scripts:
 
 - build_prior_evidence.py: one-time reconstruction of the incoming Stage 3
   evidence counts.
+- build_evidence_window.py: reconstructs the dated four-year ledger used to
+  begin Stage 4.
 - combine_prior_evidence.py: scales the prior, combines evidence, normalizes all
-  206 teams, writes confederation inputs, and carries evidence forward.
+  206 teams, writes confederation inputs, expires old ledger rows, and carries
+  the dated evidence forward.
 
 See docs/STAGE4_UPDATE_GUIDE.md for the complete commands and validation gates.
