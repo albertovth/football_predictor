@@ -43,7 +43,7 @@ st.markdown(
 )
 
 df_pf = spi.copy()
-TEAM_OPTIONS = sorted(df_pf["name"].dropna().astype(str).unique().tolist())
+TEAM_OPTIONS = df_pf["name"].dropna().astype(str).drop_duplicates().tolist()
 
 Equipo_casa = TEAM_OPTIONS
 Equipo_visita = TEAM_OPTIONS
