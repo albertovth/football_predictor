@@ -812,14 +812,65 @@ st.subheader("Result of the simulations")
 
 st.markdown("After 10 000 simulations of\nthe match, and considering the latest\noffensive and defensive indicators\nof the teams, the forecast is\nthat " + str(forecast()) + "\n" + str(score_forecast()))
 
+POINT_MAXIMIZING_TIE_THRESHOLD = 0.90
+forecast_actual_scores = parse_score_dataframe(forecast_scores_dataframe)
+
+
+def expected_points_for_point_maximizing_score(score):
+    predicted_home, predicted_visiting = [
+        int(float(value)) for value in score.split(" - ")
+    ]
+    return forecast_actual_scores.apply(
+        lambda row: contest_points(
+            row["home_goals"],
+            row["away_goals"],
+            predicted_home,
+            predicted_visiting,
+        ),
+        axis=1,
+    ).mean()
+
+
+point_maximizing_forecasts = pd.DataFrame(
+    {
+        "Outcome": [f"{equipo_casa_input} wins", "Tie", f"{equipo_visita_input} wins"],
+        "Point-maximizing score": [
+            contest_score_home_team_wins,
+            contest_score_tie,
+            contest_score_road_team_wins,
+        ],
+        "Expected 5/3/1 points": [
+            expected_points_for_point_maximizing_score(contest_score_home_team_wins),
+            expected_points_for_point_maximizing_score(contest_score_tie),
+            expected_points_for_point_maximizing_score(contest_score_road_team_wins),
+        ],
+    }
+)
+best_point_maximizing_value = point_maximizing_forecasts["Expected 5/3/1 points"].max()
+tie_point_maximizing_value = point_maximizing_forecasts.loc[
+    point_maximizing_forecasts["Outcome"] == "Tie",
+    "Expected 5/3/1 points",
+].iloc[0]
+tie_point_ratio = tie_point_maximizing_value / best_point_maximizing_value
+tie_is_likely_enough = (
+    forecast() == "the match results in a tie:"
+    or tie_point_ratio >= POINT_MAXIMIZING_TIE_THRESHOLD
+)
+
 st.subheader("Extra time for knockout matches")
+st.dataframe(point_maximizing_forecasts, hide_index=True, use_container_width=True)
+st.caption(
+    f"Extra time is available when the normal forecast is a tie, or when the tie score earns at least "
+    f"{POINT_MAXIMIZING_TIE_THRESHOLD:.0%} of the best point-maximizing score. "
+    f"Current tie ratio: {tie_point_ratio:.1%}."
+)
 forecast_extra_time = st.checkbox(
-    "Forecast extra time when the 90-minute forecast is a tie",
+    "Forecast extra time when a tie is likely enough",
     value=False,
 )
 
 if forecast_extra_time:
-    if forecast() == "the match results in a tie:":
+    if tie_is_likely_enough:
         extra_time_expected_goals_home = 0.33 * goles_esperados_equipo_casa
         extra_time_expected_goals_visiting = 0.33 * goles_esperados_equipo_visita
 
@@ -907,7 +958,9 @@ if forecast_extra_time:
         )
     else:
         st.info(
-            "Extra time was not simulated because the established 90-minute forecast is not a tie."
+            f"Extra time was not simulated because the tie score reaches {tie_point_ratio:.1%} "
+            f"of the best point-maximizing score, below the "
+            f"{POINT_MAXIMIZING_TIE_THRESHOLD:.0%} threshold."
         )
 
 st.subheader("Sources")
