@@ -1,0 +1,24 @@
+date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,source,source_match_id,score_duration,source_status,prior_home_match,prior_away_match,eligible,exclusion_reason
+2026-03-25,United States Virgin Islands,American Samoa,5.0,2.0,FIFA Series,Bayamón,Puerto Rico,True,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-03-25,Puerto Rico,Guam,4.0,0.0,FIFA Series,Bayamón,Puerto Rico,False,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-03-26,Aruba,Macau,4.0,1.0,FIFA Series,Kigali,Rwanda,True,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-03-27,Russia,Nicaragua,3.0,1.0,Friendly,Krasnodar,Russia,False,martj42,,SOURCE_FULL_TIME,FINISHED,False,True,False,home_missing_prior
+2026-03-28,American Samoa,Guam,0.0,6.0,FIFA Series,Bayamón,Puerto Rico,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-03-29,Macau,Tanzania,0.0,6.0,FIFA Series,Kigali,Rwanda,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,True,False,home_missing_prior
+2026-03-31,Russia,Mali,0.0,0.0,Friendly,Saint Petersburg,Russia,False,martj42,,SOURCE_FULL_TIME,FINISHED,False,True,False,home_missing_prior
+2026-05-28,Egypt,Russia,1.0,0.0,Friendly,Cairo,Egypt,False,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-05-31,Singapore,Mongolia,4.0,0.0,Friendly,Singapore,Singapore,False,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-06-02,Padania,Raetia,4.0,1.0,CONIFA European Football Cup,Carate Brianza,Italy,False,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-02,Rouet-Provence,Canton Ticino,0.0,1.0,CONIFA European Football Cup,Carate Brianza,Italy,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-03,Padania,Greenland,3.0,1.0,CONIFA European Football Cup,Carate Brianza,Italy,False,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-03,Canton Ticino,Northern Cyprus,1.0,5.0,CONIFA European Football Cup,Carate Brianza,Italy,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-03,Philippines,Guam,5.0,1.0,Friendly,Manila,Philippines,False,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-06-04,Raetia,Greenland,1.0,4.0,CONIFA European Football Cup,Carate Brianza,Italy,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-04,Rouet-Provence,Northern Cyprus,0.0,4.0,CONIFA European Football Cup,Carate Brianza,Italy,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-05,Hong Kong,Mongolia,2.0,0.0,Friendly,Hong Kong,Hong Kong,False,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-06-05,Russia,Burkina Faso,3.0,0.0,Friendly,Volgograd,Russia,False,martj42,,SOURCE_FULL_TIME,FINISHED,False,True,False,home_missing_prior
+2026-06-06,Raetia,Rouet-Provence,3.0,3.0,CONIFA European Football Cup,Carate Brianza,Italy,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-06,Greenland,Canton Ticino,3.0,2.0,CONIFA European Football Cup,Carate Brianza,Italy,True,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-06,Padania,Northern Cyprus,1.0,6.0,CONIFA European Football Cup,Carate Brianza,Italy,False,martj42,,SOURCE_FULL_TIME,FINISHED,False,False,False,both_missing_prior
+2026-06-06,Myanmar,Guam,6.0,1.0,Tri-Nations Cup,Manila,Philippines,True,martj42,,SOURCE_FULL_TIME,FINISHED,True,False,False,away_missing_prior
+2026-06-09,Russia,Trinidad and Tobago,3.0,0.0,Friendly,Kaliningrad,Russia,False,martj42,,SOURCE_FULL_TIME,FINISHED,False,True,False,home_missing_prior

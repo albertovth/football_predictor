@@ -1,0 +1,238 @@
+source,source_name,canonical_original,resolution,matched_prior,display_name
+martj42,American Samoa,American Samoa,identity,False,American Samoa
+martj42,Canton Ticino,Canton Ticino,identity,False,Canton Ticino
+martj42,Greenland,Greenland,identity,False,Greenland
+martj42,Guam,Guam,identity,False,Guam
+martj42,Macau,Macau,identity,False,Macau
+martj42,Mongolia,Mongolia,identity,False,Mongolia
+martj42,Northern Cyprus,Northern Cyprus,identity,False,Northern Cyprus
+martj42,Padania,Padania,identity,False,Padania
+martj42,Raetia,Raetia,identity,False,Raetia
+martj42,Rouet-Provence,Rouet-Provence,identity,False,Rouet-Provence
+martj42,Russia,Russia,identity,False,Russia
+football_data,Algeria,Algeria,identity,True,Algeria
+football_data,Argentina,Argentina,dictionary_corrected:Argentina,True,Argentina
+football_data,Australia,Australia,identity,True,Australia
+football_data,Austria,Austria,dictionary_corrected:Austria,True,Austria
+football_data,Belgium,Belgium,dictionary_corrected:Belgium,True,Belgium
+football_data,Bosnia-Herzegovina,Bosnia and Herzegovina,explicit:Bosnia-Herzegovina;dictionary_corrected:Bosnia and Herzegovina,True,Bosnia and Herzegovina
+football_data,Brazil,Brazil,dictionary_corrected:Brazil,True,Brazil
+football_data,Canada,Canada,dictionary_corrected:Canada,True,Canada
+football_data,Cape Verde Islands,Cape Verde,dictionary_corrected:Cape Verde Islands,True,Cape Verde Islands
+football_data,Colombia,Colombia,dictionary_corrected:Colombia,True,Colombia
+football_data,Congo DR,DR Congo,dictionary_corrected:Congo DR,True,Congo DR
+football_data,Croatia,Croatia,dictionary_corrected:Croatia,True,Croatia
+football_data,Curaçao,Curaçao,identity,True,Curacao
+football_data,Czechia,Czech Republic,explicit:Czechia;dictionary_corrected:Czech Republic,True,Czech Republic
+football_data,Ecuador,Ecuador,dictionary_corrected:Ecuador,True,Ecuador
+football_data,Egypt,Egypt,identity,True,Egypt
+football_data,England,England,dictionary_corrected:England,True,England
+football_data,France,France,dictionary_corrected:France,True,France
+football_data,Germany,Germany,dictionary_corrected:Germany,True,Germany
+football_data,Ghana,Ghana,identity,True,Ghana
+football_data,Haiti,Haiti,dictionary_corrected:Haiti,True,Haiti
+football_data,Iran,Iran,identity,True,Iran
+football_data,Iraq,Iraq,identity,True,Iraq
+football_data,Ivory Coast,Ivory Coast,identity,True,Ivory Coast
+football_data,Japan,Japan,identity,True,Japan
+football_data,Jordan,Jordan,identity,True,Jordan
+football_data,Mexico,Mexico,dictionary_corrected:Mexico,True,Mexico
+football_data,Morocco,Morocco,identity,True,Morocco
+football_data,Netherlands,Netherlands,dictionary_corrected:Netherlands,True,Netherlands
+football_data,New Zealand,New Zealand,identity,True,New Zealand
+football_data,Norway,Norway,dictionary_corrected:Norway,True,Norway
+football_data,Panama,Panama,dictionary_corrected:Panama,True,Panama
+football_data,Paraguay,Paraguay,dictionary_corrected:Paraguay,True,Paraguay
+football_data,Portugal,Portugal,dictionary_corrected:Portugal,True,Portugal
+football_data,Qatar,Qatar,identity,True,Qatar
+football_data,Saudi Arabia,Saudi Arabia,identity,True,Saudi Arabia
+football_data,Scotland,Scotland,dictionary_corrected:Scotland,True,Scotland
+football_data,Senegal,Senegal,identity,True,Senegal
+football_data,South Africa,South Africa,identity,True,South Africa
+football_data,South Korea,South Korea,identity,True,South Korea
+football_data,Spain,Spain,dictionary_corrected:Spain,True,Spain
+football_data,Sweden,Sweden,dictionary_corrected:Sweden,True,Sweden
+football_data,Switzerland,Switzerland,dictionary_corrected:Switzerland,True,Switzerland
+football_data,Tunisia,Tunisia,identity,True,Tunisia
+football_data,Turkey,Turkey,dictionary_corrected:Turkey,True,Turkey
+football_data,United States,United States,identity,True,USA
+football_data,Uruguay,Uruguay,dictionary_corrected:Uruguay,True,Uruguay
+football_data,Uzbekistan,Uzbekistan,identity,True,Uzbekistan
+martj42,Afghanistan,Afghanistan,identity,True,Afghanistan
+martj42,Albania,Albania,identity,True,Albania
+martj42,Algeria,Algeria,identity,True,Algeria
+martj42,Andorra,Andorra,identity,True,Andorra
+martj42,Angola,Angola,identity,True,Angola
+martj42,Anguilla,Anguilla,identity,True,Anguilla
+martj42,Argentina,Argentina,identity,True,Argentina
+martj42,Armenia,Armenia,identity,True,Armenia
+martj42,Aruba,Aruba,identity,True,Aruba
+martj42,Australia,Australia,identity,True,Australia
+martj42,Austria,Austria,identity,True,Austria
+martj42,Azerbaijan,Azerbaijan,identity,True,Azerbaijan
+martj42,Bahamas,Bahamas,identity,True,Bahamas
+martj42,Bahrain,Bahrain,identity,True,Bahrain
+martj42,Bangladesh,Bangladesh,identity,True,Bangladesh
+martj42,Barbados,Barbados,identity,True,Barbados
+martj42,Belarus,Belarus,identity,True,Belarus
+martj42,Belgium,Belgium,identity,True,Belgium
+martj42,Belize,Belize,identity,True,Belize
+martj42,Benin,Benin,identity,True,Benin
+martj42,Bermuda,Bermuda,identity,True,Bermuda
+martj42,Bhutan,Bhutan,identity,True,Bhutan
+martj42,Bolivia,Bolivia,identity,True,Bolivia
+martj42,Bonaire,Bonaire,identity,True,Bonaire
+martj42,Bosnia and Herzegovina,Bosnia and Herzegovina,identity,True,Bosnia and Herzegovina
+martj42,Botswana,Botswana,identity,True,Botswana
+martj42,Brazil,Brazil,identity,True,Brazil
+martj42,British Virgin Islands,British Virgin Islands,identity,True,British Virgin Islands
+martj42,Bulgaria,Bulgaria,identity,True,Bulgaria
+martj42,Burkina Faso,Burkina Faso,identity,True,Burkina Faso
+martj42,Burundi,Burundi,identity,True,Burundi
+martj42,Cambodia,Cambodia,identity,True,Cambodia
+martj42,Cameroon,Cameroon,identity,True,Cameroon
+martj42,Canada,Canada,identity,True,Canada
+martj42,Cape Verde,Cape Verde,identity,True,Cape Verde Islands
+martj42,Cayman Islands,Cayman Islands,identity,True,Cayman Islands
+martj42,Central African Republic,Central African Republic,identity,True,Central African Republic
+martj42,Chile,Chile,identity,True,Chile
+martj42,China,China PR,explicit:China,True,China PR
+martj42,Colombia,Colombia,identity,True,Colombia
+martj42,Comoros,Comoros,identity,True,Comoros
+martj42,Costa Rica,Costa Rica,identity,True,Costa Rica
+martj42,Croatia,Croatia,identity,True,Croatia
+martj42,Cuba,Cuba,identity,True,Cuba
+martj42,Curaçao,Curaçao,identity,True,Curacao
+martj42,Cyprus,Cyprus,identity,True,Cyprus
+martj42,Czech Republic,Czech Republic,identity,True,Czech Republic
+martj42,DR Congo,DR Congo,identity,True,Congo DR
+martj42,Denmark,Denmark,identity,True,Denmark
+martj42,Dominica,Dominica,identity,True,Dominica
+martj42,Dominican Republic,Dominican Republic,identity,True,Dominican Republic
+martj42,Ecuador,Ecuador,identity,True,Ecuador
+martj42,Egypt,Egypt,identity,True,Egypt
+martj42,El Salvador,El Salvador,identity,True,El Salvador
+martj42,England,England,identity,True,England
+martj42,Equatorial Guinea,Equatorial Guinea,identity,True,Equatorial Guinea
+martj42,Estonia,Estonia,identity,True,Estonia
+martj42,Ethiopia,Ethiopia,identity,True,Ethiopia
+martj42,Faroe Islands,Faroe Islands,identity,True,Faroe Islands
+martj42,Fiji,Fiji,identity,True,Fiji
+martj42,Finland,Finland,identity,True,Finland
+martj42,France,France,identity,True,France
+martj42,Gabon,Gabon,identity,True,Gabon
+martj42,Gambia,Gambia,identity,True,Gambia
+martj42,Georgia,Georgia,identity,True,Georgia
+martj42,Germany,Germany,identity,True,Germany
+martj42,Ghana,Ghana,identity,True,Ghana
+martj42,Gibraltar,Gibraltar,identity,True,Gibraltar
+martj42,Greece,Greece,identity,True,Greece
+martj42,Grenada,Grenada,identity,True,Grenada
+martj42,Guatemala,Guatemala,identity,True,Guatemala
+martj42,Guinea,Guinea,identity,True,Guinea
+martj42,Guinea-Bissau,Guinea-Bissau,identity,True,Guinea-Bissau
+martj42,Guyana,Guyana,identity,True,Guyana
+martj42,Haiti,Haiti,identity,True,Haiti
+martj42,Honduras,Honduras,identity,True,Honduras
+martj42,Hong Kong,Hong Kong,identity,True,Hong Kong
+martj42,Hungary,Hungary,identity,True,Hungary
+martj42,Iceland,Iceland,identity,True,Iceland
+martj42,India,India,identity,True,India
+martj42,Indonesia,Indonesia,identity,True,Indonesia
+martj42,Iran,Iran,identity,True,Iran
+martj42,Iraq,Iraq,identity,True,Iraq
+martj42,Israel,Israel,identity,True,Israel
+martj42,Italy,Italy,identity,True,Italy
+martj42,Ivory Coast,Ivory Coast,identity,True,Ivory Coast
+martj42,Jamaica,Jamaica,identity,True,Jamaica
+martj42,Japan,Japan,identity,True,Japan
+martj42,Jordan,Jordan,identity,True,Jordan
+martj42,Kazakhstan,Kazakhstan,identity,True,Kazakhstan
+martj42,Kenya,Kenya,identity,True,Kenya
+martj42,Kosovo,Kosovo,identity,True,Kosovo
+martj42,Kuwait,Kuwait,identity,True,Kuwait
+martj42,Kyrgyzstan,Kyrgyzstan,identity,True,Kyrgyzstan
+martj42,Latvia,Latvia,identity,True,Latvia
+martj42,Lesotho,Lesotho,identity,True,Lesotho
+martj42,Liberia,Liberia,identity,True,Liberia
+martj42,Libya,Libya,identity,True,Libya
+martj42,Liechtenstein,Liechtenstein,identity,True,Liechtenstein
+martj42,Lithuania,Lithuania,identity,True,Lithuania
+martj42,Luxembourg,Luxembourg,identity,True,Luxembourg
+martj42,Madagascar,Madagascar,identity,True,Madagascar
+martj42,Malawi,Malawi,identity,True,Malawi
+martj42,Maldives,Maldives,identity,True,Maldives
+martj42,Mali,Mali,identity,True,Mali
+martj42,Malta,Malta,identity,True,Malta
+martj42,Martinique,Martinique,identity,True,Martinique
+martj42,Mauritania,Mauritania,identity,True,Mauritania
+martj42,Mexico,Mexico,identity,True,Mexico
+martj42,Moldova,Moldova,identity,True,Moldova
+martj42,Montenegro,Montenegro,identity,True,Montenegro
+martj42,Morocco,Morocco,identity,True,Morocco
+martj42,Mozambique,Mozambique,identity,True,Mozambique
+martj42,Myanmar,Myanmar,identity,True,Myanmar
+martj42,Namibia,Namibia,identity,True,Namibia
+martj42,Netherlands,Netherlands,identity,True,Netherlands
+martj42,New Caledonia,New Caledonia,identity,True,New Caledonia
+martj42,New Zealand,New Zealand,identity,True,New Zealand
+martj42,Nicaragua,Nicaragua,identity,True,Nicaragua
+martj42,Niger,Niger,identity,True,Niger
+martj42,Nigeria,Nigeria,identity,True,Nigeria
+martj42,North Macedonia,North Macedonia,identity,True,North Macedonia
+martj42,Northern Ireland,Northern Ireland,identity,True,Northern Ireland
+martj42,Norway,Norway,identity,True,Norway
+martj42,Oman,Oman,identity,True,Oman
+martj42,Pakistan,Pakistan,identity,True,Pakistan
+martj42,Palestine,Palestine,identity,True,Palestine
+martj42,Panama,Panama,identity,True,Panama
+martj42,Paraguay,Paraguay,identity,True,Paraguay
+martj42,Peru,Peru,identity,True,Peru
+martj42,Philippines,Philippines,identity,True,Philippines
+martj42,Poland,Poland,identity,True,Poland
+martj42,Portugal,Portugal,identity,True,Portugal
+martj42,Puerto Rico,Puerto Rico,identity,True,Puerto Rico
+martj42,Qatar,Qatar,identity,True,Qatar
+martj42,Republic of Ireland,Republic of Ireland,identity,True,Rep of Ireland
+martj42,Romania,Romania,identity,True,Romania
+martj42,Rwanda,Rwanda,identity,True,Rwanda
+martj42,Saint Kitts and Nevis,Saint Kitts and Nevis,identity,True,St. Kitts and Nevis
+martj42,Saint Lucia,Saint Lucia,identity,True,St. Lucia
+martj42,Saint Martin,Saint Martin,identity,True,St. Martin
+martj42,Saint Vincent and the Grenadines,Saint Vincent and the Grenadines,identity,True,St. Vincent and the Grenadines
+martj42,San Marino,San Marino,identity,True,San Marino
+martj42,Saudi Arabia,Saudi Arabia,identity,True,Saudi Arabia
+martj42,Scotland,Scotland,identity,True,Scotland
+martj42,Senegal,Senegal,identity,True,Senegal
+martj42,Serbia,Serbia,identity,True,Serbia
+martj42,Sierra Leone,Sierra Leone,identity,True,Sierra Leone
+martj42,Singapore,Singapore,identity,True,Singapore
+martj42,Sint Maarten,Sint Maarten,identity,True,Sint Maarten
+martj42,Slovakia,Slovakia,identity,True,Slovakia
+martj42,Slovenia,Slovenia,identity,True,Slovenia
+martj42,Solomon Islands,Solomon Islands,identity,True,Solomon Islands
+martj42,South Africa,South Africa,identity,True,South Africa
+martj42,South Korea,South Korea,identity,True,South Korea
+martj42,Spain,Spain,identity,True,Spain
+martj42,Suriname,Suriname,identity,True,Suriname
+martj42,Sweden,Sweden,identity,True,Sweden
+martj42,Switzerland,Switzerland,identity,True,Switzerland
+martj42,Syria,Syria,identity,True,Syria
+martj42,Tajikistan,Tajikistan,identity,True,Tajikistan
+martj42,Tanzania,Tanzania,identity,True,Tanzania
+martj42,Thailand,Thailand,identity,True,Thailand
+martj42,Togo,Togo,identity,True,Togo
+martj42,Trinidad and Tobago,Trinidad and Tobago,identity,True,Trinidad and Tobago
+martj42,Tunisia,Tunisia,identity,True,Tunisia
+martj42,Turkey,Turkey,identity,True,Turkey
+martj42,Ukraine,Ukraine,identity,True,Ukraine
+martj42,United States,United States,identity,True,USA
+martj42,United States Virgin Islands,United States Virgin Islands,identity,True,US Virgin Islands
+martj42,Uruguay,Uruguay,identity,True,Uruguay
+martj42,Uzbekistan,Uzbekistan,identity,True,Uzbekistan
+martj42,Vanuatu,Vanuatu,identity,True,Vanuatu
+martj42,Venezuela,Venezuela,identity,True,Venezuela
+martj42,Vietnam,Vietnam,identity,True,Vietnam
+martj42,Wales,Wales,identity,True,Wales
+martj42,Zambia,Zambia,identity,True,Zambia
+martj42,Zimbabwe,Zimbabwe,identity,True,Zimbabwe

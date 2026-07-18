@@ -1,0 +1,21 @@
+{
+  "start_date": "2026-01-27",
+  "end_date": "2026-07-19",
+  "world_cup_start": "2026-06-11",
+  "martj_results": "/tmp/international_results_audit/results.csv",
+  "martj_sha256": "9bb7ae6bac69e6d028ecd1a2c3a040d8590671bc430ccf8ac17f4ad3d1a126ee",
+  "football_data_results": "/tmp/post_world_cup_football_data/fetched_results_normalized.csv",
+  "football_data_sha256": "d86a09c1f88d6f7a4141670705d62bdc77fd1453fb753adfaa530431aeaa8679",
+  "prior": "data/config/priors/spi_global_rankings_intl_pre_world_cup_2026.csv",
+  "prior_team_count": 206,
+  "martj_completed_matches": 298,
+  "football_data_completed_matches": 102,
+  "all_completed_matches": 400,
+  "eligible_matches": 377,
+  "excluded_matches": 23,
+  "friendly_matches": 194,
+  "world_cup_matches": 102,
+  "other_competitive_matches": 81,
+  "duplicate_rows": 0,
+  "incomplete_api_rows": 1
+}

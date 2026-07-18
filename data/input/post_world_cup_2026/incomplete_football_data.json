@@ -1,0 +1,28 @@
+[
+  {
+    "source": "football_data",
+    "source_match_id": 537389,
+    "schedule_match_id": NaN,
+    "date": "2026-07-18 00:00:00",
+    "home_team_source": "France",
+    "away_team_source": "England",
+    "home_team_normalized": "france",
+    "away_team_normalized": "england",
+    "home_score": NaN,
+    "away_score": NaN,
+    "score_duration": "REGULAR",
+    "score_winner": NaN,
+    "regular_time_home": NaN,
+    "regular_time_away": NaN,
+    "extra_time_home": NaN,
+    "extra_time_away": NaN,
+    "penalties_home": NaN,
+    "penalties_away": NaN,
+    "mapping_error": NaN,
+    "penalty_shootout_winner": NaN,
+    "actual_shootout_winner": NaN,
+    "status": "TIMED",
+    "utc_date": "2026-07-18T21:00:00Z",
+    "last_updated": "2026-07-18T05:20:20Z"
+  }
+]
