@@ -812,6 +812,104 @@ st.subheader("Result of the simulations")
 
 st.markdown("After 10 000 simulations of\nthe match, and considering the latest\noffensive and defensive indicators\nof the teams, the forecast is\nthat " + str(forecast()) + "\n" + str(score_forecast()))
 
+st.subheader("Extra time for knockout matches")
+forecast_extra_time = st.checkbox(
+    "Forecast extra time when the 90-minute forecast is a tie",
+    value=False,
+)
+
+if forecast_extra_time:
+    if forecast() == "the match results in a tie:":
+        extra_time_expected_goals_home = 0.33 * goles_esperados_equipo_casa
+        extra_time_expected_goals_visiting = 0.33 * goles_esperados_equipo_visita
+
+        extra_time_goals_home = np.random.poisson(
+            extra_time_expected_goals_home,
+            size=n_simulations,
+        )
+        extra_time_goals_visiting = np.random.poisson(
+            extra_time_expected_goals_visiting,
+            size=n_simulations,
+        )
+        extra_time_scores = [
+            f"{float(home)} - {float(visiting)}"
+            for home, visiting in zip(extra_time_goals_home, extra_time_goals_visiting)
+        ]
+        extra_time_results = []
+        for home, visiting in zip(extra_time_goals_home, extra_time_goals_visiting):
+            if home > visiting:
+                extra_time_results.append("home team wins")
+            elif home < visiting:
+                extra_time_results.append("visiting team wins")
+            else:
+                extra_time_results.append("tie")
+
+        extra_time_simulated = [
+            extra_time_results.count("home team wins"),
+            extra_time_results.count("tie"),
+            extra_time_results.count("visiting team wins"),
+        ]
+        extra_time_x_list = [
+            sum((observed - expected_count) ** 2 / expected_count
+                for observed, expected_count in zip(extra_time_simulated, expected))
+            for expected in expected_a + expected_b + expected_c + expected_d + expected_e + expected_f
+        ]
+
+        if all(value > cr for value in extra_time_x_list):
+            if (
+                extra_time_simulated[0] / n_simulations > extra_time_simulated[2] / n_simulations + 0.02
+                and extra_time_simulated[0] / n_simulations > extra_time_simulated[1] / n_simulations + 0.02
+            ):
+                extra_time_outcome = "home team wins"
+            elif (
+                extra_time_simulated[2] / n_simulations > extra_time_simulated[0] / n_simulations + 0.02
+                and extra_time_simulated[2] / n_simulations > extra_time_simulated[1] / n_simulations + 0.02
+            ):
+                extra_time_outcome = "visiting team wins"
+            else:
+                extra_time_outcome = "tie"
+        else:
+            extra_time_outcome = "tie"
+
+        extra_time_scores_dataframe = pd.DataFrame(
+            {
+                "Results": extra_time_results,
+                "Scores": extra_time_scores,
+            }
+        )
+        extra_time_score_forecast = contest_optimized_score(
+            extra_time_scores_dataframe,
+            extra_time_outcome,
+        )
+
+        if extra_time_outcome == "home team wins":
+            extra_time_forecast_text = f"{equipo_casa_input} wins in extra time"
+        elif extra_time_outcome == "visiting team wins":
+            extra_time_forecast_text = f"{equipo_visita_input} wins in extra time"
+        else:
+            extra_time_forecast_text = "the match remains tied after extra time"
+
+        st.markdown(
+            f"Extra-time expected goals (0.33 × 90-minute expected goals): "
+            f"**{equipo_casa_input} {extra_time_expected_goals_home:.2f} – "
+            f"{extra_time_expected_goals_visiting:.2f} {equipo_visita_input}**"
+        )
+        st.markdown(
+            f"{equipo_casa_input} wins extra time in "
+            f"**{extra_time_simulated[0] / n_simulations:.2%}** of simulations; "
+            f"extra time is tied in **{extra_time_simulated[1] / n_simulations:.2%}**; "
+            f"{equipo_visita_input} wins extra time in "
+            f"**{extra_time_simulated[2] / n_simulations:.2%}**."
+        )
+        st.markdown(
+            f"After 10 000 extra-time simulations, the forecast is that "
+            f"**{extra_time_forecast_text}: {extra_time_score_forecast}**"
+        )
+    else:
+        st.info(
+            "Extra time was not simulated because the established 90-minute forecast is not a tie."
+        )
+
 st.subheader("Sources")
 
 st.markdown("""
