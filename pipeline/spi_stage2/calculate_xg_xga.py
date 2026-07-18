@@ -258,6 +258,29 @@ median_goals_per_team = all_goals.median()
 xg_df['xG'] = (xg_df['xG'] / median_xG) * median_goals_per_team
 xg_df['xGA'] = (xg_df['xGA'] / median_xGA) * median_goals_per_team
 
+# Teams without an eligible match in this stage retain their prior relative
+# offensive and defensive positions on the newly calculated median-goal scale.
+prior_off_median = spi_df['off'].median()
+prior_def_median = spi_df['def'].median()
+observed_teams = set(xg_df['team'])
+carried_forward_df = spi_df.loc[
+    ~spi_df['team'].isin(observed_teams),
+    ['team', 'off', 'def'],
+].copy()
+carried_forward_df['xG'] = (
+    carried_forward_df['off'] / prior_off_median
+) * median_goals_per_team
+carried_forward_df['xGA'] = (
+    carried_forward_df['def'] / prior_def_median
+) * median_goals_per_team
+carried_forward_df['matches'] = 0.0
+carried_forward_df = carried_forward_df[['team', 'xG', 'xGA', 'matches']]
+xg_df = pd.concat([xg_df, carried_forward_df], ignore_index=True)
+
+print(f"Prior offensive median used for carry-forward: {prior_off_median}")
+print(f"Prior defensive median used for carry-forward: {prior_def_median}")
+print(f"Teams carried forward without a new eligible match: {len(carried_forward_df)}")
+
 # Inner merge after canonicalization; no blank rows should survive
 xg_df = xg_df.merge(confed_df, on='team', how='inner')
 

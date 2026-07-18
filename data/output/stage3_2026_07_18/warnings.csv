@@ -1,0 +1,7 @@
+severity,code,message
+documented,CUTOFF_FALLBACK,Unchanged cutoff search tested 1%-25% and found no qualifying cutoff; explicit 7% fallback retained.
+documented,EXCLUDED_ROWS,23 completed source rows were excluded because one or both mapped teams were outside the 206-team prior universe; see audit/excluded_matches.csv.
+documented,UNFINISHED_MATCH,France-England on 2026-07-18 was unfinished and excluded. Spain-Argentina on 2026-07-19 is outside the cutoff and was not processed.
+methodology,EVIDENCE_STABILIZATION,Cumulative Stage 1 + Stage 2 per-team eligible match counts are a new Stage 3 confidence layer; all adjusted-goal and simulation formulas remain Stage 2.
+provenance,STAGE1_COUNT_RECOUNT,"Original saved aggregated_xg_data contains Stage 2 counts, so Stage 1 counts were deterministically recounted from the frozen results snapshot and Stage 1 prior universe."
+informational,CAP_HELPER_DIAGNOSTIC,"calculate_caps_off_def.py outputs are recorded but are not consumed by the unchanged production calculate_xg_xga.py, which retains its literal cap of 6."

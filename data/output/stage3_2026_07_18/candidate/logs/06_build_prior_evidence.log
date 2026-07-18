@@ -1,0 +1,10 @@
+results_file                    /home/albertovth/football_predictor/data/input...
+stage1_start                                                           2021-05-26
+stage1_end                                                             2025-05-26
+stage1_prior_teams                                                            218
+stage1_source_completed_rows                                                 4375
+stage1_eligible_matches                                                      4292
+stage2_metric_teams                                                           206
+output_teams                                                                  206
+Saved prior evidence: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/prior_evidence.csv
+Prior evidence teams: 206

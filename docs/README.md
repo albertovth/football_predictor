@@ -1,186 +1,36 @@
-# Football Predictor
-
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://footballpredictor.streamlit.app)
-
-`/home/albertovth/football_predictor` is now the canonical codebase for this project.
-
-The older `/home/albertovth/SPI` workspace is no longer the source of truth. Relevant stage 1 and stage 2 code, configuration, and generated data needed for the current workflow have been migrated into this repository. Legacy scripts from the old flat layout have been preserved under `archive/root_legacy/` only for reference.
-
-## Repository Structure
-
-```text
-football_predictor/
-├── app/                      # Streamlit application implementation
-├── src/football_predictor/   # Shared Python helpers and path configuration
-├── pipeline/
-│   ├── spi_stage1/           # Stage 1 ranking pipeline
-│   └── spi_stage2/           # Stage 2 ranking pipeline
-├── scripts/                  # Wrapper scripts for common workflows
-├── data/
-│   ├── config/               # Dictionary, confederations, prior rankings
-│   ├── intermediate/         # Working files produced by the pipeline
-│   └── output/               # Final ranking artifacts
-├── archive/root_legacy/      # Archived pre-reorg root scripts
-├── football_predictor.py     # Root compatibility wrapper for Streamlit
-└── ranking_final.csv         # Root copy used by the app and GitHub consumers
-```
-
-## Current Layout
-
-### `app/`
-
-Contains the actual Streamlit app implementation in `app/football_predictor.py`.
-
-### `src/football_predictor/`
-
-Contains shared repository helpers. `src/football_predictor/paths.py` is the central path definition module used by the pipeline scripts so they run relative to the repository instead of `/home/albertovth/SPI`.
-
-### `pipeline/`
-
-Contains the active ranking pipeline:
-
-- `pipeline/spi_stage1/`
-  Builds the stage 1 prior and updated confederation-level xG/xGA data through the 2021-05-26 to 2025-05-26 window.
-- `pipeline/spi_stage2/`
-  Uses the stage 2 prior and corrected balanced low-team logic to build the latest ranking outputs and final `ranking_final.csv`.
-
-### `scripts/`
-
-Contains executable wrappers:
-
-- `scripts/run_stage1.sh`
-- `scripts/run_stage2.sh`
-- `scripts/update_rankings.sh`
-
-### `data/`
-
-Contains inputs and outputs used by the active code:
-
-- `data/config/`
-  Static configuration and prior ranking CSVs.
-- `data/intermediate/`
-  Working files such as `spi_final.csv`, `aggregated_xg_data.csv`, `opponent_strength_data.csv`, and confederation split CSVs.
-- `data/output/`
-  Final output files, including `data/output/ranking_final.csv`.
-
-### `archive/root_legacy/`
-
-Contains the older flat root-level scripts that were previously at repo root. These are not the active code path and should not be used for current documentation or operational instructions.
-
-## Relationship To The Old SPI Workspace
-
-Before this reorganization, active work was split between:
-
-- the GitHub repository clone in `/home/albertovth/football_predictor`
-- the newer experimental and production scripts in `/home/albertovth/SPI`
-
-That split has been collapsed into this repository. The repo now contains:
-
-- the canonical Streamlit app
-- the migrated stage 1 pipeline
-- the migrated stage 2 pipeline
-- the needed configuration and prior data files
-- the generated ranking outputs used by the app
-
-The old `/home/albertovth/SPI` directory can still be useful as a historical reference, but updates should now be made in this repository first.
-
-## Ranking File Contract
-
-The final rankings are produced at:
-
-- `data/output/ranking_final.csv`
-
-For compatibility with the existing app and external consumers, the stage 2 simulation also copies the same result to:
-
-- `ranking_final.csv`
-
-The Streamlit app reads the root `ranking_final.csv`. This preserves the previous public contract while allowing the pipeline to use a cleaner internal structure.
-
-## Root Streamlit Wrapper
-
-The repo keeps a root-level `football_predictor.py` for compatibility.
-
-That file is now a thin wrapper which executes:
-
-- `app/football_predictor.py`
-
-This preserves the existing Streamlit entrypoint:
-
-```bash
-streamlit run football_predictor.py
-```
-
-while allowing the real app implementation to live under `app/`.
-
-## Running The Project
-
-From the repository root:
-
-### Run Stage 1
-
-```bash
-cd /home/albertovth/football_predictor
-./scripts/run_stage1.sh
-```
-
-### Run Stage 2
-
-```bash
-cd /home/albertovth/football_predictor
-./scripts/run_stage2.sh
-```
-
-### Run Stage 1 And Stage 2 Sequentially
-
-```bash
-cd /home/albertovth/football_predictor
-./scripts/update_rankings.sh
-```
-
-### Run The Streamlit App
-
-```bash
-cd /home/albertovth/football_predictor
-streamlit run football_predictor.py
-```
-
-## Pipeline Summary
-
-The active workflow is:
-
-1. Initialize the stage prior from the configured FiveThirtyEight snapshot.
-2. Calculate adjusted xG/xGA metrics from match results.
-3. Write confederation-level intermediate files under `data/intermediate/confed/`.
-4. Run the confederation simulation step.
-5. Produce the final ranking table in `data/output/ranking_final.csv`.
-6. Copy the same final ranking to the root `ranking_final.csv` for app compatibility.
-
-## Data Sources And Attribution
-
-### Match Results
-
-Updated match results are read from Martj42's public international results dataset:
-
-- Repository: <https://github.com/martj42/international_results>
-- License: CC0 1.0
-- Data file: <https://raw.githubusercontent.com/martj42/international_results/master/results.csv>
-
-### Initial Ranking Structure
-
-The initial ranking structure and priors are derived from FiveThirtyEight's Soccer Power Index data:
-
-- Documentation: <https://github.com/fivethirtyeight/data/blob/master/soccer-spi/README.md>
-- License: CC-BY-4.0
-
-### Logos And Flags
-
-The Streamlit app uses Wikipedia-hosted team logos and flags:
-
-- Source: <https://www.wikipedia.org>
-- License family: Creative Commons Attribution-ShareAlike
-
-## Notes
-
-- The root `README.md` and `METHODS.md` describe the active reorganized repository.
-- `docs/README.md` and `docs/METHODS.md` currently mirror the root documents.
-- Archived legacy scripts may still contain historical `/home/albertovth/SPI` path references, but active code no longer depends on them.
+# Ranking documentation
+
+This directory contains the authoritative documentation for the national-team
+ranking currently used by the application.
+
+## Start here for the next update
+
+Use [STAGE4_UPDATE_GUIDE.md](STAGE4_UPDATE_GUIDE.md). It gives the exact prior
+files, next start date, calibration order, commands, outputs, and validation
+gates for extending the validated Stage 3 ranking.
+
+Supporting references:
+
+- [METHODS.md](METHODS.md) explains the current method and the distinction
+  between raw new-period xG/xGA and cumulative evidence stabilization.
+- `pipeline/spi_stage3/README.md` documents the Stage 3 evidence scripts.
+- `data/output/stage3_2026_07_18/VALIDATION_REPORT.md` records the completed
+  Stage 3 run, parameters, match counts, mappings, and reproducibility checks.
+
+## Authority rules
+
+- The application reads the repository-root `ranking_final.csv`.
+- The published Stage 3 prior pair for the next update is
+  `data/config/priors/spi_global_rankings_intl_18_7_2026.csv` and
+  `data/config/priors/ranking_evidence_18_7_2026.csv`.
+- `pipeline/spi_stage2/` remains the production formula and simulation engine;
+  its directory name does not mean that an old prior or old parameters are
+  reused.
+- `pipeline/spi_stage3/` adds cumulative evidence weighting without
+  reimplementing the Stage 2 adjusted-goal formulas.
+- Do not use `archive/`, `post_world_cup_update.py`, `wrong_output`, or any
+  post-World-Cup custom updater. Those are not valid production paths.
+
+The obsolete `post_world_cup_2026_calibration.md` was removed because it
+described the rejected custom implementation and could not reproduce the
+published Stage 3 result.

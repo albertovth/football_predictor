@@ -1,0 +1,323 @@
+{
+  "status": "passed",
+  "checks": {
+    "prior_sha256": true,
+    "live_prior_still_protected": true,
+    "data_output_prior_still_protected": true,
+    "source_sha256": true,
+    "source_window_rows": true,
+    "source_completed_rows": true,
+    "source_unfinished_rows": true,
+    "eligible_rows": true,
+    "excluded_rows": true,
+    "eligible_plus_excluded_completed": true,
+    "friendly_rows": true,
+    "world_cup_rows": true,
+    "other_competitive_rows": true,
+    "eligible_last_completed_date": true,
+    "no_prior_overlap": true,
+    "source_completed_duplicates": true,
+    "eligible_duplicates": true,
+    "completed_scores_well_formed": true,
+    "unfinished_france_england": true,
+    "unfinished_spain_argentina_not_in_cutoff": true,
+    "friendly_half_weight_code": true,
+    "raw_team_rows": true,
+    "raw_unique_backend_teams": true,
+    "raw_finite_metrics": true,
+    "raw_nonnegative_metrics": true,
+    "pooled_team_rows": true,
+    "pooled_unique_backend_teams": true,
+    "pooled_finite_metrics": true,
+    "pooled_nonnegative_metrics": true,
+    "raw_match_team_rows": true,
+    "raw_observed_teams": true,
+    "raw_carried_teams": true,
+    "pooled_median_xg": true,
+    "pooled_median_xga": true,
+    "candidate_rows": true,
+    "candidate_unique_ui_names": true,
+    "candidate_finite": true,
+    "candidate_positive": true,
+    "candidate_rank_permutation": true,
+    "candidate_ui_set_matches_prior": true,
+    "backend_to_ui_roundtrip": true,
+    "china_ui_preserved": true,
+    "ivory_coast_ui_preserved": true,
+    "prior_evidence_rows": true,
+    "stage1_eligible_match_count": true,
+    "final_evidence_rows": true,
+    "evidence_arithmetic": true,
+    "pooled_xg_formula": true,
+    "pooled_xga_formula": true,
+    "no_match_count": true,
+    "no_match_xg_relative_order": true,
+    "no_match_xga_relative_order": true,
+    "no_match_xg_common_scale": true,
+    "no_match_xga_common_scale": true,
+    "regression_prior_off_exact": true,
+    "regression_prior_def_exact": true,
+    "regression_team_count": true,
+    "seeded_reproducibility_sha": true,
+    "unseeded_seeded_rank_stability": true,
+    "top_order_seed_independent": true,
+    "empty_window_off_exact": true,
+    "empty_window_def_exact": true,
+    "cutoff_search_all_25_quantiles": true,
+    "cutoff_fallback_is_7_percent": true,
+    "eligible_within_configured_start": true,
+    "stage4_published_prior_empty_handoff": true
+  },
+  "details": {
+    "prior_sha256": "a773aef99836f50ec32cf6f858c0da1b47aec1cfaef2fb22165abb44f649c87a",
+    "live_prior_still_protected": "a773aef99836f50ec32cf6f858c0da1b47aec1cfaef2fb22165abb44f649c87a",
+    "data_output_prior_still_protected": "a773aef99836f50ec32cf6f858c0da1b47aec1cfaef2fb22165abb44f649c87a",
+    "source_sha256": "9bb7ae6bac69e6d028ecd1a2c3a040d8590671bc430ccf8ac17f4ad3d1a126ee",
+    "source_window_rows": 401,
+    "source_completed_rows": 400,
+    "source_unfinished_rows": 1,
+    "eligible_rows": 377,
+    "excluded_rows": 23,
+    "eligible_plus_excluded_completed": [
+      377,
+      23,
+      400
+    ],
+    "friendly_rows": 194,
+    "world_cup_rows": 102,
+    "other_competitive_rows": 81,
+    "eligible_start_date": "2026-02-25",
+    "eligible_last_completed_date": "2026-07-15",
+    "no_prior_overlap": "2026-02-25",
+    "source_completed_duplicates": 0,
+    "eligible_duplicates": 0,
+    "completed_scores_well_formed": 0,
+    "unfinished_france_england": [
+      {
+        "date": "2026-07-18",
+        "home_team": "France",
+        "away_team": "England"
+      }
+    ],
+    "goal_weight_totals": {
+      "unweighted": 1055.0,
+      "friendly_half_weighted": 791.5
+    },
+    "raw_team_rows": 206,
+    "raw_unique_backend_teams": 206,
+    "pooled_team_rows": 206,
+    "pooled_unique_backend_teams": 206,
+    "raw_match_team_rows": 754.0,
+    "raw_observed_teams": 178,
+    "raw_carried_teams": 28,
+    "pooled_median_xg": 0.9999999999999998,
+    "pooled_median_xga": 1.0,
+    "candidate_rows": 206,
+    "candidate_unique_ui_names": 206,
+    "candidate_ui_set_matches_prior": {
+      "missing": [],
+      "extra": []
+    },
+    "backend_to_ui_roundtrip": {
+      "missing": [],
+      "extra": []
+    },
+    "prior_evidence_rows": 206,
+    "stage1_eligible_match_count": 4292,
+    "final_evidence_rows": 206,
+    "evidence_arithmetic": 0.0,
+    "pooled_xg_formula": 2.220446049250313e-16,
+    "pooled_xga_formula": 4.440892098500626e-16,
+    "no_match_count": 28,
+    "no_match_xg_common_scale": 1,
+    "no_match_xga_common_scale": 1,
+    "regression_prior_off_exact": 4.440892098500626e-16,
+    "regression_prior_def_exact": 0.0,
+    "regression_team_count": 206,
+    "seeded_reproducibility_sha": {
+      "run1": "0f37da7a55d5b60b54015b38087fa0a9a192d0eb86e139e973be2f7b865ee97d",
+      "run2": "0f37da7a55d5b60b54015b38087fa0a9a192d0eb86e139e973be2f7b865ee97d"
+    },
+    "unseeded_seeded_rank_stability": 0.9999560721651961,
+    "top_order_seed_independent": {
+      "seeded": [
+        "Spain",
+        "England",
+        "France",
+        "Switzerland",
+        "Argentina",
+        "Colombia",
+        "South Korea",
+        "Brazil",
+        "Senegal",
+        "Norway"
+      ],
+      "unseeded": [
+        "Spain",
+        "England",
+        "France",
+        "Switzerland",
+        "Argentina",
+        "Colombia",
+        "South Korea",
+        "Brazil",
+        "Senegal",
+        "Norway"
+      ]
+    },
+    "empty_window_off_exact": 2.220446049250313e-16,
+    "empty_window_def_exact": 2.220446049250313e-16,
+    "cutoff_search_all_25_quantiles": 25,
+    "cutoff_fallback_is_7_percent": 0.07,
+    "ranking": {
+      "spearman": 0.997660842796693,
+      "mean_absolute_rank_change": 2.7475728155339807,
+      "median_absolute_rank_change": 2.0,
+      "maximum_rise": 13,
+      "maximum_fall": -19,
+      "top_10": [
+        {
+          "rank": 1,
+          "name": "Spain"
+        },
+        {
+          "rank": 2,
+          "name": "England"
+        },
+        {
+          "rank": 3,
+          "name": "France"
+        },
+        {
+          "rank": 4,
+          "name": "Switzerland"
+        },
+        {
+          "rank": 5,
+          "name": "Argentina"
+        },
+        {
+          "rank": 6,
+          "name": "Colombia"
+        },
+        {
+          "rank": 7,
+          "name": "South Korea"
+        },
+        {
+          "rank": 8,
+          "name": "Brazil"
+        },
+        {
+          "rank": 9,
+          "name": "Senegal"
+        },
+        {
+          "rank": 10,
+          "name": "Norway"
+        }
+      ],
+      "argentina": {
+        "name": "Argentina",
+        "confed": "CONMEBOL",
+        "rank_prior": 6,
+        "rank_new": 5,
+        "rank_change": 1,
+        "off_prior": 2.058661038947033,
+        "off_new": 2.050166358545128,
+        "off_change": -0.00849468040190482,
+        "def_prior": 0.397346923648422,
+        "def_new": 0.4512139818132739,
+        "def_change": 0.05386705816485188,
+        "spi_prior": 66.83324390243902,
+        "spi_new": 66.22621951219513,
+        "spi_change": -0.6070243902438932
+      },
+      "rwanda": {
+        "name": "Rwanda",
+        "confed": "CAF",
+        "rank_prior": 160,
+        "rank_new": 153,
+        "rank_change": 7,
+        "off_prior": 0.3838622733107503,
+        "off_new": 0.4347993759273176,
+        "off_change": 0.05093710261656731,
+        "def_prior": 1.201091846738796,
+        "def_new": 1.132358570377644,
+        "def_change": -0.06873327636115212,
+        "spi_prior": 36.15678861788618,
+        "spi_new": 37.73248780487805,
+        "spi_change": 1.5756991869918693
+      },
+      "ivory_coast": {
+        "name": "Ivory Coast",
+        "confed": "CAF",
+        "rank_prior": 47,
+        "rank_new": 37,
+        "rank_change": 10,
+        "off_prior": 1.3505188919090767,
+        "off_new": 1.4753258687864048,
+        "off_change": 0.12480697687732811,
+        "def_prior": 0.6085546088053622,
+        "def_new": 0.5904751080099607,
+        "def_change": -0.018079500795401438,
+        "spi_prior": 56.27160162601626,
+        "spi_new": 58.15169918699187,
+        "spi_change": 1.8800975609756065
+      }
+    },
+    "date_boundaries": {
+      "prior_last_included": "2026-01-26",
+      "configured_new_start": "2026-01-27",
+      "first_eligible_match": "2026-02-25",
+      "last_completed_eligible_match": "2026-07-15",
+      "source_cutoff": "2026-07-18"
+    },
+    "stage4_published_prior_empty_handoff": {
+      "off_max_abs_error": 6.661338147750939e-16,
+      "def_max_abs_error": 4.440892098500626e-16,
+      "teams": 206
+    }
+  },
+  "warnings": [
+    {
+      "severity": "documented",
+      "code": "CUTOFF_FALLBACK",
+      "message": "Unchanged cutoff search tested 1%-25% and found no qualifying cutoff; explicit 7% fallback retained."
+    },
+    {
+      "severity": "documented",
+      "code": "EXCLUDED_ROWS",
+      "message": "23 completed source rows were excluded because one or both mapped teams were outside the 206-team prior universe; see audit/excluded_matches.csv."
+    },
+    {
+      "severity": "documented",
+      "code": "UNFINISHED_MATCH",
+      "message": "France-England on 2026-07-18 was unfinished and excluded. Spain-Argentina on 2026-07-19 is outside the cutoff and was not processed."
+    },
+    {
+      "severity": "methodology",
+      "code": "EVIDENCE_STABILIZATION",
+      "message": "Cumulative Stage 1 + Stage 2 per-team eligible match counts are a new Stage 3 confidence layer; all adjusted-goal and simulation formulas remain Stage 2."
+    },
+    {
+      "severity": "provenance",
+      "code": "STAGE1_COUNT_RECOUNT",
+      "message": "Original saved aggregated_xg_data contains Stage 2 counts, so Stage 1 counts were deterministically recounted from the frozen results snapshot and Stage 1 prior universe."
+    },
+    {
+      "severity": "informational",
+      "code": "CAP_HELPER_DIAGNOSTIC",
+      "message": "calculate_caps_off_def.py outputs are recorded but are not consumed by the unchanged production calculate_xg_xga.py, which retains its literal cap of 6."
+    }
+  ],
+  "hashes": {
+    "prior": "a773aef99836f50ec32cf6f858c0da1b47aec1cfaef2fb22165abb44f649c87a",
+    "input_results": "9bb7ae6bac69e6d028ecd1a2c3a040d8590671bc430ccf8ac17f4ad3d1a126ee",
+    "raw_metrics": "af98b80305969a3ad262f6faf1b81c15c928bcc2e4036ce417a1bbd856bb571b",
+    "pooled_metrics": "7fba04ab380798ff74d76649a3bb885d1030c58b42f197b8a08a655582212749",
+    "seeded_ranking": "0f37da7a55d5b60b54015b38087fa0a9a192d0eb86e139e973be2f7b865ee97d",
+    "production_candidate_ranking": "ffd346a5d512d6754885f35207ebc17ff9155363f7ec199e5ec548371dccebb1",
+    "final_evidence": "51635dcccdc8d927ee4422fa0d388c211912084fa724098520738484ffa48e05"
+  }
+}

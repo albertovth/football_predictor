@@ -1,0 +1,2 @@
+results_file,stage1_start,stage1_end,stage1_prior_teams,stage1_source_completed_rows,stage1_eligible_matches,stage2_metric_teams,output_teams
+/home/albertovth/football_predictor/data/input/stage3_2026_07_18/results.csv,2021-05-26,2025-05-26,218,4375,4292,206,206

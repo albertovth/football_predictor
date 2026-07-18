@@ -1,290 +1,143 @@
-# Methods
+# Current national-team ranking method
 
-This document describes the active methodology implemented in the reorganized repository at `/home/albertovth/football_predictor`.
+Status: authoritative for the validated Stage 3 ranking published on
+2026-07-18. For operational commands for the next update, use
+`docs/STAGE4_UPDATE_GUIDE.md`.
 
-It is aligned with the current code under:
+## Pipeline history
 
-- `app/`
-- `src/football_predictor/`
-- `pipeline/spi_stage1/`
-- `pipeline/spi_stage2/`
-- `scripts/`
-- `data/`
+- Stage 1 started from the May 2021 FiveThirtyEight international SPI prior and
+  processed matches from 2021-05-26 through 2025-05-26.
+- Stage 2 used the Stage 1 result as its prior and processed matches from
+  2025-05-27 through 2026-01-26.
+- Stage 3 used the then-current 206-team application `ranking_final.csv` as its
+  prior and processed new matches from 2026-01-27. The last eligible completed
+  match in the frozen source was 2026-07-15.
 
-It does not describe the archived legacy scripts under `archive/root_legacy/`.
+The Stage 3 prior was the ranking beginning Spain, England, and France. It was
+not the older file named `spi_global_rankings_intl_26_5_2025.csv`.
 
-## Canonical Codebase
+## Authoritative code
 
-`/home/albertovth/football_predictor` is now the canonical codebase for both ranking generation and the Streamlit app.
-
-Historically, updated work had accumulated in `/home/albertovth/SPI`, especially the newer stage 1 and stage 2 scripts. Those operational pieces have now been migrated into this repository, and the active pipeline has been refactored to use repository-relative paths via `src/football_predictor/paths.py`.
-
-## Method Overview
-
-The project updates football team ratings in two broad phases:
-
-1. Derive offensive and defensive metrics from match history.
-2. Simulate all-versus-all matchups from those metrics to derive a ranking table.
-
-The repository currently keeps two explicit pipeline stages:
+The active production calculation remains in:
 
 - `pipeline/spi_stage1/`
 - `pipeline/spi_stage2/`
-
-Stage 1 produces an updated ranking snapshot that becomes the stage 2 prior. Stage 2 then applies the current corrected and balanced methodology to produce the latest final ranking used by the app.
-
-## Repository Roles In The Method
-
-### `pipeline/spi_stage1/`
-
-Stage 1 contains:
-
-- `init_from_spi_538.py`
-- `calculate_xg_xga.py`
-- `simulate_spi.py`
-
-This stage:
-
-- starts from the 2021-05-25 prior snapshot in `data/config/priors/spi_global_rankings_intl_25_5_2021.csv`
-- filters to the six supported confederations
-- initializes `data/intermediate/spi_final.csv`
-- uses historical results from 2021-05-26 through 2025-05-26
-- computes confederation-level xG/xGA files
-- simulates the all-versus-all ranking table
-- writes the stage 1 resulting ranking to `data/config/priors/spi_global_rankings_intl_26_5_2025.csv`
-
-### `pipeline/spi_stage2/`
-
-Stage 2 contains:
-
-- `init_from_spi_538.py`
-- `calculate_adjustment_factor.py`
-- `calculate_caps_off_def.py`
-- `calculate_low_team_cutoff.py`
-- `calculate_xg_xga.py`
-- `simulate_spi.py`
-
-This stage:
-
-- starts from the stage 2 prior in `data/config/priors/spi_global_rankings_intl_26_5_2025.csv`
-- reinitializes `data/intermediate/spi_final.csv`
-- uses the corrected balanced low-team methodology
-- generates fresh intermediate xG/xGA and confederation split files
-- simulates the final ranking table
-- writes `data/output/ranking_final.csv`
-- copies the same file to root `ranking_final.csv` for app compatibility
-
-## Input Data
-
-### Prior Rankings
-
-The current pipeline uses two prior files:
-
-- `data/config/priors/spi_global_rankings_intl_25_5_2021.csv`
-- `data/config/priors/spi_global_rankings_intl_26_5_2025.csv`
-
-### Team Name Mapping
-
-The pipeline uses:
-
-- `data/config/dictionary.csv`
-
-This file maps between naming variants so that:
-
-- historical results
-- confederation metadata
-- priors
-- output rankings
-
-can be aligned consistently.
-
-### Confederation Mapping
-
-The pipeline uses:
-
-- `data/config/confederations.csv`
-
-This file is used to assign teams to:
-
-- CONMEBOL
-- UEFA
-- CONCACAF
-- AFC
-- CAF
-- OFC
-
-## Match Data
-
-Both stages use:
-
-- <https://raw.githubusercontent.com/martj42/international_results/master/results.csv>
-
-The historical results are filtered by date window depending on stage.
-
-Friendly matches are down-weighted by halving the recorded goals before metric generation.
-
-## Offensive And Defensive Metrics
-
-The project uses the labels `xG` and `xGA` to describe adjusted offensive and defensive team metrics derived from historical goals and opponent strength. These are not shot-based expected goals models in the conventional event-data sense.
-
-Instead, the metrics are built from:
-
-- goals scored
-- goals conceded
-- opponent quality
-- prior strength information
-- correction logic for schedule imbalance
-
-## Stage 1 Logic
-
-Stage 1 uses the 2021 prior as a starting point and updates it over the 2021-05-26 to 2025-05-26 window.
-
-At a high level, it:
-
-1. loads the stage prior from `data/intermediate/spi_final.csv`
-2. canonicalizes team names using `data/config/dictionary.csv`
-3. filters the historical results to teams present in the prior universe
-4. applies a low-team adjustment regime below the configured cutoff
-5. computes per-team xG and xGA
-6. corrects those values for opponent strength exposure
-7. rescales the outputs into goal-like units using the empirical median goals in the stage window
-8. writes:
-   - `data/intermediate/aggregated_xg_data.csv`
-   - `data/intermediate/opponent_spi_data.csv`
-   - `data/intermediate/confed/*.csv`
-
-The stage 1 simulation then uses those confederation files to simulate all matchups and generate the next prior snapshot.
-
-## Stage 2 Logic
-
-Stage 2 is the currently active production method used for the latest rankings.
-
-Its code implements a corrected, strength-balanced low-team approach:
-
-1. The prior is converted into an internal strength scale.
-2. A low-team cutoff is derived on that internal strength scale.
-3. High-strength teams use one reward regime.
-4. Lower-strength teams use a corrected regime where:
-   - offensive reward depends on actual opponent strength
-   - own dampening is anchored at the cutoff
-   - defensive penalties increase when conceding to weaker low-strength teams
-5. Team metrics are corrected for opponent-strength exposure.
-6. Outputs are rescaled using the empirical median goals in the relevant match window.
-7. Confederation-level files are written and used for all-versus-all simulation.
-
-This stage writes:
-
-- `data/intermediate/aggregated_xg_data.csv`
-- `data/intermediate/opponent_strength_data.csv`
-- `data/intermediate/confed/*.csv`
-- `data/output/ranking_final.csv`
-- `ranking_final.csv`
-
-## Simulation Method
-
-The simulation step in both stages uses:
-
-- offensive metric of team A
-- defensive metric of team B
-- offensive metric of team B
-- defensive metric of team A
-
-Expected goals are derived as simple averages:
-
-- team A expected goals = `(team_a_xG + team_b_xGA) / 2`
-- team B expected goals = `(team_b_xG + team_a_xGA) / 2`
-
-Each matchup is then simulated repeatedly using Poisson-distributed goal counts. The pipeline currently uses a large all-versus-all Monte Carlo approach and converts simulated points into an SPI-like percentage scale.
-
-## Outputs
-
-### Intermediate Outputs
-
-The active pipeline writes working files under:
-
-- `data/intermediate/`
-
-including:
-
-- `spi_final.csv`
-- `aggregated_xg_data.csv`
-- `opponent_strength_data.csv`
-- `opponent_spi_data.csv` when stage 1 is run
-- `confed/AFC.csv`
-- `confed/CAF.csv`
-- `confed/CONCACAF.csv`
-- `confed/CONMEBOL.csv`
-- `confed/OFC.csv`
-- `confed/UEFA.csv`
-
-### Final Ranking Output
-
-The final ranking output lives at:
-
-- `data/output/ranking_final.csv`
-
-and is also copied to:
-
-- `ranking_final.csv`
-
-The root copy exists so the Streamlit app and any external consumer that expects the old root file contract continue to work unchanged.
-
-## Streamlit App Contract
-
-The active app implementation lives in:
-
-- `app/football_predictor.py`
-
-The compatibility entrypoint lives at:
-
-- `football_predictor.py`
-
-That root file is intentionally a wrapper which runs the app implementation under `app/`. The app itself reads the local root `ranking_final.csv`, not archived legacy outputs.
-
-## Operational Commands
-
-Run from `/home/albertovth/football_predictor`.
-
-### Stage 1
-
-```bash
-./scripts/run_stage1.sh
+- `src/football_predictor/stage_config.py`
+
+Stage 3 deliberately calls `pipeline/spi_stage2/calculate_xg_xga.py` and
+`pipeline/spi_stage2/simulate_spi.py`. Reusing those scripts means reusing the
+established formulas and calculation order; it does not mean reusing the Stage
+2 prior, dates, match sample, or derived parameters.
+
+The Stage 3-specific evidence layer is implemented in:
+
+- `pipeline/spi_stage3/build_prior_evidence.py`
+- `pipeline/spi_stage3/combine_prior_evidence.py`
+
+Do not use `archive/`, `src/football_predictor/post_world_cup_update.py`,
+`wrong_output`, or custom post-World-Cup scripts for a production ranking.
+
+## Raw new-period xG and xGA
+
+Raw Stage 3 xG and xGA are calculated only from eligible matches in the new
+Stage 3 window. Old matches are not reprocessed to create the new-period
+metrics.
+
+The production order is:
+
+1. Load the exact incoming ranking and rank-normalize its SPI distribution to
+   0.05 through 0.95.
+2. Derive the adjustment factor, dynamism, cutoff search, cutoff strength, and
+   low-team defensive anchor from the configured prior and calibration sample.
+3. Filter the inclusive date window and exclude unfinished or ineligible rows.
+4. Map source aliases to backend teams while retaining the prior's UI names.
+5. Multiply friendly goals by exactly 0.5 before metric calculation.
+6. Apply the established high-team/low-team adjusted-goal branches, rewards,
+   penalties, floors, and caps.
+7. Average adjusted xG and xGA by team appearances.
+8. Calculate opponent mean and median strengths and apply the existing
+   opponent corrections.
+9. Calculate and apply the corrected-xGA percentile cap.
+10. Derive corrected metric medians, the empirical median goals, and offensive
+    and defensive scaling.
+11. Write raw xG/xGA and confederation inputs.
+
+The labels xG and xGA are goal- and opponent-adjusted team metrics; they are
+not shot-event expected-goal models.
+
+## Relative prior transfer and evidence weighting
+
+An incoming prior's xG and xGA are not treated as permanent absolute goal
+values. They are first expressed relative to their respective prior
+distributions and transferred to the new period's empirical median-goal scale:
+
+```text
+scaled prior xG =
+    (team prior xG / median prior xG) * new empirical median goals
+
+scaled prior xGA =
+    (team prior xGA / median prior xGA) * new empirical median goals
 ```
 
-### Stage 2
+For a team with new matches, each metric is then combined independently:
 
-```bash
-./scripts/run_stage2.sh
+```text
+pooled metric =
+    (scaled prior metric * prior evidence appearances
+     + raw new-period metric * new-period appearances)
+    / (prior evidence appearances + new-period appearances)
 ```
 
-### Full Ranking Update
+The complete 206-team pooled xG and xGA distributions are then independently
+normalized to the new empirical median goals.
 
-```bash
-./scripts/update_rankings.sh
+This distinction is important:
+
+- A team's raw new-period metric is based only on its new matches.
+- Prior evidence counts control confidence in its incoming relative position;
+  they do not cause old goals to be recalculated.
+- A team with few new matches moves modestly because both sources are weighted.
+- A team with no new matches has new weight zero and therefore preserves its
+  relative prior xG and xGA positions on the new scale.
+
+The first Stage 3 update reconstructed prior evidence counts from the eligible
+Stage 1 and Stage 2 team appearances. Later updates use the published
+`ranking_evidence_*.csv` file and add only the new window's appearances. Do not
+recount Stage 1 and Stage 2 for every future update.
+
+## Simulation
+
+The final pooled confederation files are consumed by the unchanged production
+simulation. For teams A and B:
+
+```text
+A expected goals = (A xG + B xGA) / 2
+B expected goals = (B xG + A xGA) / 2
 ```
 
-### Streamlit App
+Every ordered matchup uses 10,000 Poisson simulations. Points are converted to
+the existing SPI-like scale and all 206 teams are ranked all-versus-all. Normal
+production behavior is unseeded; separate seeded runs validate reproducibility.
 
-```bash
-streamlit run football_predictor.py
-```
+## Names and application contract
 
-### Streamlit App Score Suggestion
+`data/config/dictionary.csv` maps source aliases in the backend. The published
+ranking must retain exactly the prior's 206 UI-compatible team names.
 
-The Streamlit app first keeps its existing winner/draw forecast logic based on the 10,000 simulated outcomes. After that outcome is selected, candidate scorelines are constrained to that forecasted outcome.
+The validated ranking is copied byte-for-byte to:
 
-Within that set, the displayed scoreline is chosen by a 5/3/1 criteria point system that prioritizes exact result, goal difference and winner: 5 points for exact score, 3 for correct goal difference, and 1 for correct winner or draw. The app evaluates each candidate scoreline against all simulated match results and selects the scoreline with the highest average points.
+- `ranking_final.csv`, read directly by `app/football_predictor.py`;
+- `data/output/ranking_final.csv`;
+- the dated ranking prior for the next stage.
 
-Because the candidate scores already share the selected outcome, the winner criterion is included for consistency with the point system, while exact score and goal difference do most of the work when choosing between scores for the same forecasted winner or draw.
+The cumulative evidence output is likewise copied to the dated evidence prior
+for the next stage. Publication happens only after validation and identical
+ranking hashes are confirmed.
 
-This is more complete than simply picking the modal score. The most frequent simulated score is often only slightly more common than several nearby scores. The point-maximizing approach evaluates a wider range of outcomes and selects the score that gives the best average return when exact score, goal difference and correct winner are all considered, with exact score weighted highest and goal difference weighted next.
+## Completed Stage 3 reference
 
-This means the suggested scoreline is not necessarily the single most frequent simulated score.
-
-## Limitations
-
-- The model is driven primarily by scorelines and prior strength, not event-level shot data.
-- It does not explicitly model home advantage, injuries, squad selection, travel, or tactical context.
-- Match coverage and match frequency are uneven across teams.
-- The all-versus-all simulation is computationally heavy.
-- The current documentation reflects the repository structure and code as migrated; it does not claim that every archived historical experiment in `/home/albertovth/SPI` has been retained as active logic.
+The exact inputs, outputs, parameter comparison, warnings, mappings, and
+validation evidence are under `data/output/stage3_2026_07_18/`. The concise
+human-readable record is `VALIDATION_REPORT.md`; machine-readable checks are in
+`validation.json`.

@@ -8,6 +8,7 @@ It is aligned with the current code under:
 - `src/football_predictor/`
 - `pipeline/spi_stage1/`
 - `pipeline/spi_stage2/`
+- `pipeline/spi_stage3/`
 - `scripts/`
 - `data/`
 
@@ -26,12 +27,18 @@ The project updates football team ratings in two broad phases:
 1. Derive offensive and defensive metrics from match history.
 2. Simulate all-versus-all matchups from those metrics to derive a ranking table.
 
-The repository currently keeps two explicit pipeline stages:
+The repository currently keeps two historical calculation stages and one
+evidence-update layer:
 
 - `pipeline/spi_stage1/`
 - `pipeline/spi_stage2/`
+- `pipeline/spi_stage3/`
 
-Stage 1 produces an updated ranking snapshot that becomes the stage 2 prior. Stage 2 then applies the current corrected and balanced methodology to produce the latest final ranking used by the app.
+Stage 1 produces the May 2025 prior. Stage 2 contains the current corrected and
+balanced calculation and simulation engine. Stage 3 reuses that engine with a
+new prior and new date window, then stabilizes sparse samples by transferring
+the prior's relative xG/xGA positions to the new median scale and weighting
+them against new match appearances.
 
 ## Repository Roles In The Method
 
@@ -43,7 +50,7 @@ Stage 1 contains:
 - `calculate_xg_xga.py`
 - `simulate_spi.py`
 
-This stage:
+This historical stage:
 
 - starts from the 2021-05-25 prior snapshot in `data/config/priors/spi_global_rankings_intl_25_5_2021.csv`
 - filters to the six supported confederations
@@ -66,9 +73,10 @@ Stage 2 contains:
 - `calculate_xg_xga.py`
 - `simulate_spi.py`
 
-This stage:
+As the reusable production engine, this stage:
 
-- starts from the stage 2 prior in `data/config/priors/spi_global_rankings_intl_26_5_2025.csv`
+- accepts the stage-specific prior through configuration (the dated May 2025
+  file is only the original Stage 2 default)
 - reinitializes `data/intermediate/spi_final.csv`
 - by default uses historical results from 2025-05-27 through today
 - resolves the active stage window through `src/football_predictor/stage_config.py`
@@ -84,10 +92,12 @@ This stage:
 
 ### Prior Rankings
 
-The current pipeline uses two prior files:
+The historical pipeline and next-update workflow use these prior files:
 
 - `data/config/priors/spi_global_rankings_intl_25_5_2021.csv`
 - `data/config/priors/spi_global_rankings_intl_26_5_2025.csv`
+- `data/config/priors/spi_global_rankings_intl_18_7_2026.csv`
+- `data/config/priors/ranking_evidence_18_7_2026.csv`
 
 ### Team Name Mapping
 
@@ -193,7 +203,8 @@ The stage 1 simulation then uses those confederation files to simulate all match
 
 ## Stage 2 Logic
 
-Stage 2 is the currently active production method used for the latest rankings.
+Stage 2 is the active formula and simulation engine. Later numbered updates
+reconfigure this engine with their own prior, dates, and recalibrated values.
 
 Its code implements a corrected, strength-balanced low-team approach:
 
@@ -217,9 +228,26 @@ This stage writes:
 - `data/output/ranking_final.csv`
 - `ranking_final.csv`
 
+## Stage 3 Evidence Logic
+
+Stage 3 calculates raw xG/xGA only from the new match window using the Stage 2
+engine. It then transfers each prior metric by relative median position:
+
+- scaled prior xG = `(team prior xG / median prior xG) * new goal median`
+- scaled prior xGA = `(team prior xGA / median prior xGA) * new goal median`
+
+Each transferred metric is weighted against the raw new-period metric using
+prior and new team appearances. The pooled 206-team xG and xGA distributions
+are normalized independently to the new empirical goal median before the
+unchanged simulation runs. Teams without a new match therefore preserve their
+relative prior positions; teams with few matches move in proportion to their
+new evidence.
+
+The exact next-update procedure is in `docs/STAGE4_UPDATE_GUIDE.md`.
+
 ## Simulation Method
 
-The simulation step in both stages uses:
+The simulation step used by the calculation stages and later updates uses:
 
 - offensive metric of team A
 - defensive metric of team B

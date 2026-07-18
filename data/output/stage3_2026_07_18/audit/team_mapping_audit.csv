@@ -1,0 +1,190 @@
+source_name,window_appearances,backend_name,ui_name,backend_in_prior,source_to_backend_renamed,backend_to_ui_renamed
+Afghanistan,3,Afghanistan,Afghanistan,True,False,False
+Albania,4,Albania,Albania,True,False,False
+Algeria,8,Algeria,Algeria,True,False,False
+Andorra,5,Andorra,Andorra,True,False,False
+Angola,2,Angola,Angola,True,False,False
+Anguilla,2,Anguilla,Anguilla,True,False,False
+Argentina,11,Argentina,Argentina,True,False,False
+Armenia,3,Armenia,Armenia,True,False,False
+Aruba,3,Aruba,Aruba,True,False,False
+Australia,8,Australia,Australia,True,False,False
+Austria,7,Austria,Austria,True,False,False
+Azerbaijan,4,Azerbaijan,Azerbaijan,True,False,False
+Bahamas,2,Bahamas,Bahamas,True,False,False
+Bahrain,1,Bahrain,Bahrain,True,False,False
+Bangladesh,2,Bangladesh,Bangladesh,True,False,False
+Barbados,2,Barbados,Barbados,True,False,False
+Belarus,4,Belarus,Belarus,True,False,False
+Belgium,10,Belgium,Belgium,True,False,False
+Belize,2,Belize,Belize,True,False,False
+Benin,4,Benin,Benin,True,False,False
+Bermuda,2,Bermuda,Bermuda,True,False,False
+Bhutan,1,Bhutan,Bhutan,True,False,False
+Bolivia,5,Bolivia,Bolivia,True,False,False
+Bonaire,3,Bonaire,Bonaire,True,False,False
+Bosnia and Herzegovina,8,Bosnia and Herzegovina,Bosnia and Herzegovina,True,False,False
+Botswana,2,Botswana,Botswana,True,False,False
+Brazil,9,Brazil,Brazil,True,False,False
+British Virgin Islands,4,British Virgin Islands,British Virgin Islands,True,False,False
+Bulgaria,4,Bulgaria,Bulgaria,True,False,False
+Burkina Faso,4,Burkina Faso,Burkina Faso,True,False,False
+Burundi,1,Burundi,Burundi,True,False,False
+Cambodia,2,Cambodia,Cambodia,True,False,False
+Cameroon,2,Cameroon,Cameroon,True,False,False
+Canada,9,Canada,Canada,True,False,False
+Cape Verde,8,Cape Verde,Cape Verde Islands,True,False,True
+Cayman Islands,3,Cayman Islands,Cayman Islands,True,False,False
+Central African Republic,2,Central African Republic,Central African Republic,True,False,False
+Chile,4,Chile,Chile,True,False,False
+China,4,China,China PR,True,False,True
+Colombia,9,Colombia,Colombia,True,False,False
+Comoros,3,Comoros,Comoros,True,False,False
+Costa Rica,4,Costa Rica,Costa Rica,True,False,False
+Croatia,8,Croatia,Croatia,True,False,False
+Cuba,2,Cuba,Cuba,True,False,False
+Curaçao,7,Curaçao,Curacao,True,False,True
+Cyprus,4,Cyprus,Cyprus,True,False,False
+Czech Republic,7,Czech Republic,Czech Republic,True,False,False
+DR Congo,8,DR Congo,Congo DR,True,False,True
+Denmark,4,Denmark,Denmark,True,False,False
+Dominica,2,Dominica,Dominica,True,False,False
+Dominican Republic,3,Dominican Republic,Dominican Republic,True,False,False
+Ecuador,8,Ecuador,Ecuador,True,False,False
+Egypt,9,Egypt,Egypt,True,False,False
+El Salvador,4,El Salvador,El Salvador,True,False,False
+England,12,England,England,True,False,False
+Equatorial Guinea,3,Equatorial Guinea,Equatorial Guinea,True,False,False
+Estonia,4,Estonia,Estonia,True,False,False
+Ethiopia,2,Ethiopia,Ethiopia,True,False,False
+Faroe Islands,3,Faroe Islands,Faroe Islands,True,False,False
+Fiji,1,Fiji,Fiji,True,False,False
+Finland,4,Finland,Finland,True,False,False
+France,12,France,France,True,False,False
+Gabon,2,Gabon,Gabon,True,False,False
+Gambia,2,Gambia,Gambia,True,False,False
+Georgia,4,Georgia,Georgia,True,False,False
+Germany,8,Germany,Germany,True,False,False
+Ghana,8,Ghana,Ghana,True,False,False
+Gibraltar,2,Gibraltar,Gibraltar,True,False,False
+Greece,4,Greece,Greece,True,False,False
+Grenada,3,Grenada,Grenada,True,False,False
+Guatemala,3,Guatemala,Guatemala,True,False,False
+Guinea,3,Guinea,Guinea,True,False,False
+Guinea-Bissau,2,Guinea-Bissau,Guinea-Bissau,True,False,False
+Guyana,2,Guyana,Guyana,True,False,False
+Haiti,7,Haiti,Haiti,True,False,False
+Honduras,2,Honduras,Honduras,True,False,False
+Hong Kong,2,Hong Kong,Hong Kong,True,False,False
+Hungary,4,Hungary,Hungary,True,False,False
+Iceland,5,Iceland,Iceland,True,False,False
+India,4,India,India,True,False,False
+Indonesia,4,Indonesia,Indonesia,True,False,False
+Iran,7,Iran,Iran,True,False,False
+Iraq,7,Iraq,Iraq,True,False,False
+Israel,2,Israel,Israel,True,False,False
+Italy,4,Italy,Italy,True,False,False
+Ivory Coast,7,Ivory Coast,Ivory Coast,True,False,False
+Jamaica,5,Jamaica,Jamaica,True,False,False
+Japan,7,Japan,Japan,True,False,False
+Jordan,7,Jordan,Jordan,True,False,False
+Kazakhstan,4,Kazakhstan,Kazakhstan,True,False,False
+Kenya,3,Kenya,Kenya,True,False,False
+Kosovo,4,Kosovo,Kosovo,True,False,False
+Kuwait,1,Kuwait,Kuwait,True,False,False
+Kyrgyzstan,4,Kyrgyzstan,Kyrgyzstan,True,False,False
+Latvia,2,Latvia,Latvia,True,False,False
+Lesotho,1,Lesotho,Lesotho,True,False,False
+Liberia,4,Liberia,Liberia,True,False,False
+Libya,2,Libya,Libya,True,False,False
+Liechtenstein,4,Liechtenstein,Liechtenstein,True,False,False
+Lithuania,4,Lithuania,Lithuania,True,False,False
+Luxembourg,2,Luxembourg,Luxembourg,True,False,False
+Madagascar,3,Madagascar,Madagascar,True,False,False
+Malawi,3,Malawi,Malawi,True,False,False
+Maldives,2,Maldives,Maldives,True,False,False
+Mali,2,Mali,Mali,True,False,False
+Malta,2,Malta,Malta,True,False,False
+Martinique,2,Martinique,Martinique,True,False,False
+Mauritania,3,Mauritania,Mauritania,True,False,False
+Mexico,11,Mexico,Mexico,True,False,False
+Moldova,4,Moldova,Moldova,True,False,False
+Montenegro,4,Montenegro,Montenegro,True,False,False
+Morocco,11,Morocco,Morocco,True,False,False
+Mozambique,1,Mozambique,Mozambique,True,False,False
+Myanmar,2,Myanmar,Myanmar,True,False,False
+Namibia,2,Namibia,Namibia,True,False,False
+Netherlands,8,Netherlands,Netherlands,True,False,False
+New Caledonia,1,New Caledonia,New Caledonia,True,False,False
+New Zealand,7,New Zealand,New Zealand,True,False,False
+Nicaragua,3,Nicaragua,Nicaragua,True,False,False
+Niger,4,Niger,Niger,True,False,False
+Nigeria,6,Nigeria,Nigeria,True,False,False
+North Macedonia,4,North Macedonia,North Macedonia,True,False,False
+Northern Ireland,4,Northern Ireland,Northern Ireland,True,False,False
+Norway,10,Norway,Norway,True,False,False
+Oman,1,Oman,Oman,True,False,False
+Pakistan,3,Pakistan,Pakistan,True,False,False
+Palestine,2,Palestine,Palestine,True,False,False
+Panama,8,Panama,Panama,True,False,False
+Paraguay,8,Paraguay,Paraguay,True,False,False
+Peru,4,Peru,Peru,True,False,False
+Philippines,2,Philippines,Philippines,True,False,False
+Poland,4,Poland,Poland,True,False,False
+Portugal,9,Portugal,Portugal,True,False,False
+Puerto Rico,3,Puerto Rico,Puerto Rico,True,False,False
+Qatar,5,Qatar,Qatar,True,False,False
+Republic of Ireland,5,Republic of Ireland,Rep of Ireland,True,False,True
+Romania,4,Romania,Romania,True,False,False
+Rwanda,2,Rwanda,Rwanda,True,False,False
+Saint Kitts and Nevis,2,Saint Kitts and Nevis,St. Kitts and Nevis,True,False,True
+Saint Lucia,1,Saint Lucia,St. Lucia,True,False,True
+Saint Martin,2,Saint Martin,St. Martin,True,False,True
+Saint Vincent and the Grenadines,2,Saint Vincent and the Grenadines,St. Vincent and the Grenadines,True,False,True
+San Marino,4,San Marino,San Marino,True,False,False
+Saudi Arabia,8,Saudi Arabia,Saudi Arabia,True,False,False
+Scotland,7,Scotland,Scotland,True,False,False
+Senegal,8,Senegal,Senegal,True,False,False
+Serbia,4,Serbia,Serbia,True,False,False
+Sierra Leone,3,Sierra Leone,Sierra Leone,True,False,False
+Singapore,2,Singapore,Singapore,True,False,False
+Sint Maarten,2,Sint Maarten,Sint Maarten,True,False,False
+Slovakia,4,Slovakia,Slovakia,True,False,False
+Slovenia,4,Slovenia,Slovenia,True,False,False
+Solomon Islands,2,Solomon Islands,Solomon Islands,True,False,False
+South Africa,8,South Africa,South Africa,True,False,False
+South Korea,7,South Korea,South Korea,True,False,False
+Spain,11,Spain,Spain,True,False,False
+Suriname,1,Suriname,Suriname,True,False,False
+Sweden,8,Sweden,Sweden,True,False,False
+Switzerland,10,Switzerland,Switzerland,True,False,False
+Syria,1,Syria,Syria,True,False,False
+Tajikistan,2,Tajikistan,Tajikistan,True,False,False
+Tanzania,2,Tanzania,Tanzania,True,False,False
+Thailand,2,Thailand,Thailand,True,False,False
+Togo,4,Togo,Togo,True,False,False
+Trinidad and Tobago,5,Trinidad and Tobago,Trinidad and Tobago,True,False,False
+Tunisia,7,Tunisia,Tunisia,True,False,False
+Turkey,7,Turkey,Turkey,True,False,False
+Ukraine,4,Ukraine,Ukraine,True,False,False
+United States,9,United States,USA,True,False,True
+United States Virgin Islands,2,United States Virgin Islands,US Virgin Islands,True,False,True
+Uruguay,5,Uruguay,Uruguay,True,False,False
+Uzbekistan,7,Uzbekistan,Uzbekistan,True,False,False
+Vanuatu,1,Vanuatu,Vanuatu,True,False,False
+Venezuela,4,Venezuela,Venezuela,True,False,False
+Vietnam,1,Vietnam,Vietnam,True,False,False
+Wales,4,Wales,Wales,True,False,False
+Zambia,1,Zambia,Zambia,True,False,False
+Zimbabwe,3,Zimbabwe,Zimbabwe,True,False,False
+American Samoa,2,American Samoa,American Samoa,False,False,False
+Canton Ticino,3,Canton Ticino,Canton Ticino,False,False,False
+Greenland,3,Greenland,Greenland,False,False,False
+Guam,4,Guam,Guam,False,False,False
+Macau,2,Macau,Macau,False,False,False
+Mongolia,2,Mongolia,Mongolia,False,False,False
+Northern Cyprus,3,Northern Cyprus,Northern Cyprus,False,False,False
+Padania,3,Padania,Padania,False,False,False
+Raetia,3,Raetia,Raetia,False,False,False
+Rouet-Provence,3,Rouet-Provence,Rouet-Provence,False,False,False
+Russia,5,Russia,Russia,False,False,False

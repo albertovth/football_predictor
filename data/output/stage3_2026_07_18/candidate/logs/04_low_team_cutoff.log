@@ -1,0 +1,453 @@
+Stage 2 cutoff-search window: 2026-01-27 to 2026-07-18
+Estimated adjustment factor: 0.332778
+Estimated dynamism variable: 0.025000
+Testing with cutoff quantile: 0.01
+Cutoff Quantile strength: 0.059000000000000004
+Teams with xG and xGA both under 1 at quantile 0.01:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003577  0.040420      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.539262  0.743311      4.0
+166        Liechtenstein  0.454286  0.844711      4.0
+160           San Marino  0.758392  0.624334      4.0
+131              Andorra  0.151614  0.817454      5.0
+112              Jamaica  0.542407  0.968456      5.0
+
+[75 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.02
+Cutoff Quantile strength: 0.068
+Teams with xG and xGA both under 1 at quantile 0.02:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003577  0.040420      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.539262  0.743311      4.0
+166        Liechtenstein  0.454286  0.844711      4.0
+160           San Marino  0.758392  0.624334      4.0
+131              Andorra  0.151614  0.817454      5.0
+112              Jamaica  0.542407  0.968456      5.0
+
+[74 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.03
+Cutoff Quantile strength: 0.077
+Teams with xG and xGA both under 1 at quantile 0.03:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003577  0.345964      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.539262  0.743311      4.0
+166        Liechtenstein  0.454286  0.844711      4.0
+160           San Marino  0.758392  0.624334      4.0
+131              Andorra  0.151614  0.817454      5.0
+112              Jamaica  0.542407  0.968456      5.0
+
+[73 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.04
+Cutoff Quantile strength: 0.086
+Teams with xG and xGA both under 1 at quantile 0.04:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003577  0.456183      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.539262  0.743311      4.0
+166        Liechtenstein  0.454286  0.844711      4.0
+160           San Marino  0.758392  0.624334      4.0
+131              Andorra  0.151614  0.817454      5.0
+112              Jamaica  0.542407  0.968456      5.0
+
+[73 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.05
+Cutoff Quantile strength: 0.095
+Teams with xG and xGA both under 1 at quantile 0.05:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003577  0.566401      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.539262  0.743311      4.0
+166        Liechtenstein  0.454286  0.844711      4.0
+160           San Marino  0.758392  0.624334      4.0
+131              Andorra  0.151614  0.817454      5.0
+112              Jamaica  0.542407  0.968456      5.0
+
+[71 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.06
+Cutoff Quantile strength: 0.104
+Teams with xG and xGA both under 1 at quantile 0.06:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003577  0.676620      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.539262  0.743311      4.0
+166        Liechtenstein  0.454286  0.844711      4.0
+160           San Marino  0.758392  0.624334      4.0
+131              Andorra  0.151614  0.817454      5.0
+112              Jamaica  0.542407  0.968456      5.0
+
+[69 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.07
+Cutoff Quantile strength: 0.113
+Teams with xG and xGA both under 1 at quantile 0.07:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003577  0.786839      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.539262  0.743311      4.0
+166        Liechtenstein  0.454286  0.844711      4.0
+160           San Marino  0.758392  0.624334      4.0
+131              Andorra  0.151614  0.817454      5.0
+112              Jamaica  0.432125  0.968456      5.0
+
+[69 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.08
+Cutoff Quantile strength: 0.122
+Teams with xG and xGA both under 1 at quantile 0.08:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003622  0.897057      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+97            Kyrgyzstan  0.546005  0.743311      4.0
+166        Liechtenstein  0.459966  0.844711      4.0
+160           San Marino  0.767876  0.624334      4.0
+131              Andorra  0.153510  0.817454      5.0
+112              Jamaica  0.437529  0.968456      5.0
+
+[68 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.09
+Cutoff Quantile strength: 0.131
+Teams with xG and xGA both under 1 at quantile 0.09:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+200               Bhutan  0.003622  0.944179      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.459966  0.791798      4.0
+43       North Macedonia  0.003622  0.937359      4.0
+160           San Marino  0.767876  0.585225      4.0
+131              Andorra  0.153510  0.766248      5.0
+112              Jamaica  0.437529  0.907791      5.0
+
+[70 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.1
+Cutoff Quantile strength: 0.14
+Teams with xG and xGA both under 1 at quantile 0.1:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.472892  0.761767      4.0
+43       North Macedonia  0.003724  0.901807      4.0
+160           San Marino  0.789454  0.563029      4.0
+131              Andorra  0.157824  0.737186      5.0
+112              Jamaica  0.449824  0.873360      5.0
+
+[66 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.11
+Cutoff Quantile strength: 0.149
+Teams with xG and xGA both under 1 at quantile 0.11:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.472892  0.753605      4.0
+43       North Macedonia  0.003724  0.892145      4.0
+160           San Marino  0.789454  0.556996      4.0
+131              Andorra  0.157824  0.729287      5.0
+112              Jamaica  0.449824  0.864002      5.0
+
+[65 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.12
+Cutoff Quantile strength: 0.15799999999999997
+Teams with xG and xGA both under 1 at quantile 0.12:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.469672  0.753605      4.0
+43       North Macedonia  0.003698  0.892145      4.0
+160           San Marino  0.784079  0.556996      4.0
+131              Andorra  0.156749  0.729287      5.0
+112              Jamaica  0.446761  0.864002      5.0
+
+[65 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.13
+Cutoff Quantile strength: 0.16699999999999998
+Teams with xG and xGA both under 1 at quantile 0.13:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.459966  0.739640      4.0
+43       North Macedonia  0.003622  0.875613      4.0
+160           San Marino  0.767876  0.546675      4.0
+131              Andorra  0.153510  0.715773      5.0
+112              Jamaica  0.437529  0.847993      5.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.14
+Cutoff Quantile strength: 0.176
+Teams with xG and xGA both under 1 at quantile 0.14:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.452708  0.723057      4.0
+43       North Macedonia  0.003565  0.855982      4.0
+160           San Marino  0.755759  0.534418      4.0
+131              Andorra  0.151087  0.699725      5.0
+112              Jamaica  0.430625  0.828980      5.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.15
+Cutoff Quantile strength: 0.185
+Teams with xG and xGA both under 1 at quantile 0.15:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.452708  0.723057      4.0
+43       North Macedonia  0.003565  0.855982      4.0
+160           San Marino  0.755759  0.534418      4.0
+131              Andorra  0.151087  0.699725      5.0
+112              Jamaica  0.430625  0.828980      5.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.16
+Cutoff Quantile strength: 0.194
+Teams with xG and xGA both under 1 at quantile 0.16:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.452708  0.723057      4.0
+43       North Macedonia  0.003565  0.855982      4.0
+160           San Marino  0.755759  0.534418      4.0
+131              Andorra  0.151087  0.699725      5.0
+112              Jamaica  0.430625  0.828980      5.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.17
+Cutoff Quantile strength: 0.203
+Teams with xG and xGA both under 1 at quantile 0.17:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.454286  0.723057      4.0
+43       North Macedonia  0.003577  0.855982      4.0
+160           San Marino  0.758392  0.534418      4.0
+131              Andorra  0.151614  0.699725      5.0
+112              Jamaica  0.432125  0.828980      5.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.18
+Cutoff Quantile strength: 0.21199999999999997
+Teams with xG and xGA both under 1 at quantile 0.18:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.446257  0.723057      4.0
+43       North Macedonia  0.003514  0.855982      4.0
+160           San Marino  0.744989  0.534418      4.0
+131              Andorra  0.148934  0.699725      5.0
+112              Jamaica  0.424488  0.828980      5.0
+
+[65 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.19
+Cutoff Quantile strength: 0.22099999999999997
+Teams with xG and xGA both under 1 at quantile 0.19:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+166        Liechtenstein  0.442809  0.734717      4.0
+43       North Macedonia  0.003488  0.842365      4.0
+160           San Marino  0.739446  0.525917      4.0
+131              Andorra  0.147826  0.688595      5.0
+112              Jamaica  0.422803  0.815793      5.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.2
+Cutoff Quantile strength: 0.22999999999999998
+Teams with xG and xGA both under 1 at quantile 0.2:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+43       North Macedonia  0.003469  0.842365      4.0
+160           San Marino  0.735392  0.525917      4.0
+131              Andorra  0.109194  0.688595      5.0
+112              Jamaica  0.428456  0.815793      5.0
+62          South Africa  0.998721  0.991361      8.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.21
+Cutoff Quantile strength: 0.239
+Teams with xG and xGA both under 1 at quantile 0.21:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+162              Burundi  0.003464  0.988915      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+43       North Macedonia  0.003464  0.842365      4.0
+160           San Marino  0.732350  0.779655      4.0
+131              Andorra  0.112724  0.688595      5.0
+112              Jamaica  0.435229  0.815793      5.0
+62          South Africa  0.997350  0.991361      8.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.22
+Cutoff Quantile strength: 0.248
+Teams with xG and xGA both under 1 at quantile 0.22:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+43       North Macedonia  0.003468  0.822721      4.0
+160           San Marino  0.735621  0.669694      4.0
+131              Andorra  0.116286  0.672536      5.0
+112              Jamaica  0.442619  0.796769      5.0
+62          South Africa  0.998622  0.968242      8.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.23
+Cutoff Quantile strength: 0.257
+Teams with xG and xGA both under 1 at quantile 0.23:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+43       North Macedonia  0.003468  0.822721      4.0
+160           San Marino  0.741580  0.698121      4.0
+131              Andorra  0.119464  0.672536      5.0
+112              Jamaica  0.448975  0.796769      5.0
+62          South Africa  0.998622  0.968242      8.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.24
+Cutoff Quantile strength: 0.26599999999999996
+Teams with xG and xGA both under 1 at quantile 0.24:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+43       North Macedonia  0.003468  0.822721      4.0
+160           San Marino  0.747136  0.710514      4.0
+131              Andorra  0.122427  0.672536      5.0
+112              Jamaica  0.454901  0.796769      5.0
+62          South Africa  0.998622  0.968242      8.0
+
+[64 rows x 4 columns]
+--------------------------------------------------
+Testing with cutoff quantile: 0.25
+Cutoff Quantile strength: 0.27499999999999997
+Teams with xG and xGA both under 1 at quantile 0.25:
+                    team        xG       xGA  matches
+136  Antigua and Barbuda  0.000000  0.000000      1.0
+203               Brunei  0.000000  0.000000      1.0
+107                 Chad  0.000000  0.000000      1.0
+119                Congo  0.000000  0.000000      1.0
+172             Djibouti  0.000000  0.000000      1.0
+..                   ...       ...       ...      ...
+43       North Macedonia  0.003468  0.819459      4.0
+160           San Marino  0.752328  0.720041      4.0
+131              Andorra  0.125196  0.669870      5.0
+112              Jamaica  0.460440  0.793610      5.0
+62          South Africa  0.998622  0.964403      8.0
+
+[63 rows x 4 columns]
+--------------------------------------------------

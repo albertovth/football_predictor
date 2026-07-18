@@ -1,0 +1,84 @@
+Median strength: 0.5
+Cutoff quantile strength: 0.113
+Minimum strength: 0.05
+Maximum strength: 0.95
+Estimated adjustment factor: 0.332778
+Estimated dynamism variable: 0.025000
+Stage 2 window: 2026-01-27 to 2026-07-18
+Low-team defensive P_c: 3.784242871189775
+95th Percentile for Corrected xGA: 8.396484358315535
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/opponent_strength_data.csv
+Shape: (178, 3)
+Columns: ['team', 'average_opponent_strength', 'median_opponent_strength']
+          team  average_opponent_strength  median_opponent_strength
+0        Spain                   0.686984                  0.704146
+1      England                   0.776386                  0.805122
+2       France                   0.833060                  0.897317
+3  Switzerland                   0.792829                  0.846829
+4  South Korea                   0.627631                  0.734878
+Prior offensive median used for carry-forward: 1.0
+Prior defensive median used for carry-forward: 1.0
+Teams carried forward without a new eligible match: 28
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/aggregated_xg_data.csv
+Shape: (206, 5)
+Columns: ['team', 'xG', 'xGA', 'matches', 'confed']
+          team        xG       xGA  matches confed
+0        Spain  1.729696  0.403998     11.0   UEFA
+1      England  1.977234  0.831627     11.0   UEFA
+2       France  2.405775  0.775050     11.0   UEFA
+3  Switzerland  1.964538  0.895603     10.0   UEFA
+4  South Korea  0.647340  1.153797      7.0    AFC
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/confed/CONMEBOL.csv
+Shape: (10, 4)
+Columns: ['team', 'xG', 'xGA', 'matches']
+         team        xG       xGA  matches
+5   Argentina  2.148300  0.804354     11.0
+6    Colombia  1.955115  0.566734      9.0
+8      Brazil  2.515809  1.008666      9.0
+19    Ecuador  1.520897  0.964827      8.0
+21   Paraguay  1.866998  0.641480      8.0
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/confed/UEFA.csv
+Shape: (54, 4)
+Columns: ['team', 'xG', 'xGA', 'matches']
+          team        xG       xGA  matches
+0        Spain  1.729696  0.403998     11.0
+1      England  1.977234  0.831627     11.0
+2       France  2.405775  0.775050     11.0
+3  Switzerland  1.964538  0.895603     10.0
+9       Norway  2.436280  1.079362     10.0
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/confed/CONCACAF.csv
+Shape: (40, 4)
+Columns: ['team', 'xG', 'xGA', 'matches']
+             team        xG       xGA  matches
+16         Mexico  2.317367  0.329308     11.0
+27         Canada  1.890789  0.724979      9.0
+32  United States  2.396397  0.940923      9.0
+66         Panama  1.382639  1.184198      8.0
+76       Suriname  2.011541  1.632989      1.0
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/confed/AFC.csv
+Shape: (43, 4)
+Columns: ['team', 'xG', 'xGA', 'matches']
+           team        xG       xGA  matches
+4   South Korea  0.647340  1.153797      7.0
+20    Australia  1.549970  0.805171      8.0
+33        Japan  2.628452  0.519718      7.0
+36   Uzbekistan  1.494637  1.070271      7.0
+54       Jordan  2.143609  1.288099      7.0
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/confed/CAF.csv
+Shape: (53, 4)
+Columns: ['team', 'xG', 'xGA', 'matches']
+          team        xG       xGA  matches
+7      Senegal  1.993985  0.896789      8.0
+12     Morocco  2.297551  0.808202     11.0
+22    DR Congo  1.373364  0.905554      8.0
+35  Madagascar  0.786202  1.658160      3.0
+38     Nigeria  2.143906  0.969552      6.0
+Saved: /home/albertovth/football_predictor/data/output/stage3_2026_07_18/candidate/raw/intermediate/confed/OFC.csv
+Shape: (6, 4)
+Columns: ['team', 'xG', 'xGA', 'matches']
+                team        xG       xGA  matches
+44       New Zealand  1.210193  1.511019      7.0
+62     New Caledonia  0.002475  2.211792      1.0
+118          Vanuatu  0.245330  1.543166      1.0
+135  Solomon Islands  0.592809  2.837027      2.0
+150             Fiji  0.438583  0.863198      1.0

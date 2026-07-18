@@ -1,0 +1,85 @@
+{
+  "stage": "stage3",
+  "status": "completed_and_published",
+  "published": true,
+  "production_method": "unchanged capped Stage 2 raw calculation plus cumulative Stage 1 + Stage 2 per-team prior-evidence stabilization and 206-team median normalization",
+  "prior": "/home/albertovth/football_predictor/data/output/stage3_2026_07_18/prior_ranking.csv",
+  "prior_sha256": "a773aef99836f50ec32cf6f858c0da1b47aec1cfaef2fb22165abb44f649c87a",
+  "prior_teams": 206,
+  "prior_cutoff_date": "2026-01-26",
+  "results_source": "/home/albertovth/football_predictor/data/input/stage3_2026_07_18/results.csv",
+  "results_sha256": "9bb7ae6bac69e6d028ecd1a2c3a040d8590671bc430ccf8ac17f4ad3d1a126ee",
+  "results_upstream_commit": "80f408d2c93ba4f9e06a2c7cdc5effb05fea9680",
+  "configured_start_date": "2026-01-27",
+  "first_eligible_match_date": "2026-02-25",
+  "source_cutoff_date": "2026-07-18",
+  "latest_completed_eligible_match_date": "2026-07-15",
+  "next_stage_start_date": "2026-07-16",
+  "selected_cutoff_quantile": 0.07,
+  "selected_cutoff_strength": 0.113,
+  "cutoff_selection_rule": "unchanged search tested 1%-25%, found no qualifying quantile, and retained documented 0.07 fallback",
+  "simulations_per_ordered_matchup": 10000,
+  "production_seed": null,
+  "seeded_validation_seed": 20260718,
+  "input_counts": {
+    "source_window_rows": 401,
+    "completed": 400,
+    "unfinished": 1,
+    "eligible": 377,
+    "friendly": 194,
+    "world_cup": 102,
+    "other_competitive": 81,
+    "excluded": 23,
+    "observed_teams": 178,
+    "carried_forward_teams": 28
+  },
+  "evidence_counts": {
+    "stage1_eligible_matches": 4292,
+    "stage1_current_team_appearances": 8461,
+    "stage2_team_appearances": 1574,
+    "incoming_prior_appearances": 10035,
+    "stage3_team_appearances": 754,
+    "outgoing_prior_appearances": 10789
+  },
+  "validation": {
+    "status": "passed",
+    "checks_passed": 66,
+    "checks_failed": 0,
+    "pytest_passed": 16,
+    "pytest_failed": 0,
+    "seeded_runs_byte_identical": true
+  },
+  "artifact_hashes": {
+    "raw_adjusted_xg_xga": "af98b80305969a3ad262f6faf1b81c15c928bcc2e4036ce417a1bbd856bb571b",
+    "opponent_strength": "66168a5f20d814eb4cbcb2cd67a0833a8d964833220488876b7fcc65293777af",
+    "pooled_xg_xga": "7fba04ab380798ff74d76649a3bb885d1030c58b42f197b8a08a655582212749",
+    "prior_evidence": "de46b62ac5a0e9f1a90c497c291010660e7ac7c4013c8a4219eec163c031ddab",
+    "outgoing_evidence": "51635dcccdc8d927ee4422fa0d388c211912084fa724098520738484ffa48e05",
+    "seeded_ranking": "0f37da7a55d5b60b54015b38087fa0a9a192d0eb86e139e973be2f7b865ee97d",
+    "published_ranking": "ffd346a5d512d6754885f35207ebc17ff9155363f7ec199e5ec548371dccebb1"
+  },
+  "script_hashes": {
+    "src/football_predictor/stage_config.py": "dc5ffc334e36ba4deb8d2cedcbdca56a363ffd077d714979d59044c1308cf389",
+    "pipeline/spi_stage2/calculate_adjustment_factor.py": "6a6c43fa468ff8106e8f83a0239f4a5a4e32100cf62215cf9b7138ea08dfdd27",
+    "pipeline/spi_stage2/calculate_caps_off_def.py": "9951e7bdade5ed7b2bbbe96ce0b6d347087b48390244c8e185abaf725fcee609",
+    "pipeline/spi_stage2/calculate_low_team_cutoff.py": "be4627261ae00adfc504f702334504ded4f1b3e6c769924ee53e09f5e3aea39c",
+    "pipeline/spi_stage2/calculate_xg_xga.py": "523acef4de73bbd778afdcadbcff70502e72a0fb1724b0dbe07f8f4a3506b751",
+    "pipeline/spi_stage2/simulate_spi.py": "811885d4710805c8140dc565bf2abad214e05eaa2ce757c1b2a83ab0795d8ca5",
+    "pipeline/spi_stage3/build_prior_evidence.py": "cec67328be07cb5d1c9383843dee0912aaa5254d118b04b7713ef16a36cb8cc4",
+    "pipeline/spi_stage3/combine_prior_evidence.py": "5b7aae8049bc1b278f342d8375a50c4b33f7342b17608d04b2a58f89812e3435"
+  },
+  "published_files": [
+    "ranking_final.csv",
+    "data/output/ranking_final.csv",
+    "data/output/stage3_2026_07_18/ranking_final.csv",
+    "data/config/priors/spi_global_rankings_intl_18_7_2026.csv",
+    "data/output/ranking_evidence.csv",
+    "data/config/priors/ranking_evidence_18_7_2026.csv"
+  ],
+  "published_sha256": "ffd346a5d512d6754885f35207ebc17ff9155363f7ec199e5ec548371dccebb1",
+  "rejected_direct_replacement": {
+    "sha256": "4f7346dea700e42f08c2ec7cc8dbc381a158320ac8c031c7e906e88cb0cfd297",
+    "location": "data/output/stage3_2026_07_18/audit/rejected_new_only",
+    "reason": "sparse Stage 3 samples replaced the prior and produced Ivory Coast 1 and Rwanda 5"
+  }
+}

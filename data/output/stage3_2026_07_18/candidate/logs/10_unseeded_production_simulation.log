@@ -1,0 +1,17 @@
+Empirical median goals (used as baseline): 1.0
+Stage 2 simulation window: 2026-01-27 to 2026-07-18
+SPI Combined Results:
+     rank                      name    confed       off       def        spi
+58      1                     Spain      UEFA  2.570978  0.450090  71.149260
+23      2                   England      UEFA  2.135605  0.277442  69.310358
+27      3                    France      UEFA  2.566451  0.657465  68.666439
+60      4               Switzerland      UEFA  2.295672  0.522378  67.765911
+0       5                 Argentina  CONMEBOL  2.050166  0.451214  66.226220
+..    ...                       ...       ...       ...       ...        ...
+122   202                      Laos       AFC  0.004394  2.835100  17.768675
+67    203                   Bahamas  CONCACAF  0.001735  2.842902  17.690764
+109   204                    Brunei       AFC  0.001055  2.845049  17.641886
+112   205               Timor-Leste       AFC  0.001135  2.845049  17.638772
+101   206  Turks and Caicos Islands  CONCACAF  0.000378  2.845049  17.630585
+
+[206 rows x 6 columns]
