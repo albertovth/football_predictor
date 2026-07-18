@@ -17,6 +17,13 @@ Supporting references:
 - `data/output/stage3_replay_from_2021_2026_07_18/VALIDATION_REPORT.md` records
   the authoritative replay, parameters, counts, and reproducibility checks.
 
+Output-directory distinction:
+
+- `data/output/stage3_replay_from_2021_2026_07_18/` is the authoritative
+  current replay and contains the Stage 1, Stage 2, and Stage 3 outputs.
+- `data/output/stage3_2026_07_18/` is retained only as the superseded first
+  Stage 3 audit. Its ranking is not used by the application or the next prior.
+
 ## Authority rules
 
 - The application reads the repository-root `ranking_final.csv`.

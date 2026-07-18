@@ -46,12 +46,15 @@ appearances.
 
 Scripts:
 
-- build_prior_evidence.py: one-time reconstruction of the incoming Stage 3
-  evidence counts.
-- build_evidence_window.py: reconstructs the dated four-year ledger used to
-  begin Stage 4.
+- build_prior_evidence.py: retained helper for reconstructing the original
+  cumulative Stage 3 evidence audit; it is not the current rolling method.
+- build_evidence_window.py: reconstructs the dated four-year ledger used at
+  the replayed Stage 2 and Stage 3 handoffs and carried into Stage 4.
 - combine_prior_evidence.py: scales the prior, combines evidence, normalizes all
   206 teams, writes confederation inputs, expires old ledger rows, and carries
   the dated evidence forward.
 
-See docs/STAGE4_UPDATE_GUIDE.md for the complete commands and validation gates.
+The current run outputs are under
+`data/output/stage3_replay_from_2021_2026_07_18/`. The older
+`data/output/stage3_2026_07_18/` directory is a superseded historical audit.
+See `docs/STAGE4_UPDATE_GUIDE.md` for the next commands and validation gates.
