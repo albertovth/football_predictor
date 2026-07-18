@@ -9,6 +9,8 @@ import math
 import json
 from pathlib import Path
 
+from app.team_flags import flag_url_for_team
+
 # GitHub badge
 st.markdown("[![GitHub repo](https://img.shields.io/badge/Repo-View%20README-blue)](https://github.com/albertovth/football_predictor/blob/main/README.md)")
 
@@ -172,8 +174,9 @@ def print_team_logo_road():
         return country_flag_road()
     return club_logo_road()
 
-team_logo_home = print_team_logo_home()
-team_logo_road = print_team_logo_road()
+# Flag lookup must use the team name because TEAM_OPTIONS is ranking-ordered.
+team_logo_home = flag_url_for_team(equipo_casa_input)
+team_logo_road = flag_url_for_team(equipo_visita_input)
 
 def logo_home():
     return team_logo_home
