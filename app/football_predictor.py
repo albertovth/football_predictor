@@ -952,9 +952,24 @@ if forecast_extra_time:
             f"{equipo_visita_input} wins extra time in "
             f"**{extra_time_simulated[2] / n_simulations:.2%}**."
         )
+        ninety_minute_tie_home, ninety_minute_tie_visiting = [
+            int(float(value)) for value in contest_score_tie.split(" - ")
+        ]
+        extra_time_score_home, extra_time_score_visiting = [
+            int(float(value)) for value in extra_time_score_forecast.split(" - ")
+        ]
+        combined_score_home = ninety_minute_tie_home + extra_time_score_home
+        combined_score_visiting = ninety_minute_tie_visiting + extra_time_score_visiting
+
         st.markdown(
-            f"After 10 000 extra-time simulations, the forecast is that "
-            f"**{extra_time_forecast_text}: {extra_time_score_forecast}**"
+            f"**Extra-time period only (minutes 91–120):** {extra_time_forecast_text}. "
+            f"Goals scored during extra time: **{equipo_casa_input} "
+            f"{extra_time_score_home}–{extra_time_score_visiting} {equipo_visita_input}**."
+        )
+        st.markdown(
+            f"**Combined score after 120 minutes:** the 90-minute tie scenario is "
+            f"**{ninety_minute_tie_home}–{ninety_minute_tie_visiting}**; after adding the "
+            f"extra-time goals, it is **{combined_score_home}–{combined_score_visiting}**."
         )
     else:
         st.info(
