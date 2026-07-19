@@ -22,6 +22,6 @@
     "scripts/prepare_rolling_ranking_update.py": "6ba3e93a5ff0edc1a2afb22fc99b5fd6dcfe70b531d4b8fb2694a2bdc227d54f",
     "scripts/run_guarded_ranking_update.sh": "729b9b64e0dede8f6cac788ed676db6ed2faa4e18bfe86a55cbba401be083140",
     "scripts/validate_and_publish_ranking_update.py": "40492955d0431b71e8cd38bbb41d7568bf87e848064e1bf9ddfcaf31b83300ed",
-    "scripts/send_ranking_ntfy.py": "577995335ad7812789b77dbbfc5aecdebceff30896ae9ccc4aae35d27971c5b6"
+    "scripts/send_ranking_ntfy.py": "ef57f63a08075a470644198e5ec009fc812b9adcc4f8083f88d52fc5a654131e"
   }
 }
