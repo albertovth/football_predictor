@@ -481,6 +481,15 @@ simulation steps in isolation, rejects non-finite diagnostics, runs two seeded
 reproducibility checks and the test suite, and publishes atomically only after
 every gate passes.
 
+The automatic cutoff gate retains the unchanged 1%-25% search and the
+documented 7% fallback. If the search selects any value other than 7%, the
+wrapper repeats the raw metric calculation, evidence pooling, and all-versus-all
+simulation at 7% with the same deterministic seed. The selected and 7% pooled
+xG/xGA files and seeded rankings must be byte-identical. Otherwise publication
+stops, the current ranking remains untouched, and ntfy reports that manual
+review is required. A selected 7%, or a harmless non-7% result that is exactly
+identical to 7%, continues automatically.
+
 The installed cron runs at 04:15 Europe/Oslo on the 20th of every month.
 `flock` prevents overlapping runs. Logs and frozen inputs are under
 `data/output/automatic_YYYYMMDD/` and

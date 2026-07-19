@@ -71,6 +71,13 @@ The production order is:
 The labels xG and xGA are goal- and opponent-adjusted team metrics; they are
 not shot-event expected-goal models.
 
+For unattended updates, 7% is the empirical cutoff reference established by
+the completed Stage 2 and Stage 3 searches. The cutoff search itself remains
+unchanged. When it selects a different value, the guarded workflow also runs
+the exact production calculation at 7% with the same simulation seed. It may
+publish automatically only when pooled xG/xGA and the seeded ranking are
+byte-identical; a consequential difference fails closed for manual review.
+
 ## Relative prior transfer and evidence weighting
 
 An incoming prior's xG and xGA are not treated as permanent absolute goal

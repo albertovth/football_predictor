@@ -25,6 +25,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--prior-ledger", required=True, type=Path)
     parser.add_argument("--dictionary", required=True, type=Path)
     parser.add_argument("--selected-cutoff", required=True, type=float)
+    parser.add_argument("--sensitivity-dir", type=Path)
     parser.add_argument("--publish", action="store_true")
     return parser.parse_args()
 
@@ -38,6 +39,39 @@ def atomic_copy(source: Path, target: Path) -> None:
     temporary = target.with_name(f".{target.name}.tmp")
     shutil.copy2(source, temporary)
     os.replace(temporary, target)
+
+
+def cutoff_sensitivity_checks(
+    selected_pooled: Path,
+    selected_ranking: Path,
+    reference_raw: Path,
+    reference_pooled: Path,
+    reference_ranking: Path,
+) -> dict[str, bool]:
+    """Require exact equality at the model input and same-seed ranking levels."""
+    reference_paths = [reference_raw, reference_pooled, reference_ranking]
+    artifacts = all(path.exists() for path in reference_paths)
+    checks = {
+        "cutoff_sensitivity_artifacts": artifacts,
+        "cutoff_sensitivity_metrics_finite": False,
+        "cutoff_sensitivity_pooled_identical": False,
+        "cutoff_sensitivity_seeded_ranking_identical": False,
+    }
+    if not artifacts:
+        return checks
+    raw = pd.read_csv(reference_raw)
+    pooled = pd.read_csv(reference_pooled)
+    checks["cutoff_sensitivity_metrics_finite"] = bool(
+        np.isfinite(raw[["xG", "xGA", "matches"]].to_numpy()).all()
+        and np.isfinite(pooled[["xG", "xGA", "matches"]].to_numpy()).all()
+    )
+    checks["cutoff_sensitivity_pooled_identical"] = (
+        sha256(selected_pooled) == sha256(reference_pooled)
+    )
+    checks["cutoff_sensitivity_seeded_ranking_identical"] = (
+        sha256(selected_ranking) == sha256(reference_ranking)
+    )
+    return checks
 
 
 def main() -> int:
@@ -121,6 +155,51 @@ def main() -> int:
         np.isfinite(args.selected_cutoff) and 0.01 <= args.selected_cutoff <= 0.25
     )
 
+    reference_cutoff = 0.07
+    sensitivity_required = not np.isclose(
+        args.selected_cutoff, reference_cutoff, rtol=0.0, atol=1e-12
+    )
+    sensitivity_dir = args.sensitivity_dir or (
+        args.run_dir / "cutoff_sensitivity/reference_0_07"
+    )
+    sensitivity_raw_path = (
+        sensitivity_dir / "raw/intermediate/aggregated_xg_data.csv"
+    )
+    sensitivity_pooled_path = (
+        sensitivity_dir / "intermediate/aggregated_xg_data.csv"
+    )
+    sensitivity_ranking_path = sensitivity_dir / "output/ranking_final.csv"
+    sensitivity_audit: dict[str, object] = {
+        "required": bool(sensitivity_required),
+        "selected_cutoff": float(args.selected_cutoff),
+        "reference_cutoff": reference_cutoff,
+        "comparison": "exact pooled metrics and same-seed ranking",
+    }
+    if sensitivity_required:
+        checks.update(
+            cutoff_sensitivity_checks(
+                pooled_path,
+                seeded_one,
+                sensitivity_raw_path,
+                sensitivity_pooled_path,
+                sensitivity_ranking_path,
+            )
+        )
+        if sensitivity_ranking_path.exists():
+            sensitivity_audit["reference_seeded_sha256"] = sha256(
+                sensitivity_ranking_path
+            )
+    else:
+        checks.update(
+            {
+                "cutoff_sensitivity_artifacts": True,
+                "cutoff_sensitivity_metrics_finite": True,
+                "cutoff_sensitivity_pooled_identical": True,
+                "cutoff_sensitivity_seeded_ranking_identical": True,
+            }
+        )
+        sensitivity_audit["status"] = "not required; selected cutoff is 0.07"
+
     # All calibration diagnostics used by the guarded job must be finite.
     calibration_logs = [
         args.run_dir / "logs/02_adjustment_factor.log",
@@ -129,6 +208,13 @@ def main() -> int:
         args.run_dir / "logs/05_calculate_raw_xg_xga.log",
         args.run_dir / "logs/06_combine_prior_evidence.log",
     ]
+    if sensitivity_required:
+        calibration_logs.extend(
+            [
+                args.run_dir / "logs/09b_cutoff_07_raw_xg_xga.log",
+                args.run_dir / "logs/09c_cutoff_07_combine_evidence.log",
+            ]
+        )
     nonfinite = re.compile(r"(?<![A-Za-z])(?:nan|[+-]?inf)(?![A-Za-z])", re.I)
     checks["calibration_logs_finite"] = all(
         path.exists() and not nonfinite.search(path.read_text(errors="replace"))
@@ -171,6 +257,7 @@ def main() -> int:
         "prior_sha256": sha256(args.prior_ranking),
         "candidate_sha256": sha256(candidate_path),
         "seeded_sha256": sha256(seeded_one),
+        "cutoff_sensitivity": sensitivity_audit,
     }
     (args.run_dir / "validation.json").write_text(
         json.dumps(validation, indent=2) + "\n", encoding="utf-8"

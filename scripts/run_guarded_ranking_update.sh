@@ -228,7 +228,83 @@ for reproducibility_run in run1 run2; do
         > "$log_dir/08_seeded_$reproducibility_run.log" 2>&1
 done
 
-"$python_bin" -m pytest -q > "$log_dir/09_pytest.log" 2>&1
+reference_cutoff="0.07"
+sensitivity_dir="$run_dir/cutoff_sensitivity/reference_0_07"
+sensitivity_required="$("$python_bin" -c '
+import math,sys
+print(int(not math.isclose(float(sys.argv[1]), 0.07, rel_tol=0.0, abs_tol=1e-12)))
+' "$selected_cutoff")"
+
+if [[ "$sensitivity_required" == "1" ]]; then
+    mkdir -p \
+        "$sensitivity_dir/raw/intermediate/confed" \
+        "$sensitivity_dir/intermediate/confed" \
+        "$sensitivity_dir/output"
+
+    sensitivity_raw_env=(
+        FOOTBALL_DATA_DIR="$repo_root/data"
+        FOOTBALL_INTERMEDIATE_DIR="$sensitivity_dir/raw/intermediate"
+        FOOTBALL_STAGE2_PRIOR_FILE="$run_dir/prior/ranking.csv"
+        FOOTBALL_RESULTS_SOURCE="$input_dir/results.csv"
+        FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE="$input_dir/goal_median_results.csv"
+        GOAL_MEDIAN_START_DATE="$median_start"
+        GOAL_MEDIAN_END_DATE="$median_end"
+        STAGE2_START_DATE="$stage_start"
+        STAGE2_END_DATE="$stage_end"
+    )
+    env "${sensitivity_raw_env[@]}" "$python_bin" \
+        pipeline/spi_stage2/init_from_spi_538.py \
+        > "$log_dir/09a_cutoff_07_init.log" 2>&1
+    env "${sensitivity_raw_env[@]}" STAGE2_CUTOFF_QUANTILE="$reference_cutoff" \
+        "$python_bin" pipeline/spi_stage2/calculate_xg_xga.py \
+        > "$log_dir/09b_cutoff_07_raw_xg_xga.log" 2>&1
+    ensure_finite_log "$log_dir/09b_cutoff_07_raw_xg_xga.log"
+
+    "$python_bin" pipeline/spi_stage3/combine_prior_evidence.py \
+        --prior-ranking "$run_dir/prior/ranking.csv" \
+        --prior-evidence "$run_dir/prior/evidence.csv" \
+        --prior-evidence-ledger "$run_dir/prior/evidence_ledger.csv" \
+        --new-metrics "$sensitivity_dir/raw/intermediate/aggregated_xg_data.csv" \
+        --dictionary data/config/dictionary.csv \
+        --results "$input_dir/results.csv" \
+        --start-date "$stage_start" \
+        --end-date "$stage_end" \
+        --goal-median-results "$input_dir/goal_median_results.csv" \
+        --goal-median-start-date "$median_start" \
+        --goal-median-end-date "$median_end" \
+        --aggregated-output "$sensitivity_dir/intermediate/aggregated_xg_data.csv" \
+        --confed-output-dir "$sensitivity_dir/intermediate/confed" \
+        --calibration-output "$sensitivity_dir/evidence_calibration.csv" \
+        --evidence-output "$sensitivity_dir/evidence_final.csv" \
+        --evidence-ledger-output "$sensitivity_dir/evidence_ledger_final.csv" \
+        --windowed-prior-output "$sensitivity_dir/windowed_prior_evidence.csv" \
+        --evidence-cutoff-date "$run_date" \
+        --evidence-window-years 4 \
+        --stage-label "auto_${compact_date}_cutoff_07_sensitivity" \
+        --audit-output "$sensitivity_dir/evidence_normalization.csv" \
+        > "$log_dir/09c_cutoff_07_combine_evidence.log" 2>&1
+    ensure_finite_log "$log_dir/09c_cutoff_07_combine_evidence.log"
+
+    sensitivity_simulation_env=(
+        FOOTBALL_DATA_DIR="$repo_root/data"
+        FOOTBALL_INTERMEDIATE_DIR="$sensitivity_dir/intermediate"
+        FOOTBALL_RESULTS_SOURCE="$input_dir/results.csv"
+        FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE="$input_dir/goal_median_results.csv"
+        GOAL_MEDIAN_START_DATE="$median_start"
+        GOAL_MEDIAN_END_DATE="$median_end"
+        STAGE2_START_DATE="$stage_start"
+        STAGE2_END_DATE="$stage_end"
+    )
+    env "${sensitivity_simulation_env[@]}" \
+        FOOTBALL_OUTPUT_DIR="$sensitivity_dir/output" \
+        FOOTBALL_RANKING_OUTPUT_FILE="$sensitivity_dir/output/ranking_final.csv" \
+        FOOTBALL_ROOT_RANKING_FILE="$sensitivity_dir/output/root_ranking_final.csv" \
+        "$python_bin" -c \
+        "import numpy as np, runpy; np.random.seed($compact_date); runpy.run_path('pipeline/spi_stage2/simulate_spi.py', run_name='__main__')" \
+        > "$log_dir/09d_cutoff_07_seeded_simulation.log" 2>&1
+fi
+
+"$python_bin" -m pytest -q > "$log_dir/10_pytest.log" 2>&1
 "$python_bin" scripts/validate_and_publish_ranking_update.py \
     --run-dir "$run_dir" \
     --input-dir "$input_dir" \
@@ -237,8 +313,9 @@ done
     --prior-ledger "$run_dir/prior/evidence_ledger.csv" \
     --dictionary data/config/dictionary.csv \
     --selected-cutoff "$selected_cutoff" \
+    --sensitivity-dir "$sensitivity_dir" \
     --publish \
-    > "$log_dir/10_validate_and_publish.log" 2>&1
+    > "$log_dir/11_validate_and_publish.log" 2>&1
 
 if [[ "${FOOTBALL_AUTO_GIT_PUSH:-0}" == "1" ]]; then
     dated="$("$python_bin" -c 'import pandas as pd,sys; d=pd.Timestamp(sys.argv[1]); print(f"{d.day}_{d.month}_{d.year}")' "$run_date")"
@@ -259,5 +336,5 @@ fi
 send_notification \
     success \
     "Football ranking updated" \
-    "The guarded update for $run_date passed calibration, mapping, rolling-window, test, and reproducibility checks. The validated ranking was published successfully."
+    "The guarded update for $run_date passed calibration, cutoff-sensitivity, mapping, rolling-window, test, and reproducibility checks. The validated ranking was published successfully."
 echo "Validated rolling ranking update published for $run_date."
