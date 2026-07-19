@@ -1,0 +1,2 @@
+teams,median_goals,prior_off_median,prior_def_median,pooled_off_median_before_normalization,pooled_def_median_before_normalization,final_off_median,final_def_median,zero_new_match_teams,evidence_window_years,evidence_window_start,evidence_window_end,prior_evidence_end,retained_prior_appearances,new_appearances,final_appearances,expired_appearances,goal_median_results,goal_median_start,goal_median_end
+206,1.0,0.9999999999999999,1.0,1.0,1.0,1.0,1.0,202,4,2022-07-20,2026-07-19,2026-07-15,7756,4,7760,8,data/input/stage4_2026_07_20/goal_median_results.csv,2022-07-20,2026-07-19

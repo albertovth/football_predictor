@@ -1,0 +1,23 @@
+teams                                                                                   206
+median_goals                                                                            1.0
+prior_off_median                                                                        1.0
+prior_def_median                                                                        1.0
+pooled_off_median_before_normalization                                                  1.0
+pooled_def_median_before_normalization                                                  1.0
+final_off_median                                                                        1.0
+final_def_median                                                                        1.0
+zero_new_match_teams                                                                    202
+evidence_window_years                                                                     4
+evidence_window_start                                                            2022-07-20
+evidence_window_end                                                              2026-07-19
+prior_evidence_end                                                               2026-07-15
+retained_prior_appearances                                                             7756
+new_appearances                                                                           4
+final_appearances                                                                      7760
+expired_appearances                                                                       8
+goal_median_results                       data/input/stage4_2026_07_20/goal_median_resul...
+goal_median_start                                                                2022-07-20
+goal_median_end                                                                  2026-07-19
+Saved pooled metrics: /home/albertovth/football_predictor/data/output/stage4_2026_07_20/intermediate/aggregated_xg_data.csv
+Saved calibration: /home/albertovth/football_predictor/data/output/stage4_2026_07_20/evidence_calibration.csv
+Saved next-stage evidence: /home/albertovth/football_predictor/data/output/stage4_2026_07_20/evidence_final.csv

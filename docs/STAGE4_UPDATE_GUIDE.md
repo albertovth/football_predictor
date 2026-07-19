@@ -1,11 +1,12 @@
 # Stage 4 national-team ranking update guide
 
-This guide continues from the validated full 2021-to-Stage-3 replay published
-on 2026-07-18. Do not use archive, post_world_cup_update.py, or wrong_output.
+This guide records the validated Stage 4 update published on 2026-07-20 and is
+the repeatable template for later rolling updates. Do not use archive,
+post_world_cup_update.py, or wrong_output.
 
 Stage 4 has five parts:
 
-1. Run unchanged Stage 2 calibration and raw xG/xGA using the published Stage 3
+1. Run the production Stage 2 calibration and raw xG/xGA using the published
    ranking as the prior.
 2. Combine raw metrics with the published four-year evidence window.
 3. Run unchanged Stage 2 all-versus-all simulation.
@@ -44,6 +45,13 @@ metrics only from the new window, and combines the two sources using the
 evidence counts below. The replay audit is under
 `data/output/stage3_replay_from_2021_2026_07_18/`.
 
+The completed Stage 4 publication uses:
+
+- ranking: `data/config/priors/spi_global_rankings_intl_20_7_2026.csv`;
+- evidence: `data/config/priors/ranking_evidence_20_7_2026.csv`;
+- ledger: `data/config/priors/ranking_evidence_ledger_20_7_2026.csv`;
+- full audit: `data/output/stage4_2026_07_20/`.
+
 ## Exact Stage 4 start
 
 The Stage 3 source cutoff was July 18, but its last completed eligible match was
@@ -52,8 +60,9 @@ included.
 
 - Incoming prior last included match: 2026-07-15
 - Stage 4 start: 2026-07-16
-- Stage 4 end: the new frozen-source cutoff
+- Stage 4 end: 2026-07-19
 - Incoming four-year evidence window: 2022-07-16 through 2026-07-15
+- Updated evidence and goal-median window: 2022-07-20 through 2026-07-19
 
 Always derive the start from the last completed eligible match actually
 included. Do not infer it from a filename or publication date.
@@ -71,12 +80,15 @@ Suggested variables:
 
     STAGE4_RUN=data/output/stage4_YYYY_MM_DD
     STAGE4_INPUT=data/input/stage4_YYYY_MM_DD/results.csv
+    STAGE4_GOAL_MEDIAN=data/input/stage4_YYYY_MM_DD/goal_median_results.csv
     STAGE4_PRIOR=data/config/priors/spi_global_rankings_intl_18_7_2026.csv
     STAGE4_EVIDENCE=data/config/priors/ranking_evidence_18_7_2026.csv
     STAGE4_LEDGER=data/config/priors/ranking_evidence_ledger_18_7_2026.csv
     STAGE4_START=2026-07-16
     STAGE4_END=YYYY-MM-DD
     STAGE4_LAST_INCLUDED=YYYY-MM-DD
+    GOAL_MEDIAN_START=YYYY-MM-DD
+    GOAL_MEDIAN_END=YYYY-MM-DD
     SPYDER_PYTHON=/home/albertovth/anaconda3/envs/spyder607/bin/python
 
 Create isolated output directories:
@@ -110,6 +122,11 @@ Create audit files for:
 - unfinished rows;
 - team source/backend/UI mappings.
 
+Also freeze `STAGE4_GOAL_MEDIAN`: every completed source result in the
+inclusive rolling four-year window ending at the update cutoff. This file is
+used only for the common empirical raw-goal scale. It does not add old matches
+to the new-period xG/xGA calculation.
+
 Count friendlies, World Cup matches, and other competitive matches separately.
 Check duplicate keys using:
 
@@ -126,6 +143,9 @@ Run:
     FOOTBALL_INTERMEDIATE_DIR="$PWD/$STAGE4_RUN/raw/intermediate" \
     FOOTBALL_STAGE2_PRIOR_FILE="$PWD/$STAGE4_PRIOR" \
     FOOTBALL_RESULTS_SOURCE="$PWD/$STAGE4_INPUT" \
+    FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE="$PWD/$STAGE4_GOAL_MEDIAN" \
+    GOAL_MEDIAN_START_DATE="$GOAL_MEDIAN_START" \
+    GOAL_MEDIAN_END_DATE="$GOAL_MEDIAN_END" \
     STAGE2_START_DATE="$STAGE4_START" \
     STAGE2_END_DATE="$STAGE4_END" \
     "$SPYDER_PYTHON" pipeline/spi_stage2/init_from_spi_538.py \
@@ -165,14 +185,18 @@ Cutoff search:
     FOOTBALL_INTERMEDIATE_DIR="$PWD/$STAGE4_RUN/raw/intermediate" \
     FOOTBALL_STAGE2_PRIOR_FILE="$PWD/$STAGE4_PRIOR" \
     FOOTBALL_RESULTS_SOURCE="$PWD/$STAGE4_INPUT" \
+    FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE="$PWD/$STAGE4_GOAL_MEDIAN" \
+    GOAL_MEDIAN_START_DATE="$GOAL_MEDIAN_START" \
+    GOAL_MEDIAN_END_DATE="$GOAL_MEDIAN_END" \
     STAGE2_START_DATE="$STAGE4_START" \
     STAGE2_END_DATE="$STAGE4_END" \
     "$SPYDER_PYTHON" pipeline/spi_stage2/calculate_low_team_cutoff.py \
       > "$STAGE4_RUN/logs/04_low_team_cutoff.log"
 
-Use the unchanged search's selected quantile. If none of 1 percent through 25
-percent qualifies, retain the documented 7 percent fallback. Never silently
-assume 7 percent.
+Use the production search's selected quantile. Teams without a new match are
+not synthetic zero-metric observations in this diagnostic. If none of 1
+percent through 25 percent qualifies, retain the documented 7 percent fallback.
+Never silently assume 7 percent.
 
 The cap helper is a recorded diagnostic. Unchanged calculate_xg_xga.py does not
 consume its printed values and retains the established hard cap of 6.
@@ -197,7 +221,8 @@ Do not reorder these operations:
 14. Apply offense and defense opponent corrections.
 15. Calculate and apply corrected-xGA 95th-percentile cap.
 16. Calculate corrected xG and clipped xGA medians.
-17. Calculate the unweighted empirical goal median for the date window.
+17. Calculate the unweighted empirical raw-goal median from the same rolling
+    four-year window used for evidence confidence.
 18. Scale raw xG and xGA to the empirical median.
 19. Carry zero-match teams from the prior on the new scale.
 20. Save raw metrics and opponent correction.
@@ -213,6 +238,9 @@ Replace 0.07 below only if the unchanged cutoff search selected another value:
     FOOTBALL_INTERMEDIATE_DIR="$PWD/$STAGE4_RUN/raw/intermediate" \
     FOOTBALL_STAGE2_PRIOR_FILE="$PWD/$STAGE4_PRIOR" \
     FOOTBALL_RESULTS_SOURCE="$PWD/$STAGE4_INPUT" \
+    FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE="$PWD/$STAGE4_GOAL_MEDIAN" \
+    GOAL_MEDIAN_START_DATE="$GOAL_MEDIAN_START" \
+    GOAL_MEDIAN_END_DATE="$GOAL_MEDIAN_END" \
     STAGE2_START_DATE="$STAGE4_START" \
     STAGE2_END_DATE="$STAGE4_END" \
     STAGE2_CUTOFF_QUANTILE=0.07 \
@@ -235,6 +263,9 @@ Run:
       --results "$STAGE4_INPUT" \
       --start-date "$STAGE4_START" \
       --end-date "$STAGE4_END" \
+      --goal-median-results "$STAGE4_GOAL_MEDIAN" \
+      --goal-median-start-date "$GOAL_MEDIAN_START" \
+      --goal-median-end-date "$GOAL_MEDIAN_END" \
       --aggregated-output "$STAGE4_RUN/intermediate/aggregated_xg_data.csv" \
       --confed-output-dir "$STAGE4_RUN/intermediate/confed" \
       --calibration-output "$STAGE4_RUN/evidence_calibration.csv" \
@@ -275,13 +306,14 @@ zero. Therefore a team with 36 retained prior appearances and four new matches
 gets prior weight 36/40 and new weight 4/40. Those shares come from observed
 match counts, not a selected coefficient.
 
-The rolling start is always:
+For an automated update, the rolling start is always:
 
-    last included eligible match date - 4 calendar years + 1 day
+    cron run/update cutoff date - 4 calendar years + 1 day
 
-For the incoming Stage 4 prior this is 2022-07-16. If a later Stage 4 ranking
-includes a match on 2026-07-18, its evidence window begins 2022-07-19 and the
-ledger automatically expires appearances from 2022-07-16 through 2022-07-18.
+The evidence ledger and empirical goal-median source must use that same start
+and cutoff. For example, a cron run on 2026-08-20 uses 2022-08-21 through
+2026-08-20, regardless of the exact day of the latest match inside that period.
+The new-match start remains the day after the last match already in the prior.
 
 The resulting evidence_final.csv and evidence_ledger_final.csv become the next
 update's evidence prior pair.
@@ -318,6 +350,9 @@ Normal production behavior is unseeded:
     FOOTBALL_RANKING_OUTPUT_FILE="$PWD/$STAGE4_RUN/output/ranking_final.csv" \
     FOOTBALL_ROOT_RANKING_FILE="$PWD/$STAGE4_RUN/output/root_ranking_final.csv" \
     FOOTBALL_RESULTS_SOURCE="$PWD/$STAGE4_INPUT" \
+    FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE="$PWD/$STAGE4_GOAL_MEDIAN" \
+    GOAL_MEDIAN_START_DATE="$GOAL_MEDIAN_START" \
+    GOAL_MEDIAN_END_DATE="$GOAL_MEDIAN_END" \
     STAGE2_START_DATE="$STAGE4_START" \
     STAGE2_END_DATE="$STAGE4_END" \
     "$SPYDER_PYTHON" pipeline/spi_stage2/simulate_spi.py \
@@ -354,7 +389,7 @@ Do not publish unless all pass:
 - evidence arithmetic is exact;
 - new metric match counts exactly equal new ledger appearance counts by team;
 - every ledger date falls inside the four-year window;
-- the window start equals last-included date minus four years plus one day;
+- the window start equals the update cutoff date minus four years plus one day;
 - zero-match teams preserve relative xG and xGA order;
 - ranks are exactly 1 through 206;
 - prior regression metrics reproduce;
@@ -429,3 +464,35 @@ These values regression-test the workflow. Stage 4 must derive its own values:
 
 All exact replay values are in
 `data/output/stage3_replay_from_2021_2026_07_18/parameter_comparison.csv`.
+
+## Guarded monthly automation
+
+`scripts/update_rankings.sh` now runs the fail-closed rolling workflow.
+It checks monthly but only calculates and publishes when at least 100 completed,
+eligible matches have accumulated after the published ledger cutoff:
+
+    bash scripts/update_rankings.sh
+
+The threshold is an evidence gate, not a weighting coefficient. If fewer than
+100 matches exist, the command records the source audit and exits without
+touching the app ranking. When the gate passes it freezes and maps the source,
+derives the four-year dates from that run date, runs all calibration and
+simulation steps in isolation, rejects non-finite diagnostics, runs two seeded
+reproducibility checks and the test suite, and publishes atomically only after
+every gate passes.
+
+The installed cron runs at 04:15 Europe/Oslo on the 20th of every month.
+`flock` prevents overlapping runs. Logs and frozen inputs are under
+`data/output/automatic_YYYYMMDD/` and
+`data/input/automatic_YYYYMMDD/`. Setting
+`FOOTBALL_AUTO_GIT_PUSH=1` also commits and pushes only the published
+ranking/evidence files after validation.
+
+The cron reuses the existing private `NTFY_TOPIC` from
+environment/secrets. It sends a normal-priority success message after
+publication, a low-priority good-to-know message when the 100-match gate is not
+yet met, and an urgent message for actionable failures. Notification delivery
+errors are written to the run's `ntfy.log` and cannot recursively
+trigger more notifications. The old World Cup result/fixture cron is commented
+out and no related systemd timer is active, so its old failure notifier cannot
+currently send messages.

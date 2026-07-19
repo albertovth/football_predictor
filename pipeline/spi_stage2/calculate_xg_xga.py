@@ -13,14 +13,17 @@ from football_predictor.paths import (
     CONFEDERATIONS_FILE,
     CONFED_FILES,
     DICTIONARY_FILE,
+    GOAL_MEDIAN_RESULTS_SOURCE,
     OPPONENT_STRENGTH_FILE,
     RESULTS_URL,
     SPI_FINAL_FILE,
 )
 from football_predictor.stage_config import (
     add_strength,
+    empirical_median_goals,
     estimate_stage_metric_parameters,
     resolve_cutoff_quantile,
+    resolve_goal_median_window,
     resolve_stage_window,
 )
 
@@ -248,12 +251,17 @@ print(opponent_strength_df.head())
 median_xG = xg_df['xG'].median()
 median_xGA = xg_df['xGA'].median()
 
-historical_data = pd.read_csv(RESULTS_URL)
-historical_data['date'] = pd.to_datetime(historical_data['date'])
-filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= end_date)]
-
-all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
-median_goals_per_team = all_goals.median()
+goal_median_start, goal_median_end = resolve_goal_median_window(start_date, end_date)
+median_goals_per_team = empirical_median_goals(
+    GOAL_MEDIAN_RESULTS_SOURCE,
+    goal_median_start,
+    goal_median_end,
+)
+print(
+    "Empirical goal-median window: "
+    f"{goal_median_start.date()} to {goal_median_end.date()}"
+)
+print(f"Empirical median goals per team: {median_goals_per_team}")
 
 xg_df['xG'] = (xg_df['xG'] / median_xG) * median_goals_per_team
 xg_df['xGA'] = (xg_df['xGA'] / median_xGA) * median_goals_per_team

@@ -14,22 +14,29 @@ from football_predictor.paths import (
     CONFEDS,
     CONFED_FILES,
     DICTIONARY_FILE,
+    GOAL_MEDIAN_RESULTS_SOURCE,
     RANKING_OUTPUT_FILE,
-    RESULTS_URL,
     ROOT_RANKING_FILE,
 )
-from football_predictor.stage_config import resolve_stage_window
+from football_predictor.stage_config import (
+    empirical_median_goals,
+    resolve_goal_median_window,
+    resolve_stage_window,
+)
 
-historical_data = pd.read_csv(RESULTS_URL)
-
-historical_data['date'] = pd.to_datetime(historical_data['date'])
 start_date, end_date = resolve_stage_window("stage2")
-filtered_data = historical_data[(historical_data['date'] >= start_date) & (historical_data['date'] <= end_date)]
-
-all_goals = pd.concat([filtered_data['home_score'], filtered_data['away_score']])
-median_goals = all_goals.median()
+goal_median_start, goal_median_end = resolve_goal_median_window(start_date, end_date)
+median_goals = empirical_median_goals(
+    GOAL_MEDIAN_RESULTS_SOURCE,
+    goal_median_start,
+    goal_median_end,
+)
 
 print(f"Empirical median goals (used as baseline): {median_goals}")
+print(
+    "Empirical goal-median window: "
+    f"{goal_median_start.date()} to {goal_median_end.date()}"
+)
 print(f"Stage 2 simulation window: {start_date.date()} to {end_date.date()}")
 
 

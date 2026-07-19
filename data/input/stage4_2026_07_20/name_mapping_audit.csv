@@ -1,0 +1,5 @@
+source_name,backend_name,ui_name,mapping_method,in_prior
+Argentina,Argentina,Argentina,identity,True
+England,England,England,identity,True
+France,France,France,identity,True
+Spain,Spain,Spain,identity,True

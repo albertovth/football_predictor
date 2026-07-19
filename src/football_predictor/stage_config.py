@@ -37,6 +37,48 @@ def resolve_stage_window(stage_name: str) -> tuple[pd.Timestamp, pd.Timestamp]:
     return start_date, end_date
 
 
+def resolve_goal_median_window(
+    stage_start: pd.Timestamp,
+    stage_end: pd.Timestamp,
+) -> tuple[pd.Timestamp, pd.Timestamp]:
+    """Resolve the empirical-goal normalization window.
+
+    Production defaults remain the active stage window. Later rolling updates can
+    explicitly point all normalization steps at their longer evidence window.
+    """
+    start_value = os.getenv("GOAL_MEDIAN_START_DATE", str(stage_start.date()))
+    end_value = os.getenv("GOAL_MEDIAN_END_DATE", str(stage_end.date()))
+    start_date = pd.to_datetime(start_value)
+    end_date = pd.to_datetime(end_value)
+    if start_date > end_date:
+        raise ValueError("Goal-median start date is after its end date.")
+    return start_date, end_date
+
+
+def empirical_median_goals(
+    results_source: str | os.PathLike[str],
+    start_date: pd.Timestamp,
+    end_date: pd.Timestamp,
+) -> float:
+    """Return the raw per-team score median for a completed-results window."""
+    results = pd.read_csv(results_source)
+    required = {"date", "home_score", "away_score"}
+    if not required.issubset(results.columns):
+        raise ValueError(f"Goal-median results must contain {sorted(required)}.")
+    results["date"] = pd.to_datetime(results["date"], errors="raise")
+    window = results.loc[
+        results["date"].between(start_date, end_date, inclusive="both")
+        & results["home_score"].notna()
+        & results["away_score"].notna()
+    ]
+    median = pd.concat(
+        [window["home_score"], window["away_score"]], ignore_index=True
+    ).median()
+    if not np.isfinite(median) or median <= 0:
+        raise ValueError(f"Invalid empirical median goals: {median}")
+    return float(median)
+
+
 def resolve_cutoff_quantile(stage_name: str, default_quantile: float = DEFAULT_CUTOFF_QUANTILE) -> float:
     stage_key = stage_name.upper()
     return float(os.getenv(f"{stage_key}_CUTOFF_QUANTILE", str(default_quantile)))

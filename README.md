@@ -14,7 +14,8 @@ football_predictor/
 ├── src/football_predictor/   # Shared Python helpers and path configuration
 ├── pipeline/
 │   ├── spi_stage1/           # Stage 1 ranking pipeline
-│   └── spi_stage2/           # Stage 2 ranking pipeline
+│   ├── spi_stage2/           # Production football calculation/simulation
+│   └── spi_stage3/           # Rolling evidence transfer between updates
 ├── scripts/                  # Wrapper scripts for common workflows
 ├── data/
 │   ├── config/               # Dictionary, confederations, prior rankings
@@ -55,7 +56,7 @@ Contains executable wrappers:
 
 - `scripts/run_stage1.sh`
 - `scripts/run_stage2.sh`
-- `scripts/update_rankings.sh`
+- `scripts/update_rankings.sh` (guarded rolling update; 100-match minimum)
 
 ### `data/`
 
@@ -142,7 +143,7 @@ bash scripts/run_stage1.sh
 bash scripts/run_stage2.sh
 ```
 
-### Run Stage 1 And Stage 2 Sequentially
+### Run The Guarded Rolling Ranking Update
 
 ```bash
 bash scripts/update_rankings.sh
@@ -156,7 +157,8 @@ streamlit run football_predictor.py
 
 ## Stage Window Configuration
 
-The pipeline now supports terminal-driven stage windows and structural cutoff overrides through environment variables.
+The pipeline supports terminal-driven stage windows, structural cutoff
+overrides, and a separate rolling empirical-goal normalization window.
 
 Default stage windows:
 
@@ -171,6 +173,9 @@ Supported overrides:
 - `STAGE2_START_DATE`
 - `STAGE2_END_DATE`
 - `STAGE2_CUTOFF_QUANTILE`
+- `GOAL_MEDIAN_START_DATE`
+- `GOAL_MEDIAN_END_DATE`
+- `FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE`
 
 Examples:
 

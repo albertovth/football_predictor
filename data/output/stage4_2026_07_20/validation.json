@@ -1,0 +1,40 @@
+{
+  "publication_ready": true,
+  "manual_update": true,
+  "checks": {
+    "exact_prior_sha": true,
+    "candidate_206_ui_names": true,
+    "new_matches_exact": true,
+    "world_cup_2_friendlies_0": true,
+    "no_new_duplicates": true,
+    "rolling_goal_window": true,
+    "goal_median_one": true,
+    "metrics_finite": true,
+    "pooled_medians_one": true,
+    "match_appearances_four": true,
+    "evidence_ledger_reconciles": true,
+    "seeded_reproducibility": true,
+    "cutoff_1_vs_7_identical": true,
+    "published_hashes_identical": true,
+    "tests_23_passed": true,
+    "automatic_sparse_guard_blocks": true
+  },
+  "prior": "data/config/priors/spi_global_rankings_intl_18_7_2026.csv",
+  "prior_last_included_match": "2026-07-15",
+  "new_window": [
+    "2026-07-16",
+    "2026-07-19"
+  ],
+  "goal_median_window": [
+    "2022-07-20",
+    "2026-07-19"
+  ],
+  "eligible_matches": 2,
+  "normalization_matches": 4048,
+  "median_goals": 1.0,
+  "selected_cutoff": 0.01,
+  "candidate_sha256": "f7677450ee8c48eed67e20b1dfa44a9ab25d0eef2fc340480c2f81c39a9cfaf6",
+  "seeded_sha256": "932dea2f4debc4a4209ec9daefbb4620e93fe5ea055258b002c9dd1a5b4d988a",
+  "pytest": "23 passed",
+  "manual_exception": "The cap helper was non-finite on two matches but is diagnostic and not consumed. Future automatic updates fail closed on any non-finite calibration log and require at least 100 eligible matches."
+}

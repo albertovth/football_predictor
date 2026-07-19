@@ -8,11 +8,18 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from football_predictor.paths import DICTIONARY_FILE, RESULTS_URL, SPI_FINAL_FILE
+from football_predictor.paths import (
+    DICTIONARY_FILE,
+    GOAL_MEDIAN_RESULTS_SOURCE,
+    RESULTS_URL,
+    SPI_FINAL_FILE,
+)
 from football_predictor.stage_config import (
     add_strength,
+    empirical_median_goals,
     estimate_stage_metric_parameters,
     resolve_cutoff_quantile,
+    resolve_goal_median_window,
     resolve_stage_window,
 )
 
@@ -51,6 +58,17 @@ df = df[(df['home_team'].isin(spi_teams)) & (df['away_team'].isin(spi_teams))]
 df['date'] = pd.to_datetime(df['date'])
 start_date, end_date = resolve_stage_window("stage2")
 print(f"Stage 2 cutoff-search window: {start_date.date()} to {end_date.date()}")
+goal_median_start, goal_median_end = resolve_goal_median_window(start_date, end_date)
+median_goals_per_team = empirical_median_goals(
+    GOAL_MEDIAN_RESULTS_SOURCE,
+    goal_median_start,
+    goal_median_end,
+)
+print(
+    "Empirical goal-median window: "
+    f"{goal_median_start.date()} to {goal_median_end.date()}"
+)
+print(f"Empirical median goals per team: {median_goals_per_team}")
 
 filtered_df = df[(df['date'] >= start_date) & (df['date'] <= end_date)].copy()
 filtered_df = filtered_df.dropna(subset=['home_score', 'away_score'])
@@ -205,7 +223,9 @@ for cutoff_quantile_low_teams in quantile_range:
 
     xg_data = []
     for team in points_for_xG.keys():
-        matches = matches_played.get(team, 1)
+        matches = matches_played.get(team, 0)
+        if matches <= 0:
+            continue
         xg = points_for_xG[team] / matches
         xga = points_for_xGA[team] / matches
         xg_data.append({'team': team, 'xG': xg, 'xGA': xga, 'matches': matches})
@@ -215,9 +235,6 @@ for cutoff_quantile_low_teams in quantile_range:
     # Rescale to goal-like units, same logic as production
     median_xG = xg_df['xG'].median()
     median_xGA = xg_df['xGA'].median()
-
-    all_goals = pd.concat([filtered_df['home_score'], filtered_df['away_score']])
-    median_goals_per_team = all_goals.median()
 
     xg_df['xG'] = (xg_df['xG'] / median_xG) * median_goals_per_team
     xg_df['xGA'] = (xg_df['xGA'] / median_xGA) * median_goals_per_team
@@ -234,3 +251,5 @@ for cutoff_quantile_low_teams in quantile_range:
         )
 
     print("-" * 50)
+else:
+    print("No suitable quantile found; use documented fallback: 0.07")

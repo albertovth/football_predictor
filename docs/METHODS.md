@@ -1,7 +1,7 @@
 # Current national-team ranking method
 
-Status: authoritative for the validated full 2021-to-Stage-3 replay published
-on 2026-07-18. For operational commands for the next update, use
+Status: authoritative for the validated Stage 4 ranking published on
+2026-07-20. For operational commands for the next update, use
 `docs/STAGE4_UPDATE_GUIDE.md`.
 
 ## Pipeline history
@@ -14,6 +14,9 @@ on 2026-07-18. For operational commands for the next update, use
 - Stage 3 used that replayed 206-team Stage 2 result, processed matches from
   2026-01-27, and applied the same evidence pooling. The last eligible
   completed match in the frozen source was 2026-07-15.
+- Stage 4 used that published Stage 3 ranking as its prior and processed France
+  4-6 England on 2026-07-18 and Spain 1-0 Argentina on 2026-07-19. The updated
+  rolling evidence and goal-median window is 2022-07-20 through 2026-07-19.
 
 This is a full sequential replay from the May 2021 starting prior, not one
 single formula applied to every match. Each stage recalculates its raw window;
@@ -42,8 +45,8 @@ Do not use `archive/`, `src/football_predictor/post_world_cup_update.py`,
 
 ## Raw new-period xG and xGA
 
-Raw Stage 3 xG and xGA are calculated only from eligible matches in the new
-Stage 3 window. Old matches are not reprocessed to create the new-period
+Raw xG and xGA are calculated only from eligible matches in the new update
+window. Old matches are not reprocessed to create the new-period
 metrics.
 
 The production order is:
@@ -61,8 +64,8 @@ The production order is:
 8. Calculate opponent mean and median strengths and apply the existing
    opponent corrections.
 9. Calculate and apply the corrected-xGA percentile cap.
-10. Derive corrected metric medians, the empirical median goals, and offensive
-    and defensive scaling.
+10. Derive corrected metric medians and scale offense and defense to the raw
+    empirical goal median from the rolling four-year results window.
 11. Write raw xG/xGA and confederation inputs.
 
 The labels xG and xGA are goal- and opponent-adjusted team metrics; they are
@@ -76,10 +79,10 @@ distributions and transferred to the new period's empirical median-goal scale:
 
 ```text
 scaled prior xG =
-    (team prior xG / median prior xG) * new empirical median goals
+    (team prior xG / median prior xG) * rolling empirical median goals
 
 scaled prior xGA =
-    (team prior xGA / median prior xGA) * new empirical median goals
+    (team prior xGA / median prior xGA) * rolling empirical median goals
 ```
 
 For a team with new matches, each metric is then combined independently:
@@ -92,7 +95,9 @@ pooled metric =
 ```
 
 The complete 206-team pooled xG and xGA distributions are then independently
-normalized to the new empirical median goals.
+normalized to the rolling empirical median goals. The median source and dated
+evidence ledger share one inclusive four-year window. Automated updates derive
+its start as the run date minus four years plus one day.
 
 This distinction is important:
 
@@ -146,9 +151,9 @@ The evidence aggregate and dated ledger are likewise copied to the next
 stage's prior files. Publication happens only after validation and identical
 ranking hashes are confirmed.
 
-## Completed Stage 3 reference
+## Completed Stage 4 reference
 
 The exact inputs, outputs, parameter comparison, warnings, mappings, and
-validation evidence are under `data/output/stage3_2026_07_18/`. The concise
+validation evidence are under `data/output/stage4_2026_07_20/`. The concise
 human-readable record is `VALIDATION_REPORT.md`; machine-readable checks are in
 `validation.json`.

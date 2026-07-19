@@ -1,0 +1,8 @@
+Stage 2 cutoff-search window: 2026-07-16 to 2026-07-19
+Empirical goal-median window: 2022-07-20 to 2026-07-19
+Empirical median goals per team: 1.0
+Estimated adjustment factor: 0.332778
+Estimated dynamism variable: 0.025000
+Testing with cutoff quantile: 0.01
+Cutoff Quantile strength: 0.059000000000000004
+Found a suitable quantile: 0.01

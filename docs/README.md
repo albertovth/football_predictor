@@ -6,31 +6,32 @@ ranking currently used by the application.
 ## Start here for the next update
 
 Use [STAGE4_UPDATE_GUIDE.md](STAGE4_UPDATE_GUIDE.md). It gives the exact prior
-files, next start date, calibration order, commands, outputs, and validation
-gates for extending the validated Stage 3 ranking.
+files, next start date, calibration order, commands, outputs, automation, and
+validation gates for extending the validated Stage 4 ranking.
 
 Supporting references:
 
 - [METHODS.md](METHODS.md) explains the current method and the distinction
   between raw new-period xG/xGA and rolling evidence stabilization.
 - `pipeline/spi_stage3/README.md` documents the Stage 3 evidence scripts.
-- `data/output/stage3_replay_from_2021_2026_07_18/VALIDATION_REPORT.md` records
-  the authoritative replay, parameters, counts, and reproducibility checks.
+- `data/output/stage4_2026_07_20/VALIDATION_REPORT.md` records the current
+  update, parameters, counts, median correction, and reproducibility checks.
 
 Output-directory distinction:
 
 - `data/output/stage3_replay_from_2021_2026_07_18/` is the authoritative
-  current replay and contains the Stage 1, Stage 2, and Stage 3 outputs.
+  full historical replay through Stage 3.
+- `data/output/stage4_2026_07_20/` is the authoritative current update.
 - `data/output/stage3_2026_07_18/` is retained only as the superseded first
   Stage 3 audit. Its ranking is not used by the application or the next prior.
 
 ## Authority rules
 
 - The application reads the repository-root `ranking_final.csv`.
-- The published Stage 3 prior set for the next update is
-  `data/config/priors/spi_global_rankings_intl_18_7_2026.csv` and
-  `data/config/priors/ranking_evidence_18_7_2026.csv`, together with
-  `data/config/priors/ranking_evidence_ledger_18_7_2026.csv`.
+- The published Stage 4 prior set for the next update is
+  `data/config/priors/spi_global_rankings_intl_20_7_2026.csv` and
+  `data/config/priors/ranking_evidence_20_7_2026.csv`, together with
+  `data/config/priors/ranking_evidence_ledger_20_7_2026.csv`.
 - `pipeline/spi_stage2/` remains the production formula and simulation engine;
   its directory name does not mean that an old prior or old parameters are
   reused.
@@ -42,4 +43,4 @@ Output-directory distinction:
 
 The obsolete `post_world_cup_2026_calibration.md` was removed because it
 described the rejected custom implementation and could not reproduce the
-published Stage 3 result.
+published Stage 4 result.

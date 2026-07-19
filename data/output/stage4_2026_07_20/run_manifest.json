@@ -1,0 +1,27 @@
+{
+  "run": "stage4_2026_07_20",
+  "publication_ready": true,
+  "hashes": {
+    "prior": "88aff21cee6585e14b8ce313489b48ac05342b3cdc8bfe669d859fd47e3918e3",
+    "results": "9b652a3f0a86c6c58d36be4bf5db2af4cd4ec3aa239a48e8d8075722b1e3b856",
+    "goal_median_results": "e2adda2c83ec6389eb9a7e838077df0bd6dc2c8e067d1e3d98deee19bad1d412",
+    "raw_metrics": "0fe3b680f472ed6db02c1aa7e742f1332731acc811024d35dd3be57ff0e3cff2",
+    "pooled_metrics": "5211e33f75689972830013445b7d38e13d689479c653bbb98e70f9f2b2499fa1",
+    "ranking": "f7677450ee8c48eed67e20b1dfa44a9ab25d0eef2fc340480c2f81c39a9cfaf6",
+    "published_ranking": "f7677450ee8c48eed67e20b1dfa44a9ab25d0eef2fc340480c2f81c39a9cfaf6",
+    "evidence": "24300cfb440fd21c3bdf9a156a7b8134094648bb6802193aac14d3d2655fda3a",
+    "ledger": "5cda663258afe665b56bafccc0e18580eecbef138a8b0911f533762036243428"
+  },
+  "script_hashes": {
+    "src/football_predictor/stage_config.py": "b6d73be817539cf6f104f0328d3b065addc486ffcde1d228973c11d33db7343e",
+    "src/football_predictor/paths.py": "ffc54283d6432c8084f4ec2ebc99c081c8833319f827e9a059f6be3853e10396",
+    "pipeline/spi_stage2/calculate_low_team_cutoff.py": "96b8c2f44aafba572f673771330a122466de3bf5e3c3bf1d95da9d0b6d12014c",
+    "pipeline/spi_stage2/calculate_xg_xga.py": "10c802b8ff132878868dfc4850827af007ede24a080fdd05c4168cb9bacd5a07",
+    "pipeline/spi_stage2/simulate_spi.py": "737dc84f7ecf2dae86ee1ce8b4744ca0c1698d650e2263388ba2ec74e681f188",
+    "pipeline/spi_stage3/combine_prior_evidence.py": "0b5bf528236063ded3c6f7a029a835965f02cd498cb18f0f3cfddaa73ac01cdd",
+    "scripts/prepare_rolling_ranking_update.py": "6ba3e93a5ff0edc1a2afb22fc99b5fd6dcfe70b531d4b8fb2694a2bdc227d54f",
+    "scripts/run_guarded_ranking_update.sh": "729b9b64e0dede8f6cac788ed676db6ed2faa4e18bfe86a55cbba401be083140",
+    "scripts/validate_and_publish_ranking_update.py": "40492955d0431b71e8cd38bbb41d7568bf87e848064e1bf9ddfcaf31b83300ed",
+    "scripts/send_ranking_ntfy.py": "577995335ad7812789b77dbbfc5aecdebceff30896ae9ccc4aae35d27971c5b6"
+  }
+}

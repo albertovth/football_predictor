@@ -1,0 +1,18 @@
+Empirical median goals (used as baseline): 1.0
+Empirical goal-median window: 2022-07-20 to 2026-07-19
+Stage 2 simulation window: 2026-07-16 to 2026-07-19
+SPI Combined Results:
+     rank                      name    confed       off       def        spi
+0       1                 Argentina  CONMEBOL  2.466131  0.436548  69.995935
+58      2                     Spain      UEFA  2.373726  0.485771  68.502585
+2       3                    Brazil  CONMEBOL  2.421623  0.602559  67.539951
+27      4                    France      UEFA  2.387411  0.625166  66.955528
+45      5               Netherlands      UEFA  2.412776  0.711834  66.174699
+..    ...                       ...       ...       ...       ...        ...
+109   202                    Brunei       AFC  0.043704  2.587662  19.344593
+101   203  Turks and Caicos Islands  CONCACAF  0.005138  2.553830  19.138268
+112   204               Timor-Leste       AFC  0.021518  2.590343  19.088024
+108   205                    Bhutan       AFC  0.040606  2.651733  18.930740
+103   206         US Virgin Islands  CONCACAF  0.018888  2.620858  18.832520
+
+[206 rows x 6 columns]

@@ -217,7 +217,9 @@ Its code implements a corrected, strength-balanced low-team approach:
    - own dampening is anchored at the cutoff
    - defensive penalties increase when conceding to weaker low-strength teams
 6. Team metrics are corrected for opponent-strength exposure.
-7. Outputs are rescaled using the empirical median goals in the relevant match window.
+7. Outputs are rescaled using an explicitly configured empirical goal-median
+   window. Rolling updates use the same inclusive four-year dates as the
+   evidence ledger; historical stages retain their original stage window.
 8. Confederation-level files are written and used for all-versus-all simulation.
 
 This stage writes:
@@ -233,13 +235,13 @@ This stage writes:
 Stage 3 calculates raw xG/xGA only from the new match window using the Stage 2
 engine. It then transfers each prior metric by relative median position:
 
-- scaled prior xG = `(team prior xG / median prior xG) * new goal median`
-- scaled prior xGA = `(team prior xGA / median prior xGA) * new goal median`
+- scaled prior xG = `(team prior xG / median prior xG) * rolling goal median`
+- scaled prior xGA = `(team prior xGA / median prior xGA) * rolling goal median`
 
 Each transferred metric is weighted against the raw new-period metric using
 prior and new team appearances. The pooled 206-team xG and xGA distributions
-are normalized independently to the new empirical goal median before the
-unchanged simulation runs. Teams without a new match therefore preserve their
+are normalized independently to the rolling four-year empirical goal median
+before the unchanged simulation runs. Teams without a new match therefore preserve their
 relative prior positions; teams with few matches move in proportion to their
 new evidence.
 
@@ -344,11 +346,15 @@ bash scripts/run_stage1.sh
 bash scripts/run_stage2.sh
 ```
 
-### Full Ranking Update
+### Guarded Rolling Ranking Update
 
 ```bash
 bash scripts/update_rankings.sh
 ```
+
+This command checks for new results and exits without publication until at
+least 100 eligible completed matches have accumulated. The evidence ledger and
+empirical goal-median source both roll to the actual update run date.
 
 ### Streamlit App
 

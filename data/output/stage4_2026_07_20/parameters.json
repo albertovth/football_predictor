@@ -1,0 +1,70 @@
+{
+  "strength_minimum": {
+    "previous_stage3": 0.05,
+    "stage4": 0.05
+  },
+  "strength_median": {
+    "previous_stage3": 0.5,
+    "stage4": 0.5
+  },
+  "strength_maximum": {
+    "previous_stage3": 0.95,
+    "stage4": 0.95
+  },
+  "adjustment_factor": {
+    "previous_stage3": 0.33277777777777784,
+    "stage4": 0.33277777777777784
+  },
+  "dynamism_variable": {
+    "previous_stage3": 0.025,
+    "stage4": 0.025
+  },
+  "cutoff_quantile": {
+    "previous_stage3": 0.07,
+    "stage4": 0.01
+  },
+  "cutoff_strength": {
+    "previous_stage3": 0.113,
+    "stage4": 0.059000000000000004
+  },
+  "low_team_defensive_anchor_P_c": {
+    "previous_stage3": 3.784242871189775,
+    "stage4": 1.1562617702448221
+  },
+  "low_team_defensive_penalty_cap": {
+    "previous_stage3": 6.0,
+    "stage4": 6.0
+  },
+  "low_team_min_offensive_reward": {
+    "previous_stage3": 0.01,
+    "stage4": 0.01
+  },
+  "adjusted_goal_cap": {
+    "previous_stage3": 6.0,
+    "stage4": 6.0
+  },
+  "corrected_xGA_95th_percentile": {
+    "previous_stage3": 10.165230613969603,
+    "stage4": 3.228044054723211
+  },
+  "empirical_median_goals": {
+    "previous_stage3": 1.0,
+    "stage4": 1.0
+  },
+  "prior_off_median": {
+    "previous_stage3": 1.0000000000000002,
+    "stage4": 0.9999999999999999
+  },
+  "prior_def_median": {
+    "previous_stage3": 0.9999999999999999,
+    "stage4": 1.0
+  },
+  "final_off_median": {
+    "previous_stage3": 1.0,
+    "stage4": 1.0
+  },
+  "final_def_median": {
+    "previous_stage3": 1.0,
+    "stage4": 1.0
+  }
+}

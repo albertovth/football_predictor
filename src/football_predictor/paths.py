@@ -53,3 +53,7 @@ RESULTS_URL = os.getenv(
     "FOOTBALL_RESULTS_SOURCE",
     "https://raw.githubusercontent.com/martj42/international_results/master/results.csv",
 )
+GOAL_MEDIAN_RESULTS_SOURCE = os.getenv(
+    "FOOTBALL_GOAL_MEDIAN_RESULTS_SOURCE",
+    RESULTS_URL,
+)

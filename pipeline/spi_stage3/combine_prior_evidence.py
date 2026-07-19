@@ -382,6 +382,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--results", type=Path, required=True)
     parser.add_argument("--start-date", required=True)
     parser.add_argument("--end-date", required=True)
+    parser.add_argument("--goal-median-results", type=Path)
+    parser.add_argument("--goal-median-start-date")
+    parser.add_argument("--goal-median-end-date")
     parser.add_argument("--aggregated-output", type=Path, required=True)
     parser.add_argument("--confed-output-dir", type=Path, required=True)
     parser.add_argument("--calibration-output", type=Path, required=True)
@@ -430,11 +433,10 @@ def main() -> None:
         windowed_prior.to_csv(args.windowed_prior_output, index=False)
         prior_evidence_file = args.windowed_prior_output
 
-    median_goals = empirical_median_goals(
-        args.results,
-        args.start_date,
-        args.end_date,
-    )
+    median_results = args.goal_median_results or args.results
+    median_start = args.goal_median_start_date or args.start_date
+    median_end = args.goal_median_end_date or args.end_date
+    median_goals = empirical_median_goals(median_results, median_start, median_end)
     calibration, aggregated, final_evidence, audit = combine_prior_evidence(
         prior_ranking_file=args.prior_ranking,
         prior_evidence_file=prior_evidence_file,
@@ -463,6 +465,11 @@ def main() -> None:
         ):
             raise ValueError("Final evidence counts do not equal the dated ledger.")
         audit.update(window_audit)
+    audit.update({
+        "goal_median_results": str(median_results),
+        "goal_median_start": median_start,
+        "goal_median_end": median_end,
+    })
 
     args.aggregated_output.parent.mkdir(parents=True, exist_ok=True)
     args.confed_output_dir.mkdir(parents=True, exist_ok=True)

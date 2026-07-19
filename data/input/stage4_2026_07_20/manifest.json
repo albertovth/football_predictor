@@ -1,0 +1,39 @@
+{
+  "snapshot_date": "2026-07-20",
+  "stage": "stage4",
+  "source": "user-confirmed completed World Cup results",
+  "upstream_url": null,
+  "upstream_commit": null,
+  "retrieval_time": "2026-07-19T22:18:08Z",
+  "configured_start_date": "2026-07-16",
+  "configured_end_date": "2026-07-19",
+  "incoming_prior_last_included_match": "2026-07-15",
+  "latest_completed_match": "2026-07-19",
+  "completed_rows": 2,
+  "unfinished_rows": 0,
+  "eligible_rows": 2,
+  "excluded_rows": 0,
+  "friendlies": 0,
+  "world_cup_matches": 2,
+  "other_competitive_matches": 0,
+  "notes": [
+    "France 4-6 England was played on 2026-07-18.",
+    "Spain 1-0 Argentina was played on 2026-07-19 and finished after extra time.",
+    "No Football-Data API result was used for this snapshot."
+  ],
+  "results_sha256": "9b652a3f0a86c6c58d36be4bf5db2af4cd4ec3aa239a48e8d8075722b1e3b856",
+  "goal_median_normalization": {
+    "method": "raw per-team score median over the same inclusive four-year rolling window",
+    "source_snapshot": "data/input/stage3_2026_07_18/results.csv",
+    "source_snapshot_sha256": "9bb7ae6bac69e6d028ecd1a2c3a040d8590671bc430ccf8ac17f4ad3d1a126ee",
+    "window_start": "2022-07-20",
+    "window_end": "2026-07-19",
+    "completed_matches": 4048,
+    "team_score_observations": 8096,
+    "friendlies": 1101,
+    "median_goals_per_team": 1.0,
+    "frozen_results_file": "data/input/stage4_2026_07_20/goal_median_results.csv",
+    "frozen_results_sha256": "e2adda2c83ec6389eb9a7e838077df0bd6dc2c8e067d1e3d98deee19bad1d412",
+    "manual_score_replacements": 2
+  }
+}

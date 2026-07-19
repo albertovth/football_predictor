@@ -1,0 +1,39 @@
+{
+  "publication_ready": false,
+  "checks": {
+    "minimum_evidence": true,
+    "candidate_universe": true,
+    "ranks_complete": true,
+    "metrics_finite": true,
+    "normalization_finite": true,
+    "normalization_matches_control": true,
+    "pooled_medians_match_goals": true,
+    "new_metric_counts": true,
+    "no_new_duplicates": true,
+    "no_ledger_duplicates": true,
+    "evidence_matches_ledger": true,
+    "rolling_window_exact": true,
+    "seeded_reproducibility": true,
+    "selected_cutoff_valid": true,
+    "calibration_logs_finite": false,
+    "zero_match_relative_order": true,
+    "friendly_rule_unchanged": true
+  },
+  "control": {
+    "status": "ready",
+    "run_date": "2026-07-20",
+    "prior_last_included_match": "2026-07-15",
+    "stage_start": "2026-07-16",
+    "stage_end": "2026-07-19",
+    "evidence_window_start": "2022-07-20",
+    "evidence_window_end": "2026-07-19",
+    "minimum_matches": 2,
+    "eligible_matches": 2,
+    "normalization_matches": 4048,
+    "median_goals": 1.0
+  },
+  "selected_cutoff": 0.01,
+  "prior_sha256": "88aff21cee6585e14b8ce313489b48ac05342b3cdc8bfe669d859fd47e3918e3",
+  "candidate_sha256": "f7677450ee8c48eed67e20b1dfa44a9ab25d0eef2fc340480c2f81c39a9cfaf6",
+  "seeded_sha256": "932dea2f4debc4a4209ec9daefbb4620e93fe5ea055258b002c9dd1a5b4d988a"
+}

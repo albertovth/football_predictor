@@ -1,0 +1,131 @@
+{
+  "overall_status": "FAIL",
+  "publication_allowed": false,
+  "checks": [
+    {
+      "name": "incoming_prior_sha",
+      "status": "PASS",
+      "detail": "88aff21cee6585e14b8ce313489b48ac05342b3cdc8bfe669d859fd47e3918e3"
+    },
+    {
+      "name": "incoming_evidence_sha",
+      "status": "PASS",
+      "detail": "2af8f7a13647547eb9ce14e0ab50c11477bf1b88e703d04700abdcf062459cfb"
+    },
+    {
+      "name": "incoming_ledger_sha",
+      "status": "PASS",
+      "detail": "44f84f23f8d96f3a120fbc11f9554abcbb380a02df62dd59a9a3b7463433278a"
+    },
+    {
+      "name": "window_dates",
+      "status": "PASS",
+      "detail": "prior through 2026-07-15; configured 2026-07-16 through 2026-07-19"
+    },
+    {
+      "name": "counts_reconcile",
+      "status": "PASS",
+      "detail": "2 completed = 2 eligible + 0 excluded; 0 unfinished; 0 duplicates"
+    },
+    {
+      "name": "category_counts",
+      "status": "PASS",
+      "detail": "0 friendlies; 2 World Cup; 0 other competitive"
+    },
+    {
+      "name": "scores_valid",
+      "status": "PASS",
+      "detail": "all completed scores finite, nonnegative integers"
+    },
+    {
+      "name": "no_prior_overlap",
+      "status": "PASS",
+      "detail": "earliest new match 2026-07-18"
+    },
+    {
+      "name": "team_mapping",
+      "status": "PASS",
+      "detail": "all four source/backend/UI names match prior exactly"
+    },
+    {
+      "name": "team_universe",
+      "status": "PASS",
+      "detail": "206 exact UI-compatible names"
+    },
+    {
+      "name": "finite_nonnegative",
+      "status": "PASS",
+      "detail": "raw and pooled xG/xGA finite and nonnegative"
+    },
+    {
+      "name": "pooled_medians",
+      "status": "PASS",
+      "detail": "xG median=2.5; xGA median=2.5; empirical=2.5"
+    },
+    {
+      "name": "evidence_arithmetic",
+      "status": "PASS",
+      "detail": "prior + new = total and weights sum to one"
+    },
+    {
+      "name": "ledger_window",
+      "status": "PASS",
+      "detail": "2022-07-20 through 2026-07-19"
+    },
+    {
+      "name": "new_match_counts",
+      "status": "PASS",
+      "detail": "four team appearances match raw metrics and ledger"
+    },
+    {
+      "name": "zero_match_relative_order",
+      "status": "FAIL",
+      "detail": "202 zero-match teams preserve independent offense and defense order"
+    },
+    {
+      "name": "rank_sequence",
+      "status": "PASS",
+      "detail": "ranks exactly 1 through 206"
+    },
+    {
+      "name": "seeded_reproducibility",
+      "status": "PASS",
+      "detail": "f5dd53a06c74d268225b85d9583ee6c0e55f6f2428ac18b56b6c4431426e5f40"
+    },
+    {
+      "name": "cutoff_sensitivity",
+      "status": "PASS",
+      "detail": "1% and 7% raw xG/xGA are byte-identical because all participants are above both cutoffs"
+    },
+    {
+      "name": "friendly_weighting",
+      "status": "PASS",
+      "detail": "no friendly in Stage 4 sample; unchanged production formula remains 0.5"
+    },
+    {
+      "name": "production_formula_diff",
+      "status": "PASS",
+      "detail": "git diff is empty for pipeline/spi_stage1, pipeline/spi_stage2, pipeline/spi_stage3, and stage_config.py"
+    },
+    {
+      "name": "empty_window_regression",
+      "status": "PASS",
+      "detail": "covered by tests/test_stage3_evidence.py::test_empty_new_window_reproduces_prior_relative_metrics"
+    },
+    {
+      "name": "repository_tests",
+      "status": "PASS",
+      "detail": "19 passed"
+    },
+    {
+      "name": "absolute_scale_plausibility",
+      "status": "FAIL",
+      "detail": "two-match empirical goal median is 2.5 versus incoming median 1.0; this globally scales app xG/xGA and expected scores by about 2.5x"
+    }
+  ],
+  "warnings": [
+    "The unchanged cap diagnostic returned NaN and is not consumed by calculate_xg_xga.py.",
+    "The two results are user-confirmed; no upstream API snapshot or commit exists.",
+    "Publication is blocked solely by the absolute-scale plausibility failure caused by a two-match empirical median."
+  ]
+}

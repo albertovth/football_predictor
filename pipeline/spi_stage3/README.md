@@ -21,8 +21,11 @@ instead applies this calculation separately to xG and xGA:
 The new metric is based only on matches in the new stage window. Prior xG/xGA
 are transferred by their relative position in the prior distributions, not
 treated as absolute goal values. The pooled 206-team xG and xGA distributions
-are independently normalized to the empirical median goals. The existing Stage
-2 simulation then consumes them without modification.
+are independently normalized to the empirical median goals. That median is
+calculated from all completed results in the same rolling four-year date window
+as the evidence ledger, preventing a tiny incremental sample from changing the
+global Poisson scale. The existing Stage 2 simulation then consumes the pooled
+metrics without modification.
 
 The published ranking was replayed from the May 2021 starting prior. The dated
 four-year ledger was applied at both the Stage 2 and Stage 3 handoffs. It
